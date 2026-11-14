@@ -63,7 +63,7 @@ Include ONLY the fields listed for the chosen item. Leave every other field out.
   "absent" only if the full body is visible with no label remnant. If a side that could hide a label is not visible, "unknown".
 - liquid: "present" if any liquid or contents are visible inside (a layer at the bottom, foam, residue of the product);
   "absent" if the interior is visibly empty (small water droplets from rinsing count as "absent").
-- crushed: "true" if the container is visibly flattened or crushed.
+- crushed: "true" if the container or box is visibly flattened, crushed, or folded flat.
 - cap: "closed" if a cap is screwed on; "present" if a cap or lid is attached in any way; "absent" if there is no cap.
   For PET bottles use "closed" or "absent"; for glass bottles use "present" or "absent".
 - contamination_level: food or contents residue left on/in a food container (NOT oil coloring; that is "stain").
@@ -75,13 +75,15 @@ Include ONLY the fields listed for the chosen item. Leave every other field out.
   If the inside is not visible (lid on, photo from the side), "unknown".
 - stain: "present" if oil or red/orange color has soaked into the surface (typical of spicy soup) and remains as a tint;
   "absent" if the visible surface keeps its original color. Do NOT confuse printed designs or shadows with stains.
-- other_material: "present" if a part of a different material is attached (paper label, aluminum film, sticker).
-- plastic_part: "present" if a plastic cap, nozzle cover or ring is attached to a metal can.
+- other_material: "present" if a part of a different material is attached (paper label, aluminum film, sticker,
+  a paper sleeve on a plastic cup).
+- plastic_part: "present" if a plastic cap, nozzle cover, ring or straw is attached to a metal can, a paper carton,
+  or a plastic film package (e.g. the hard plastic lid of a wet-wipe pouch).
 - broken: "true" if the item is cracked, chipped or shattered.
-- foreign_object: "present" if something that does not belong is inside the bottle (cigarette butt, straw, paper).
+- foreign_object: "present" if something that does not belong is inside the bottle or cup (cigarette butt, straw, paper).
 - pump_attached: "true" if the pump head is still attached to the container.
 - is_white: "true" if the styrofoam is plain white; "false" if colored, printed all over, or coated.
-- tape_label: "present" if tape, a shipping label, or a sticker remains on the styrofoam box.
+- tape_label: "present" if tape, a shipping label, or a sticker remains on the box (styrofoam or cardboard).
 - umbrella_type: "long" for a straight long umbrella, "folding" for a compact folding umbrella.
 
 # Before/after comparison (only when two images are given)

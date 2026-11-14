@@ -1,5 +1,5 @@
 {
-  "version": "판정기준표 v1 (서울특별시) · 2026-11-14 반영",
+  "version": "판정기준표 v1.1 (서울특별시) · 2026-11-14 · 품목 29개",
   "messages": {
     "pass": "분리배출할 수 있어요!",
     "need_action": "버리기 전에 아래 항목을 처리하고 다시 찍어 주세요.",
@@ -120,6 +120,20 @@
       "where": [
         "구청 홈페이지에서 '분리배출'을 검색하거나 '내 손안의 분리배출' 앱에서 확인해요."
       ]
+    },
+    "carton": {
+      "title": "종이팩 전용 수거함",
+      "where": [
+        "아파트·주민센터 등의 종이팩 전용 수거함에 넣어요.",
+        "수거함이 없으면 일반 종이와 섞지 말고 종이팩끼리 묶어서 종이류로 내놓아요."
+      ]
+    },
+    "medicine": {
+      "title": "폐의약품 수거함·우체통",
+      "where": [
+        "알약·가루약: 종이봉투에 담아 겉에 '폐의약품'이라고 쓰고 밀봉해 우체통에 넣어요.",
+        "물약 등: 주민센터·보건소·구청의 폐의약품 수거함에 넣어요."
+      ]
     }
   },
   "contamination": {
@@ -229,7 +243,7 @@
     "P02": {
       "name": "유색 페트병·일반 플라스틱 용기",
       "type": "state",
-      "ai_hint": "a tinted PET bottle or another rigid plastic container that is not a delivery food container (P03), cup noodle (P04) or pump bottle (P08).",
+      "ai_hint": "a tinted PET bottle or another rigid plastic container that is not a delivery food container (P03), cup noodle (P04), pump bottle (P08), disposable cup (P13) or instant rice tray (I16).",
       "disposal": "플라스틱류 (뚜껑과 함께 통합배출)",
       "how": [
         "내용물을 비우고 물로 헹궈요.",
@@ -591,6 +605,207 @@
       ],
       "source": "S01, S06, S09, S12"
     },
+    "P10": {
+      "name": "비닐류 (과자·라면 봉지, 포장 비닐)",
+      "type": "state",
+      "ai_hint": "a soft plastic film package such as a snack bag, ramen wrapper, wet-wipe pouch, or delivery poly bag (not plastic wrap).",
+      "disposal": "비닐류",
+      "how": [
+        "내용물을 다 비우고 털어요.",
+        "플라스틱 뚜껑이나 종이 같은 다른 재질은 떼요.",
+        "비닐류끼리 모아 버려요."
+      ],
+      "places": [
+        "vinyl"
+      ],
+      "fallback_disposal": "종량제봉투",
+      "fallback_message": "이물질이 제거되지 않는 비닐은 종량제봉투로 버려 주세요.",
+      "fallback_places": [
+        "general"
+      ],
+      "warnings": [
+        "비닐랩(PVC)은 비닐류가 아니라 종량제봉투로 버려요."
+      ],
+      "conditions": [
+        {
+          "id": "C30",
+          "key": "liquid",
+          "kind": "required",
+          "pass": [
+            "absent"
+          ],
+          "unknown": "fail",
+          "action": "남은 내용물을 다 비워 주세요."
+        },
+        {
+          "id": "C31",
+          "key": "contamination_level",
+          "kind": "contamination",
+          "unknown": "retake"
+        },
+        {
+          "id": "C32",
+          "key": "plastic_part",
+          "kind": "required",
+          "pass": [
+            "absent"
+          ],
+          "unknown": "ignore",
+          "action": "플라스틱 뚜껑(물티슈 캡 등)은 떼어 플라스틱류로 버려 주세요."
+        }
+      ],
+      "source": "S20, S21"
+    },
+    "P11": {
+      "name": "종이팩 (우유팩·두유팩)",
+      "type": "state",
+      "ai_hint": "a paper beverage carton such as a milk or soy milk carton (paper outside, white or silver inside).",
+      "disposal": "종이팩 전용 수거함 (없으면 종이팩끼리 묶어 종이류로)",
+      "how": [
+        "내용물을 비워요.",
+        "뚜껑과 빨대를 떼요.",
+        "물로 헹군 뒤 말려요.",
+        "종이팩 전용 수거함에 넣어요."
+      ],
+      "places": [
+        "carton"
+      ],
+      "checkbox": "물로 헹군 뒤 말렸어요",
+      "checkbox_action": "물로 헹군 뒤 말려 주세요.",
+      "fallback_disposal": "종이팩 전용 수거함",
+      "fallback_message": "남은 항목을 직접 확인한 뒤 종이팩으로 배출해 주세요.",
+      "fallback_places": [
+        "carton"
+      ],
+      "warnings": [
+        "일반 종이와 섞이면 재활용이 어려워요. 종이팩은 따로 모아 주세요."
+      ],
+      "conditions": [
+        {
+          "id": "C33",
+          "key": "liquid",
+          "kind": "required",
+          "pass": [
+            "absent"
+          ],
+          "unknown": "fail",
+          "action": "남은 내용물을 비워 주세요."
+        },
+        {
+          "id": "C34",
+          "key": "plastic_part",
+          "kind": "required",
+          "pass": [
+            "absent"
+          ],
+          "unknown": "retake",
+          "action": "플라스틱 뚜껑과 빨대를 떼어 주세요."
+        }
+      ],
+      "source": "S20, S22"
+    },
+    "P12": {
+      "name": "종이 박스 (택배 상자)",
+      "type": "state",
+      "ai_hint": "a corrugated cardboard box such as a delivery or shipping box.",
+      "disposal": "종이류",
+      "how": [
+        "택배 송장과 테이프를 모두 떼요.",
+        "상자를 접어 부피를 줄여요.",
+        "종이류로 버려요."
+      ],
+      "places": [
+        "paper"
+      ],
+      "fallback_disposal": "종이류",
+      "fallback_message": "송장·테이프를 직접 뗀 뒤 종이류로 배출해 주세요.",
+      "fallback_places": [
+        "paper"
+      ],
+      "warnings": [
+        "송장에는 개인정보가 있어요. 떼어서 따로 버려 주세요."
+      ],
+      "conditions": [
+        {
+          "id": "C35",
+          "key": "tape_label",
+          "kind": "required",
+          "pass": [
+            "absent"
+          ],
+          "unknown": "retake",
+          "action": "택배 송장과 테이프를 떼어 주세요."
+        },
+        {
+          "id": "C36",
+          "key": "crushed",
+          "kind": "tip",
+          "pass": [
+            "true"
+          ],
+          "action": "상자를 접어 부피를 줄이면 좋아요."
+        }
+      ],
+      "source": "S20"
+    },
+    "P13": {
+      "name": "일회용 플라스틱 컵",
+      "type": "state",
+      "ai_hint": "a disposable plastic cup such as a takeout coffee cup, with or without its lid.",
+      "disposal": "플라스틱류",
+      "how": [
+        "남은 음료를 비우고 헹궈요.",
+        "빨대는 빼서 종량제봉투로 버려요.",
+        "종이 컵홀더는 빼서 종이류로 버려요.",
+        "컵과 뚜껑은 플라스틱류로 버려요."
+      ],
+      "places": [
+        "plastic"
+      ],
+      "checkbox": "물로 헹궜어요",
+      "checkbox_action": "물로 헹궈 주세요.",
+      "fallback_disposal": "플라스틱류",
+      "fallback_message": "남은 항목을 직접 확인한 뒤 플라스틱류로 배출해 주세요.",
+      "fallback_places": [
+        "plastic"
+      ],
+      "warnings": [
+        "빨대는 작아서 재활용되지 않아요. 종량제봉투로 버려요."
+      ],
+      "conditions": [
+        {
+          "id": "C37",
+          "key": "liquid",
+          "kind": "required",
+          "pass": [
+            "absent"
+          ],
+          "unknown": "fail",
+          "action": "남은 음료를 비워 주세요."
+        },
+        {
+          "id": "C38",
+          "key": "foreign_object",
+          "kind": "required",
+          "pass": [
+            "absent"
+          ],
+          "unknown": "ignore",
+          "action": "빨대는 빼서 종량제봉투로 버려 주세요."
+        },
+        {
+          "id": "C39",
+          "key": "other_material",
+          "kind": "required",
+          "pass": [
+            "absent"
+          ],
+          "unknown": "ignore",
+          "action": "종이 컵홀더는 빼서 종이류로 버려 주세요."
+        }
+      ],
+      "source": "S20, S21"
+    },
     "I01": {
       "name": "영수증",
       "type": "info",
@@ -889,6 +1104,112 @@
       "message": "코팅된 종이컵은 종량제봉투로 버려 주세요. 종이컵 전용 수거함이 있으면 그곳에!",
       "warnings": [],
       "source": "S02, S10"
+    },
+    "I12": {
+      "name": "물티슈",
+      "type": "info",
+      "ai_hint": "used wet wipes or tissue-like nonwoven wipes (the wipes themselves, not the package).",
+      "disposal": "종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "물티슈는 합성섬유라 종이로 재활용되지 않아요. 종량제봉투로 버려 주세요.",
+      "warnings": [
+        "변기에 버리지 마세요. 포장 비닐과 뚜껑은 따로 분리해요."
+      ],
+      "source": "S24"
+    },
+    "I13": {
+      "name": "폐의약품",
+      "type": "info",
+      "ai_hint": "medicine: pills, blister packs, powder sachets, syrup bottles, or ointment tubes.",
+      "disposal": "폐의약품 수거함·우체통",
+      "places": [
+        "medicine"
+      ],
+      "message": "약은 하수구나 종량제봉투에 버리지 말고 폐의약품으로 따로 버려 주세요.",
+      "warnings": [
+        "하수구나 땅에 버리면 토양·하천을 오염시켜요."
+      ],
+      "split": {
+        "key": "medicine_type",
+        "method": "question",
+        "question": "어떤 약인가요?",
+        "options": [
+          {
+            "label": "알약·가루약",
+            "value": "solid"
+          },
+          {
+            "label": "물약",
+            "value": "liquid"
+          },
+          {
+            "label": "잘 모르겠어요",
+            "value": "unknown"
+          }
+        ],
+        "cases": [
+          {
+            "when": [
+              "solid"
+            ],
+            "disposal": "우체통 또는 폐의약품 수거함",
+            "message": "종이봉투에 담아 겉에 '폐의약품'이라고 쓰고 밀봉해 우체통에 넣어 주세요.",
+            "places": [
+              "medicine"
+            ]
+          },
+          {
+            "when": [
+              "liquid",
+              "unknown"
+            ],
+            "disposal": "주민센터·보건소 폐의약품 수거함",
+            "message": "물약은 우체통에 넣을 수 없어요. 주민센터·보건소의 폐의약품 수거함에 버려 주세요.",
+            "places": [
+              "medicine"
+            ]
+          }
+        ]
+      },
+      "source": "S23"
+    },
+    "I14": {
+      "name": "비닐랩",
+      "type": "info",
+      "ai_hint": "plastic cling wrap (thin transparent food wrap film), used or on a roll.",
+      "disposal": "종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "비닐랩은 PVC라 재활용이 어려워요. 종량제봉투로 버려 주세요.",
+      "warnings": [],
+      "source": "S21"
+    },
+    "I15": {
+      "name": "일회용 숟가락·포크",
+      "type": "info",
+      "ai_hint": "disposable plastic cutlery such as a spoon, fork, or knife.",
+      "disposal": "종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "작은 플라스틱은 선별이 어렵고 기계에 끼어요. 종량제봉투로 버려 주세요.",
+      "warnings": [],
+      "source": "S21"
+    },
+    "I16": {
+      "name": "즉석밥 용기",
+      "type": "info",
+      "ai_hint": "an instant cooked-rice tray (single-serving microwavable rice container) or its film lid.",
+      "disposal": "종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "여러 재질이 섞인 복합 재질(OTHER)이라 재활용이 어려워요. 종량제봉투로 버려 주세요.",
+      "warnings": [],
+      "source": "S21"
     }
   }
 }
