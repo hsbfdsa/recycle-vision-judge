@@ -77,6 +77,10 @@ cases = [
      lambda r: r["places"][0]["title"] == "초소형 전자제품 배출함"),
     ("헌옷 상태 질문", item("I25"), 1, None, {}, "question", None),
     ("치킨 뼈 → 종량제봉투", item("I27"), 1, None, {}, "pass", lambda r: r["disposal"] == "종량제봉투"),
+    # 추가 품목 (v1.3)
+    ("커피 찌꺼기 → 종량제봉투", item("I28"), 1, None, {}, "pass", lambda r: r["disposal"] == "종량제봉투"),
+    ("화분 흙 → 불연성 마대", item("I29"), 1, None, {}, "pass", lambda r: "마대" in r["disposal"]),
+    ("스테인리스 냄비 → 고철류", item("I35"), 1, None, {}, "pass", lambda r: r["disposal"] == "고철류"),
     # 재촬영
     ("재촬영: 같은 페트병, 라벨 제거됨", pet(), 2, "P01", YES, "pass", None),
     ("재촬영: 다른 품목을 찍음", item("I01"), 2, "P01", {}, "different_item", None),
