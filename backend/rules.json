@@ -1067,7 +1067,7 @@
     "I08": {
       "name": "칫솔·옷걸이·CD",
       "type": "info",
-      "ai_hint": "a toothbrush, a clothes hanger, or a CD/DVD disc.",
+      "ai_hint": "ONLY a toothbrush, a clothes hanger, or a CD/DVD disc. Do not use for any other plastic object.",
       "disposal": "종량제봉투",
       "places": [
         "general"
@@ -1079,7 +1079,7 @@
     "I09": {
       "name": "텀블러",
       "type": "info",
-      "ai_hint": "a tumbler (reusable insulated bottle or cup).",
+      "ai_hint": "ONLY a tumbler: a reusable insulated bottle or cup with a lid (not a mug, glass, or disposable cup).",
       "disposal": "종량제봉투",
       "places": [
         "general"
@@ -1251,7 +1251,7 @@
     "I16": {
       "name": "즉석밥 용기",
       "type": "info",
-      "ai_hint": "an instant cooked-rice tray (single-serving microwavable rice container) or its film lid.",
+      "ai_hint": "ONLY an instant cooked-rice tray (single-serving microwavable rice container) or its film lid.",
       "disposal": "종량제봉투",
       "places": [
         "general"
@@ -1301,7 +1301,7 @@
     "I20": {
       "name": "플라스틱 장난감·문구",
       "type": "info",
-      "ai_hint": "a toy or stationery item made of mixed materials, such as plastic toys, pens, or file binders.",
+      "ai_hint": "ONLY a children's toy or a stationery item (pen, ruler, file binder, scissors-free office supplies).",
       "disposal": "종량제봉투",
       "places": [
         "general"

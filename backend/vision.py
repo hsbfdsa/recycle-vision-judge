@@ -49,8 +49,10 @@ The photo is taken by a user who wants to throw away ONE object. Other things of
 {ITEM_LINES}
 - "X00": the SUBJECT is clearly none of the categories above (e.g. a spoon, a phone, clothing, food itself).
 - "unknown": there is no recognizable subject at all (blank, extremely dark or blurred, only background).
-If the subject looks like one of the categories but you are not sure, choose that category with confidence below 0.6.
-Do NOT use "X00" just because you are uncertain.
+Choose a category only when the subject IS that kind of object (a real example of it).
+- If it is that kind of object but partly hidden, unusual or hard to see, still choose it, with confidence below 0.6.
+- If it is a different kind of object that is not listed, answer "X00". Never force it into the closest-sounding category
+  (e.g. a pen, cable, remote control, plastic case or kitchen tool is NOT a toothbrush, hanger or CD; a mug is NOT a tumbler).
 
 # Observation fields
 Include ONLY the fields listed for the chosen item. Leave every other field out.
