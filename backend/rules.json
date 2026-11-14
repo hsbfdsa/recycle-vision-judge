@@ -1,5 +1,5 @@
 {
-  "version": "판정기준표 v1.2 (서울특별시) · 2026-11-14 · 품목 41개",
+  "version": "판정기준표 v1.3 (서울특별시) · 2026-11-14 · 품목 51개",
   "messages": {
     "pass": "분리배출할 수 있어요!",
     "need_action": "버리기 전에 아래 항목을 처리하고 다시 찍어 주세요.",
@@ -145,6 +145,27 @@
       "title": "초소형 전자제품 배출함",
       "where": [
         "주민센터 등에 있는 초소형 전자제품(소형 폐가전) 배출함에 통째로 넣어요."
+      ]
+    },
+    "metal": {
+      "title": "고철류",
+      "where": [
+        "아파트: 분리수거장의 고철(캔) 수거함에 넣어요.",
+        "단독주택·빌라: 투명 봉투에 담아 재활용품 배출일에 내놓아요."
+      ]
+    },
+    "appliance": {
+      "title": "폐가전 무상 방문 수거",
+      "where": [
+        "냉장고·세탁기·TV·에어컨 같은 대형 가전은 무상 방문 수거 서비스를 신청해요.",
+        "고장 나서 신청이 안 되면 구청에 대형폐기물로 신고해요."
+      ]
+    },
+    "nonburn": {
+      "title": "불연성 쓰레기 마대",
+      "where": [
+        "일반 종량제봉투가 아닌 불연성 쓰레기 전용 마대(특수규격마대)에 담아 내놓아요.",
+        "마대는 구청 청소행정과나 행정복지센터(주민센터)에서 사요."
       ]
     }
   },
@@ -1557,6 +1578,141 @@
       "message": "딱딱하거나 동물 사료로 쓸 수 없어 음식물쓰레기가 아니에요. 종량제봉투로 버려 주세요.",
       "warnings": [],
       "source": "S01, S25"
+    },
+    "I28": {
+      "name": "커피 찌꺼기·차 찌꺼기",
+      "type": "info",
+      "ai_key": "coffee_or_tea_grounds",
+      "ai_hint": "used coffee grounds or used tea leaves (loose grounds, not the cup).",
+      "disposal": "종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "커피·차 찌꺼기는 음식물쓰레기가 아니에요. 물기를 빼서 종량제봉투로 버려 주세요.",
+      "warnings": [],
+      "source": "S26"
+    },
+    "I29": {
+      "name": "불연성 쓰레기 (화분 흙·타일·고양이 모래·뚝배기)",
+      "type": "info",
+      "ai_key": "non_combustible_waste",
+      "ai_hint": "non-combustible household waste: potting soil, broken tiles, cat litter, an earthenware pot (ttukbaegi), or similar.",
+      "disposal": "불연성 쓰레기 마대",
+      "places": [
+        "nonburn"
+      ],
+      "message": "타지 않는 쓰레기는 종량제봉투가 아니라 불연성 쓰레기 마대에 담아 버려요.",
+      "warnings": [],
+      "source": "S27"
+    },
+    "I30": {
+      "name": "수영복·튜브·구명조끼",
+      "type": "info",
+      "ai_key": "swim_and_pool_items",
+      "ai_hint": "a swimsuit, an inflatable swim ring or pool float, or a life jacket.",
+      "disposal": "종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "수영복·튜브는 재활용이 어려워요. 종량제봉투로 버려 주세요. 구명조끼 속 스티로폼은 따로 스티로폼으로 버려요.",
+      "warnings": [],
+      "source": "S27"
+    },
+    "I31": {
+      "name": "폭죽",
+      "type": "info",
+      "ai_key": "fireworks",
+      "ai_hint": "fireworks or firecrackers, used or unused.",
+      "disposal": "종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "남은 폭죽은 물에 충분히 적신 뒤 종량제봉투로 버려 주세요.",
+      "warnings": [
+        "그냥 버리면 화재 위험이 있어요."
+      ],
+      "source": "S27"
+    },
+    "I32": {
+      "name": "백열전구",
+      "type": "info",
+      "ai_key": "incandescent_bulb",
+      "ai_hint": "an incandescent light bulb (not a fluorescent tube, not a compact fluorescent lamp).",
+      "disposal": "종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "백열전구는 깨지지 않게 싸서 종량제봉투로 버려 주세요. 형광등·삼파장 전구는 폐형광등 수거함이에요.",
+      "warnings": [],
+      "source": "S28"
+    },
+    "I33": {
+      "name": "알약 포장재",
+      "type": "info",
+      "ai_key": "pill_blister_pack",
+      "ai_hint": "an empty pill blister pack (plastic and aluminum foil sheet).",
+      "disposal": "종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "플라스틱과 알루미늄을 분리하기 어려워 종량제봉투로 버려 주세요. 남은 약은 폐의약품으로!",
+      "warnings": [],
+      "source": "S01, S28"
+    },
+    "I34": {
+      "name": "걸레·수건",
+      "type": "info",
+      "ai_key": "rag_or_towel",
+      "ai_hint": "an old rag, dishcloth, or towel.",
+      "disposal": "종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "걸레·수건은 재활용되지 않아요. 종량제봉투로 버려 주세요.",
+      "warnings": [],
+      "source": "S28"
+    },
+    "I35": {
+      "name": "고철 (공구·철사·못·스테인리스 그릇)",
+      "type": "info",
+      "ai_key": "scrap_metal",
+      "ai_hint": "scrap metal items such as hand tools, wire, nails, metal hangers, or stainless steel bowls and pots without plastic parts.",
+      "disposal": "고철류",
+      "places": [
+        "metal"
+      ],
+      "message": "금속은 고철로 재활용돼요. 다른 재질(플라스틱 손잡이 등)은 최대한 떼고 고철로 버려 주세요.",
+      "warnings": [
+        "코팅 프라이팬처럼 다른 재질이 붙어 떨어지지 않으면 구청 기준을 확인해요."
+      ],
+      "source": "S28"
+    },
+    "I36": {
+      "name": "대형 가전 (냉장고·세탁기·TV·에어컨)",
+      "type": "info",
+      "ai_key": "large_appliance",
+      "ai_hint": "a large home appliance such as a refrigerator, washing machine, TV, or air conditioner.",
+      "disposal": "폐가전 무상 방문 수거",
+      "places": [
+        "appliance"
+      ],
+      "message": "대형 가전은 무상 방문 수거 서비스로 버릴 수 있어요.",
+      "warnings": [],
+      "source": "S28"
+    },
+    "I37": {
+      "name": "고무 대야",
+      "type": "info",
+      "ai_key": "rubber_basin",
+      "ai_hint": "a large rubber or soft plastic washing basin (dae-ya).",
+      "disposal": "종량제봉투 또는 대형폐기물",
+      "places": [
+        "general",
+        "bulky"
+      ],
+      "message": "여러 합성수지가 섞여 재활용이 어려워요. 종량제봉투에 들어가면 종량제봉투로, 크면 대형폐기물로 신고해 주세요.",
+      "warnings": [],
+      "source": "S28"
     }
   }
 }

@@ -240,7 +240,13 @@ class Observation(BaseModel):
     confidence: Optional[float] = Field(default=None, ge=0, le=1)   # 범위 밖이면 AI 오류
     same_item: str = "unknown"
     observations: Dict[str, str] = {}
+    subject: str = ""                           # AI가 본 물건의 한국어 이름 (예: "안경"). 지원 안 함일 때 안내·로그용
     notes: str = ""
+
+    @field_validator("subject", mode="before")
+    @classmethod
+    def _subject(cls, v):
+        return str(v or "").strip()[:30]
 
     @field_validator("item", mode="before")
     @classmethod

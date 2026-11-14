@@ -100,6 +100,10 @@ When only one image is given, set "same_item" to "unknown".
 "confidence" is your confidence in the "item" ID only (0.0 to 1.0).
 Use below 0.6 when the object is partially visible, unusual, or could be another category.
 
+# Subject name
+"subject" is the everyday Korean name of the SUBJECT in 2-10 characters (e.g. "투명 페트병", "안경", "물티슈 포장지").
+Always fill it, even when the item is "other".
+
 # Notes
 "notes" is one short English sentence: name the subject you chose and the key visual evidence. This is for debugging only.
 
@@ -109,18 +113,22 @@ Use below 0.6 when the object is partially visible, unusual, or could be another
   "confidence": number,
   "same_item": "true" | "false" | "unknown",
   "observations": { only the fields listed for the item },
+  "subject": string,
   "notes": string
 }
 
 # Examples
+Photo: a pair of glasses on a desk, a phone and papers in the background.
+{"item":"other","confidence":0.9,"same_item":"unknown","observations":{},"subject":"안경","notes":"Eyeglasses in the center; not a listed category."}
+
 Photo: a clear water bottle, blue label around the middle, cap on, empty, not crushed.
-{"item":"pet_bottle","confidence":0.95,"same_item":"unknown","observations":{"is_clear":"true","label":"present","liquid":"absent","crushed":"false","cap":"closed"},"notes":"Blue label wraps a clear, empty bottle."}
+{"item":"pet_bottle","confidence":0.95,"same_item":"unknown","observations":{"is_clear":"true","label":"present","liquid":"absent","crushed":"false","cap":"closed"},"subject":"투명 페트병","notes":"Blue label wraps a clear, empty bottle."}
 
 Photo: a styrofoam ramen cup seen from above, thin broth film at the bottom, orange tint on the inner wall.
-{"item":"cup_noodle_container","confidence":0.9,"same_item":"unknown","observations":{"contamination_level":"2","stain":"present"},"notes":"Thin broth film and orange tint on the inner wall."}
+{"item":"cup_noodle_container","confidence":0.9,"same_item":"unknown","observations":{"contamination_level":"2","stain":"present"},"subject":"컵라면 용기","notes":"Thin broth film and orange tint on the inner wall."}
 
 Photo: a ramen cup photographed from the side with the lid half closed.
-{"item":"cup_noodle_container","confidence":0.85,"same_item":"unknown","observations":{"contamination_level":"unknown","stain":"unknown"},"notes":"Interior not visible because of the lid and side angle."}
+{"item":"cup_noodle_container","confidence":0.85,"same_item":"unknown","observations":{"contamination_level":"unknown","stain":"unknown"},"subject":"컵라면 용기","notes":"Interior not visible because of the lid and side angle."}
 """
 # The item list and per-item fields come from rules.json, so editing rules.json is enough for the AI to know.
 # .replace() instead of .format(): the prompt has many JSON braces that .format() would misread.

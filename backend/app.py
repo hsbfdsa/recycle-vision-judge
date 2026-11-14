@@ -160,7 +160,7 @@ def judge_api(
     # 요청마다 한 줄 기록 (사진·개인정보 없음). 실제 사용 중 정확도·속도를 볼 수 있다
     log.info("judge %s", json.dumps({
         "status": result["status"], "item": obs["item"], "confidence": obs["confidence"],
-        "attempt": attempt, "reused": observation is not None, "notes": (obs.get("notes") or "")[:150],
+        "attempt": attempt, "reused": observation is not None, "subject": obs.get("subject", ""), "notes": (obs.get("notes") or "")[:150],
         "ms": round((time.perf_counter() - started) * 1000),
     }, ensure_ascii=False))
     return {"observation": obs, "judgement": result}
