@@ -1,5 +1,5 @@
 {
-  "version": "판정기준표 v1.1 (서울특별시) · 2026-11-14 · 품목 29개",
+  "version": "판정기준표 v1.2 (서울특별시) · 2026-11-14 · 품목 41개",
   "messages": {
     "pass": "분리배출할 수 있어요!",
     "need_action": "버리기 전에 아래 항목을 처리하고 다시 찍어 주세요.",
@@ -133,6 +133,18 @@
       "where": [
         "알약·가루약: 종이봉투에 담아 겉에 '폐의약품'이라고 쓰고 밀봉해 우체통에 넣어요.",
         "물약 등: 주민센터·보건소·구청의 폐의약품 수거함에 넣어요."
+      ]
+    },
+    "clothes": {
+      "title": "폐의류 전용 수거함",
+      "where": [
+        "동네·아파트 단지의 의류 수거함에 젖지 않게 넣어요."
+      ]
+    },
+    "ebox": {
+      "title": "초소형 전자제품 배출함",
+      "where": [
+        "주민센터 등에 있는 초소형 전자제품(소형 폐가전) 배출함에 통째로 넣어요."
       ]
     }
   },
@@ -468,7 +480,8 @@
         "glass"
       ],
       "warnings": [
-        "담배꽁초 등 이물질을 넣지 마세요."
+        "담배꽁초 등 이물질을 넣지 마세요.",
+        "소주·맥주병 같은 빈용기보증금 병은 마트·편의점에 반납하면 보증금을 돌려받아요."
       ],
       "conditions": [
         {
@@ -608,7 +621,7 @@
     "P10": {
       "name": "비닐류 (과자·라면 봉지, 포장 비닐)",
       "type": "state",
-      "ai_hint": "a soft plastic film package such as a snack bag, ramen wrapper, wet-wipe pouch, or delivery poly bag (not plastic wrap).",
+      "ai_hint": "a soft plastic film package such as a snack bag, ramen wrapper, coffee pouch, wet-wipe pouch, delivery poly bag, bubble wrap, or onion mesh bag (not plastic wrap).",
       "disposal": "비닐류",
       "how": [
         "내용물을 다 비우고 털어요.",
@@ -707,7 +720,7 @@
     "P12": {
       "name": "종이 박스 (택배 상자)",
       "type": "state",
-      "ai_hint": "a corrugated cardboard box such as a delivery or shipping box.",
+      "ai_hint": "a plain corrugated cardboard box such as a delivery or shipping box (without foil or plastic lining inside).",
       "disposal": "종이류",
       "how": [
         "택배 송장과 테이프를 모두 떼요.",
@@ -806,6 +819,41 @@
       ],
       "source": "S20, S21"
     },
+    "P14": {
+      "name": "종이류 (신문·책·노트·종이 상자류)",
+      "type": "state",
+      "ai_hint": "ordinary paper such as newspapers, books, notebooks, magazines, or paper shopping bags (not cartons P11, not corrugated boxes P12, not coated paper I18).",
+      "disposal": "종이류",
+      "how": [
+        "물기에 젖지 않게 해요.",
+        "스프링·비닐 표지 같은 다른 재질은 떼요.",
+        "종이류끼리 묶거나 모아서 버려요."
+      ],
+      "places": [
+        "paper"
+      ],
+      "fallback_disposal": "종이류",
+      "fallback_message": "다른 재질을 직접 뗀 뒤 종이류로 배출해 주세요.",
+      "fallback_places": [
+        "paper"
+      ],
+      "warnings": [
+        "코팅된 종이, 사진, 영수증은 종이류가 아니에요(종량제봉투)."
+      ],
+      "conditions": [
+        {
+          "id": "C40",
+          "key": "other_material",
+          "kind": "required",
+          "pass": [
+            "absent"
+          ],
+          "unknown": "ignore",
+          "action": "스프링·비닐 표지 같은 다른 재질을 떼어 주세요."
+        }
+      ],
+      "source": "S01, S20"
+    },
     "I01": {
       "name": "영수증",
       "type": "info",
@@ -821,14 +869,15 @@
     "I02": {
       "name": "건전지",
       "type": "info",
-      "ai_hint": "a household battery (AA, AAA, 9V, coin cell).",
+      "ai_hint": "a household battery (AA, AAA, 9V, coin cell) or a small rechargeable battery pack.",
       "disposal": "전지류 전용 수거함",
       "places": [
         "battery"
       ],
       "message": "건전지는 전용 수거함에 버려 주세요. 주민센터 등 공공시설에 있어요.",
       "warnings": [
-        "일반쓰레기에 버리지 마세요."
+        "일반쓰레기에 버리지 마세요.",
+        "금속 재질 배터리도 캔류와 섞지 마세요."
       ],
       "source": "S01, S11"
     },
@@ -1003,7 +1052,7 @@
     "I07": {
       "name": "내열·크리스탈 유리, 도자기, 거울",
       "type": "info",
-      "ai_hint": "heat-resistant glass cookware, crystal glass, a ceramic or porcelain dish, or a mirror.",
+      "ai_hint": "heat-resistant glass cookware, crystal glass, flat window glass, a ceramic or porcelain dish, or a mirror.",
       "disposal": "특수규격마대 또는 대형폐기물",
       "places": [
         "sack",
@@ -1106,9 +1155,9 @@
       "source": "S02, S10"
     },
     "I12": {
-      "name": "물티슈",
+      "name": "물티슈·사용한 휴지",
       "type": "info",
-      "ai_hint": "used wet wipes or tissue-like nonwoven wipes (the wipes themselves, not the package).",
+      "ai_hint": "used wet wipes, tissues, or paper towels (the wipes themselves, not the package).",
       "disposal": "종량제봉투",
       "places": [
         "general"
@@ -1117,7 +1166,7 @@
       "warnings": [
         "변기에 버리지 마세요. 포장 비닐과 뚜껑은 따로 분리해요."
       ],
-      "source": "S24"
+      "source": "S24, S25"
     },
     "I13": {
       "name": "폐의약품",
@@ -1210,6 +1259,263 @@
       "message": "여러 재질이 섞인 복합 재질(OTHER)이라 재활용이 어려워요. 종량제봉투로 버려 주세요.",
       "warnings": [],
       "source": "S21"
+    },
+    "I17": {
+      "name": "보냉 택배 상자 (은박·비닐 안감)",
+      "type": "info",
+      "ai_hint": "an insulated delivery box whose inside is lined with aluminum foil or plastic film that cannot be separated from the paper.",
+      "disposal": "종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "안감이 종이와 붙어 있어 재활용되지 않아요. 종량제봉투로 버려 주세요.",
+      "warnings": [],
+      "source": "S01, S25"
+    },
+    "I18": {
+      "name": "코팅 종이·전단지·사진·택배 전표",
+      "type": "info",
+      "ai_hint": "glossy plastic-coated paper such as coated flyers or posters, photographs, delivery waybill stickers, foil or colored craft paper.",
+      "disposal": "종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "코팅되거나 다른 재질이 섞인 종이는 재활용되지 않아요. 종량제봉투로 버려 주세요.",
+      "warnings": [
+        "송장·전표는 개인정보를 가리고 버려요."
+      ],
+      "source": "S01, S25"
+    },
+    "I19": {
+      "name": "알루미늄 호일",
+      "type": "info",
+      "ai_hint": "aluminum foil (kitchen foil), crumpled or flat.",
+      "disposal": "종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "알루미늄 호일은 캔류가 아니에요. 종량제봉투로 버려 주세요.",
+      "warnings": [],
+      "source": "S01, S25"
+    },
+    "I20": {
+      "name": "플라스틱 장난감·문구",
+      "type": "info",
+      "ai_hint": "a toy or stationery item made of mixed materials, such as plastic toys, pens, or file binders.",
+      "disposal": "종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "여러 재질이 섞인 장난감·문구는 종량제봉투로 버려 주세요.",
+      "warnings": [],
+      "split": {
+        "key": "has_battery",
+        "method": "question",
+        "question": "건전지나 배터리가 들어 있나요?",
+        "options": [
+          {
+            "label": "예",
+            "value": "true"
+          },
+          {
+            "label": "아니요",
+            "value": "false"
+          },
+          {
+            "label": "모르겠어요",
+            "value": "unknown"
+          }
+        ],
+        "cases": [
+          {
+            "when": [
+              "true"
+            ],
+            "disposal": "초소형 전자제품 배출함",
+            "message": "배터리가 든 장난감은 통째로 초소형 전자제품 배출함에 넣어 주세요.",
+            "places": [
+              "ebox"
+            ]
+          },
+          {
+            "when": [
+              "false",
+              "unknown"
+            ],
+            "disposal": "종량제봉투",
+            "message": "여러 재질이 섞인 장난감·문구는 종량제봉투로 버려 주세요.",
+            "places": [
+              "general"
+            ]
+          }
+        ]
+      },
+      "source": "S01, S25"
+    },
+    "I21": {
+      "name": "큰 플라스틱 생활용품 (캐리어·유모차·낚싯대)",
+      "type": "info",
+      "ai_hint": "a large household item such as a rolling suitcase, stroller, walker, golf bag, or fishing rod.",
+      "disposal": "대형폐기물 신고",
+      "places": [
+        "bulky"
+      ],
+      "message": "크기가 큰 생활용품은 구청에 대형폐기물로 신고한 뒤 배출해요.",
+      "warnings": [],
+      "source": "S01, S25"
+    },
+    "I22": {
+      "name": "고무장갑·고무호스·식탁보·현수막",
+      "type": "info",
+      "ai_hint": "rubber gloves, a rubber hose, a vinyl tablecloth, or a fabric/vinyl banner.",
+      "disposal": "종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "고무나 비닐 코팅 제품은 재활용되지 않아요. 종량제봉투로 버려 주세요.",
+      "warnings": [],
+      "source": "S01, S25"
+    },
+    "I23": {
+      "name": "장판·돗자리·천막",
+      "type": "info",
+      "ai_hint": "a floor mat or vinyl flooring, a picnic/straw mat, or a tent.",
+      "disposal": "대형폐기물 신고",
+      "places": [
+        "bulky"
+      ],
+      "message": "장판·돗자리·천막은 구청에 대형폐기물로 신고한 뒤 배출해요.",
+      "warnings": [],
+      "source": "S01, S25"
+    },
+    "I24": {
+      "name": "과일 포장망 (완충재)",
+      "type": "info",
+      "ai_hint": "a foam mesh net used to protect fruit (e.g. around apples or pears).",
+      "disposal": "종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "과일 포장망은 스티로폼으로 재활용되지 않아요. 종량제봉투로 버려 주세요.",
+      "warnings": [],
+      "source": "S01, S25"
+    },
+    "I25": {
+      "name": "헌옷·신발·가방",
+      "type": "info",
+      "ai_hint": "used clothing, shoes, or a bag.",
+      "disposal": "폐의류 전용 수거함",
+      "places": [
+        "clothes"
+      ],
+      "message": "입을 수 있는 깨끗한 옷·신발은 폐의류 수거함에 넣어 주세요.",
+      "warnings": [
+        "젖거나 오염된 것은 재활용되지 않아요."
+      ],
+      "split": {
+        "key": "clothes_ok",
+        "method": "question",
+        "question": "깨끗하고 다시 입을 수 있는 상태인가요?",
+        "options": [
+          {
+            "label": "예",
+            "value": "true"
+          },
+          {
+            "label": "아니요 (해지거나 오염됨)",
+            "value": "false"
+          },
+          {
+            "label": "모르겠어요",
+            "value": "unknown"
+          }
+        ],
+        "cases": [
+          {
+            "when": [
+              "true"
+            ],
+            "disposal": "폐의류 전용 수거함",
+            "message": "깨끗한 옷·신발은 젖지 않게 폐의류 수거함에 넣어 주세요.",
+            "places": [
+              "clothes"
+            ]
+          },
+          {
+            "when": [
+              "false",
+              "unknown"
+            ],
+            "disposal": "종량제봉투",
+            "message": "재활용이 어려운 옷·신발·가방은 종량제봉투로 버려 주세요.",
+            "places": [
+              "general"
+            ]
+          }
+        ]
+      },
+      "source": "S01, S25"
+    },
+    "I26": {
+      "name": "이불·쿠션·베개",
+      "type": "info",
+      "ai_hint": "a quilt or comforter, a cushion, or a pillow.",
+      "disposal": "대형폐기물 신고",
+      "places": [
+        "bulky"
+      ],
+      "message": "솜이불·쿠션은 대형폐기물로, 베개는 종량제봉투로 버려요.",
+      "warnings": [],
+      "split": {
+        "key": "bedding_type",
+        "method": "question",
+        "question": "어떤 물건인가요?",
+        "options": [
+          {
+            "label": "솜이불·쿠션",
+            "value": "quilt"
+          },
+          {
+            "label": "베개",
+            "value": "pillow"
+          }
+        ],
+        "cases": [
+          {
+            "when": [
+              "quilt"
+            ],
+            "disposal": "대형폐기물 신고",
+            "message": "솜이불·쿠션은 구청에 대형폐기물로 신고한 뒤 배출해요.",
+            "places": [
+              "bulky"
+            ]
+          },
+          {
+            "when": [
+              "pillow"
+            ],
+            "disposal": "종량제봉투",
+            "message": "베개는 종량제봉투로 버려 주세요.",
+            "places": [
+              "general"
+            ]
+          }
+        ]
+      },
+      "source": "S01, S25"
+    },
+    "I27": {
+      "name": "음식물이 아닌 음식 쓰레기 (뼈·껍데기·씨·티백)",
+      "type": "info",
+      "ai_hint": "non-food-waste kitchen scraps: chicken or fish bones, shellfish or crab shells, eggshells, hard fruit pits (peach, plum), onion skins, or used tea bags.",
+      "disposal": "종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "딱딱하거나 동물 사료로 쓸 수 없어 음식물쓰레기가 아니에요. 종량제봉투로 버려 주세요.",
+      "warnings": [],
+      "source": "S01, S25"
     }
   }
 }
