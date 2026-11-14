@@ -23,12 +23,6 @@ from vision import observe, prepare_image
 log = logging.getLogger("uvicorn.error")
 
 app = FastAPI(title="분리배출 판정 API", version="0.3.0")
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS,
-    allow_methods=["GET", "POST"],
-    allow_headers=["*"],
-)
 
 
 # ---------- 오류: 모든 오류를 {"error": {"code", "message"}} 한 가지 모양으로 ----------
@@ -84,6 +78,17 @@ async def guard(request: Request, call_next):
                                     status_code=429)
             q.append(now)
     return await call_next(request)
+
+
+# CORS는 guard보다 나중에 등록해야 바깥쪽에서 감싼다 → 413·429 응답에도 CORS 헤더가 붙어
+# 브라우저가 "CORS 오류" 대신 실제 안내 문구("요청이 너무 많아요")를 보여 줄 수 있다.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_methods=["GET", "POST"],
+    allow_headers=["*"],
+)
+log.info("CORS allowed origins: %s", ALLOWED_ORIGINS)
 
 
 def read_upload(f: UploadFile) -> bytes:
