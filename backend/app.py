@@ -16,7 +16,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from config import ALLOWED_ORIGINS, HOST, MAX_BYTES, PORT, RATE_LIMIT_PER_MIN
-from judge import judge
+from judge import judge, RULES
 from schemas import ErrorResponse, JudgeResponse, Observation
 from vision import observe, prepare_image
 
@@ -144,8 +144,13 @@ def judge_api(
             log.warning("prev_image unreadable, judging without comparison")
             prev = None
 
+        # 사용자가 품목을 직접 고른 경우(인식 실패 화면에서) → AI에게 알려 주고 그 품목으로 확정
+        hint = str(answer_dict.get("item_hint") or "").strip().upper() or None
         try:
-            obs = Observation.model_validate(observe(cur, prev)).model_dump()
+            raw = observe(cur, prev, hint) if hint else observe(cur, prev)
+            if hint and hint in RULES and isinstance(raw, dict):
+                raw.update(item=hint, confidence=1.0)
+            obs = Observation.model_validate(raw).model_dump()
         except Exception:                               # 키 없음, 네트워크, AI가 이상한 JSON을 줌 등
             log.exception("vision failed")
             raise ApiError("AI_FAILED", "AI 분석에 실패했어요. 잠시 후 다시 시도해 주세요.", 502)
@@ -154,7 +159,7 @@ def judge_api(
     # 요청마다 한 줄 기록 (사진·개인정보 없음). 실제 사용 중 정확도·속도를 볼 수 있다
     log.info("judge %s", json.dumps({
         "status": result["status"], "item": obs["item"], "confidence": obs["confidence"],
-        "attempt": attempt, "reused": observation is not None,
+        "attempt": attempt, "reused": observation is not None, "notes": (obs.get("notes") or "")[:150],
         "ms": round((time.perf_counter() - started) * 1000),
     }, ensure_ascii=False))
     return {"observation": obs, "judgement": result}
