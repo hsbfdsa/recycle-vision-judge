@@ -180,6 +180,7 @@
     "P01": {
       "name": "투명 페트병",
       "type": "state",
+      "ai_key": "pet_bottle",
       "ai_hint": "a PET beverage bottle (water, soda, juice, tea), clear or tinted. Report the tint with is_clear.",
       "disposal": "투명 페트병 전용 수거함",
       "how": [
@@ -255,7 +256,8 @@
     "P02": {
       "name": "유색 페트병·일반 플라스틱 용기",
       "type": "state",
-      "ai_hint": "a tinted PET bottle or another rigid plastic container that is not a delivery food container (P03), cup noodle (P04), pump bottle (P08), disposable cup (P13) or instant rice tray (I16).",
+      "ai_key": "other_rigid_plastic_container",
+      "ai_hint": "a tinted PET bottle or another rigid plastic container that is not a delivery food container (delivery_food_container), cup noodle (cup_noodle_container), pump bottle (pump_bottle), disposable cup (disposable_plastic_cup) or instant rice tray (instant_rice_tray).",
       "disposal": "플라스틱류 (뚜껑과 함께 통합배출)",
       "how": [
         "내용물을 비우고 물로 헹궈요.",
@@ -291,6 +293,7 @@
     "P03": {
       "name": "배달 플라스틱 용기",
       "type": "state",
+      "ai_key": "delivery_food_container",
       "ai_hint": "a plastic food delivery or takeout container or its lid (often black or clear).",
       "disposal": "플라스틱류",
       "how": [
@@ -340,6 +343,7 @@
     "P04": {
       "name": "컵라면 용기",
       "type": "state",
+      "ai_key": "cup_noodle_container",
       "ai_hint": "an instant cup noodle container (styrofoam, paper, or plastic), with or without lid.",
       "disposal": "재질 표시에 따라 플라스틱(스티로폼)류 또는 종이류",
       "how": [
@@ -380,6 +384,7 @@
     "P05": {
       "name": "캔 (음료·식품)",
       "type": "state",
+      "ai_key": "metal_can",
       "ai_hint": "a metal beverage or food can (aluminum or steel).",
       "disposal": "캔류",
       "how": [
@@ -424,6 +429,7 @@
     "P06": {
       "name": "부탄가스·스프레이 캔",
       "type": "state",
+      "ai_key": "gas_or_spray_can",
       "ai_hint": "a butane gas canister or an aerosol spray can.",
       "disposal": "캔류",
       "how": [
@@ -462,6 +468,7 @@
     "P07": {
       "name": "유리병",
       "type": "state",
+      "ai_key": "glass_bottle",
       "ai_hint": "a glass bottle (soju, beer, beverage, sauce).",
       "disposal": "유리병류",
       "how": [
@@ -520,6 +527,7 @@
     "P08": {
       "name": "펌프형 용기 (샴푸·세제)",
       "type": "state",
+      "ai_key": "pump_bottle",
       "ai_hint": "a pump-type plastic container such as shampoo, body wash, or liquid detergent.",
       "disposal": "본체: 플라스틱류 / 펌프: 종량제봉투",
       "how": [
@@ -568,6 +576,7 @@
     "P09": {
       "name": "스티로폼 상자",
       "type": "state",
+      "ai_key": "styrofoam_box",
       "ai_hint": "a styrofoam (expanded polystyrene) box, e.g. a fruit or fish delivery box.",
       "disposal": "스티로폼",
       "how": [
@@ -621,6 +630,7 @@
     "P10": {
       "name": "비닐류 (과자·라면 봉지, 포장 비닐)",
       "type": "state",
+      "ai_key": "plastic_film_bag",
       "ai_hint": "a soft plastic film package such as a snack bag, ramen wrapper, coffee pouch, wet-wipe pouch, delivery poly bag, bubble wrap, or onion mesh bag (not plastic wrap).",
       "disposal": "비닐류",
       "how": [
@@ -672,6 +682,7 @@
     "P11": {
       "name": "종이팩 (우유팩·두유팩)",
       "type": "state",
+      "ai_key": "paper_carton",
       "ai_hint": "a paper beverage carton such as a milk or soy milk carton (paper outside, white or silver inside).",
       "disposal": "종이팩 전용 수거함 (없으면 종이팩끼리 묶어 종이류로)",
       "how": [
@@ -720,6 +731,7 @@
     "P12": {
       "name": "종이 박스 (택배 상자)",
       "type": "state",
+      "ai_key": "cardboard_box",
       "ai_hint": "a plain corrugated cardboard box such as a delivery or shipping box (without foil or plastic lining inside).",
       "disposal": "종이류",
       "how": [
@@ -764,6 +776,7 @@
     "P13": {
       "name": "일회용 플라스틱 컵",
       "type": "state",
+      "ai_key": "disposable_plastic_cup",
       "ai_hint": "a disposable plastic cup such as a takeout coffee cup, with or without its lid.",
       "disposal": "플라스틱류",
       "how": [
@@ -822,7 +835,8 @@
     "P14": {
       "name": "종이류 (신문·책·노트·종이 상자류)",
       "type": "state",
-      "ai_hint": "ordinary paper such as newspapers, books, notebooks, magazines, or paper shopping bags (not cartons P11, not corrugated boxes P12, not coated paper I18).",
+      "ai_key": "paper_newspaper_book",
+      "ai_hint": "ordinary paper such as newspapers, books, notebooks, magazines, or paper shopping bags (not cartons paper_carton, not corrugated boxes cardboard_box, not coated paper coated_paper_or_photo).",
       "disposal": "종이류",
       "how": [
         "물기에 젖지 않게 해요.",
@@ -857,6 +871,7 @@
     "I01": {
       "name": "영수증",
       "type": "info",
+      "ai_key": "receipt",
       "ai_hint": "a printed store or card receipt (thin paper slip with itemized text).",
       "disposal": "종량제봉투",
       "places": [
@@ -869,6 +884,7 @@
     "I02": {
       "name": "건전지",
       "type": "info",
+      "ai_key": "battery",
       "ai_hint": "a household battery (AA, AAA, 9V, coin cell) or a small rechargeable battery pack.",
       "disposal": "전지류 전용 수거함",
       "places": [
@@ -884,6 +900,7 @@
     "I03": {
       "name": "형광등",
       "type": "info",
+      "ai_key": "fluorescent_lamp",
       "ai_hint": "a fluorescent lamp tube or bulb, or an LED tube.",
       "disposal": "형광등 전용 수거함",
       "places": [
@@ -924,6 +941,7 @@
     "I04": {
       "name": "우산",
       "type": "info",
+      "ai_key": "umbrella",
       "ai_hint": "an umbrella (long or folding).",
       "disposal": "대형폐기물 신고",
       "places": [
@@ -975,6 +993,7 @@
     "I05": {
       "name": "아이스팩",
       "type": "info",
+      "ai_key": "ice_pack",
       "ai_hint": "an ice pack (plastic pouch filled with gel or water).",
       "disposal": "종량제봉투 (통째로)",
       "places": [
@@ -1031,6 +1050,7 @@
     "I06": {
       "name": "깨진 유리",
       "type": "info",
+      "ai_key": "broken_glass",
       "ai_hint": "broken glass pieces or a visibly broken glass item (not a broken fluorescent lamp).",
       "disposal": "소량: 종량제봉투 / 다량: 특수규격마대",
       "how": [
@@ -1052,6 +1072,7 @@
     "I07": {
       "name": "내열·크리스탈 유리, 도자기, 거울",
       "type": "info",
+      "ai_key": "ceramic_or_special_glass",
       "ai_hint": "heat-resistant glass cookware, crystal glass, flat window glass, a ceramic or porcelain dish, or a mirror.",
       "disposal": "특수규격마대 또는 대형폐기물",
       "places": [
@@ -1067,6 +1088,7 @@
     "I08": {
       "name": "칫솔·옷걸이·CD",
       "type": "info",
+      "ai_key": "toothbrush_hanger_or_cd",
       "ai_hint": "ONLY a toothbrush, a clothes hanger, or a CD/DVD disc. Do not use for any other plastic object.",
       "disposal": "종량제봉투",
       "places": [
@@ -1079,6 +1101,7 @@
     "I09": {
       "name": "텀블러",
       "type": "info",
+      "ai_key": "tumbler",
       "ai_hint": "ONLY a tumbler: a reusable insulated bottle or cup with a lid (not a mug, glass, or disposable cup).",
       "disposal": "종량제봉투",
       "places": [
@@ -1133,6 +1156,7 @@
     "I10": {
       "name": "플라스틱 빨대",
       "type": "info",
+      "ai_key": "plastic_straw",
       "ai_hint": "a plastic drinking straw.",
       "disposal": "종량제봉투",
       "places": [
@@ -1145,6 +1169,7 @@
     "I11": {
       "name": "종이컵",
       "type": "info",
+      "ai_key": "paper_cup",
       "ai_hint": "a disposable paper cup.",
       "disposal": "종량제봉투 (종이컵 전용 수거함이 있으면 그곳)",
       "places": [
@@ -1157,6 +1182,7 @@
     "I12": {
       "name": "물티슈·사용한 휴지",
       "type": "info",
+      "ai_key": "wet_wipes_or_tissue",
       "ai_hint": "used wet wipes, tissues, or paper towels (the wipes themselves, not the package).",
       "disposal": "종량제봉투",
       "places": [
@@ -1171,6 +1197,7 @@
     "I13": {
       "name": "폐의약품",
       "type": "info",
+      "ai_key": "medicine",
       "ai_hint": "medicine: pills, blister packs, powder sachets, syrup bottles, or ointment tubes.",
       "disposal": "폐의약품 수거함·우체통",
       "places": [
@@ -1227,6 +1254,7 @@
     "I14": {
       "name": "비닐랩",
       "type": "info",
+      "ai_key": "plastic_wrap",
       "ai_hint": "plastic cling wrap (thin transparent food wrap film), used or on a roll.",
       "disposal": "종량제봉투",
       "places": [
@@ -1239,6 +1267,7 @@
     "I15": {
       "name": "일회용 숟가락·포크",
       "type": "info",
+      "ai_key": "disposable_cutlery",
       "ai_hint": "disposable plastic cutlery such as a spoon, fork, or knife.",
       "disposal": "종량제봉투",
       "places": [
@@ -1251,6 +1280,7 @@
     "I16": {
       "name": "즉석밥 용기",
       "type": "info",
+      "ai_key": "instant_rice_tray",
       "ai_hint": "ONLY an instant cooked-rice tray (single-serving microwavable rice container) or its film lid.",
       "disposal": "종량제봉투",
       "places": [
@@ -1263,6 +1293,7 @@
     "I17": {
       "name": "보냉 택배 상자 (은박·비닐 안감)",
       "type": "info",
+      "ai_key": "insulated_delivery_box",
       "ai_hint": "an insulated delivery box whose inside is lined with aluminum foil or plastic film that cannot be separated from the paper.",
       "disposal": "종량제봉투",
       "places": [
@@ -1275,6 +1306,7 @@
     "I18": {
       "name": "코팅 종이·전단지·사진·택배 전표",
       "type": "info",
+      "ai_key": "coated_paper_or_photo",
       "ai_hint": "glossy plastic-coated paper such as coated flyers or posters, photographs, delivery waybill stickers, foil or colored craft paper.",
       "disposal": "종량제봉투",
       "places": [
@@ -1289,6 +1321,7 @@
     "I19": {
       "name": "알루미늄 호일",
       "type": "info",
+      "ai_key": "aluminum_foil",
       "ai_hint": "aluminum foil (kitchen foil), crumpled or flat.",
       "disposal": "종량제봉투",
       "places": [
@@ -1301,6 +1334,7 @@
     "I20": {
       "name": "플라스틱 장난감·문구",
       "type": "info",
+      "ai_key": "toy_or_stationery",
       "ai_hint": "ONLY a children's toy or a stationery item (pen, ruler, file binder, scissors-free office supplies).",
       "disposal": "종량제봉투",
       "places": [
@@ -1355,6 +1389,7 @@
     "I21": {
       "name": "큰 플라스틱 생활용품 (캐리어·유모차·낚싯대)",
       "type": "info",
+      "ai_key": "large_household_item",
       "ai_hint": "a large household item such as a rolling suitcase, stroller, walker, golf bag, or fishing rod.",
       "disposal": "대형폐기물 신고",
       "places": [
@@ -1367,6 +1402,7 @@
     "I22": {
       "name": "고무장갑·고무호스·식탁보·현수막",
       "type": "info",
+      "ai_key": "rubber_gloves_hose_banner",
       "ai_hint": "rubber gloves, a rubber hose, a vinyl tablecloth, or a fabric/vinyl banner.",
       "disposal": "종량제봉투",
       "places": [
@@ -1379,6 +1415,7 @@
     "I23": {
       "name": "장판·돗자리·천막",
       "type": "info",
+      "ai_key": "floor_mat_or_tent",
       "ai_hint": "a floor mat or vinyl flooring, a picnic/straw mat, or a tent.",
       "disposal": "대형폐기물 신고",
       "places": [
@@ -1391,6 +1428,7 @@
     "I24": {
       "name": "과일 포장망 (완충재)",
       "type": "info",
+      "ai_key": "fruit_foam_net",
       "ai_hint": "a foam mesh net used to protect fruit (e.g. around apples or pears).",
       "disposal": "종량제봉투",
       "places": [
@@ -1403,6 +1441,7 @@
     "I25": {
       "name": "헌옷·신발·가방",
       "type": "info",
+      "ai_key": "clothes_shoes_bag",
       "ai_hint": "used clothing, shoes, or a bag.",
       "disposal": "폐의류 전용 수거함",
       "places": [
@@ -1459,6 +1498,7 @@
     "I26": {
       "name": "이불·쿠션·베개",
       "type": "info",
+      "ai_key": "bedding",
       "ai_hint": "a quilt or comforter, a cushion, or a pillow.",
       "disposal": "대형폐기물 신고",
       "places": [
@@ -1508,6 +1548,7 @@
     "I27": {
       "name": "음식물이 아닌 음식 쓰레기 (뼈·껍데기·씨·티백)",
       "type": "info",
+      "ai_key": "bones_shells_pits_teabags",
       "ai_hint": "non-food-waste kitchen scraps: chicken or fish bones, shellfish or crab shells, eggshells, hard fruit pits (peach, plum), onion skins, or used tea bags.",
       "disposal": "종량제봉투",
       "places": [

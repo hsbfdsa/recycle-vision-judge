@@ -42,16 +42,16 @@ A separate rule engine makes all decisions based on your observations.
 The photo is taken by a user who wants to throw away ONE object. Other things often appear too
 (table, floor, shelves, other trash, packaging, hands). Pick the SUBJECT: the object the photographer is aiming at.
 - Usually it is near the center, the largest in the frame, in the sharpest focus, closest to the camera, or held in a hand.
-- Ignore everything else completely. Background objects must never change your answer and never make it "X00".
+- Ignore everything else completely. Background objects must never change your answer and never make it "other".
 - All observation fields describe the SUBJECT only.
 
-# Item categories (choose exactly one item ID for the SUBJECT)
+# Item categories (choose exactly one item name for the SUBJECT, spelled exactly as listed)
 {ITEM_LINES}
-- "X00": the SUBJECT is clearly none of the categories above (e.g. a spoon, a phone, clothing, food itself).
+- "other": the SUBJECT is clearly none of the categories above (e.g. a spoon, a phone, clothing, food itself).
 - "unknown": there is no recognizable subject at all (blank, extremely dark or blurred, only background).
 Choose a category only when the subject IS that kind of object (a real example of it).
 - If it is that kind of object but partly hidden, unusual or hard to see, still choose it, with confidence below 0.6.
-- If it is a different kind of object that is not listed, answer "X00". Never force it into the closest-sounding category
+- If it is a different kind of object that is not listed, answer "other". Never force it into the closest-sounding category
   (e.g. a pen, cable, remote control, plastic case or kitchen tool is NOT a toothbrush, hanger or CD; a mug is NOT a tumbler).
 
 # Observation fields
@@ -114,13 +114,13 @@ Use below 0.6 when the object is partially visible, unusual, or could be another
 
 # Examples
 Photo: a clear water bottle, blue label around the middle, cap on, empty, not crushed.
-{"item":"P01","confidence":0.95,"same_item":"unknown","observations":{"is_clear":"true","label":"present","liquid":"absent","crushed":"false","cap":"closed"},"notes":"Blue label wraps a clear, empty bottle."}
+{"item":"pet_bottle","confidence":0.95,"same_item":"unknown","observations":{"is_clear":"true","label":"present","liquid":"absent","crushed":"false","cap":"closed"},"notes":"Blue label wraps a clear, empty bottle."}
 
 Photo: a styrofoam ramen cup seen from above, thin broth film at the bottom, orange tint on the inner wall.
-{"item":"P04","confidence":0.9,"same_item":"unknown","observations":{"contamination_level":"2","stain":"present"},"notes":"Thin broth film and orange tint on the inner wall."}
+{"item":"cup_noodle_container","confidence":0.9,"same_item":"unknown","observations":{"contamination_level":"2","stain":"present"},"notes":"Thin broth film and orange tint on the inner wall."}
 
 Photo: a ramen cup photographed from the side with the lid half closed.
-{"item":"P04","confidence":0.85,"same_item":"unknown","observations":{"contamination_level":"unknown","stain":"unknown"},"notes":"Interior not visible because of the lid and side angle."}
+{"item":"cup_noodle_container","confidence":0.85,"same_item":"unknown","observations":{"contamination_level":"unknown","stain":"unknown"},"notes":"Interior not visible because of the lid and side angle."}
 """
 # The item list and per-item fields come from rules.json, so editing rules.json is enough for the AI to know.
 # .replace() instead of .format(): the prompt has many JSON braces that .format() would misread.
@@ -137,11 +137,11 @@ def _values(key):
     return " | ".join(f'"{v}"' for v in sorted(FIELD_VALUES[key])) + ' | "unknown"'
 
 
-ITEM_LINES = "\n".join(f'- "{key}": {rule.ai_hint}' for key, rule in RULES.items())
-ITEM_KEYS = " | ".join(f'"{key}"' for key in [*RULES, UNSUPPORTED, "unknown"])
+ITEM_LINES = "\n".join(f'- "{rule.ai_key}": {rule.ai_hint}' for rule in RULES.values())
+ITEM_KEYS = " | ".join(f'"{rule.ai_key}"' for rule in RULES.values()) + ' | "other" | "unknown"'
 FIELD_LINES = "\n".join(
-    f'- {key}: ' + (", ".join(f"{f} ({_values(f)})" for f in _fields(rule)) or "no fields")
-    for key, rule in RULES.items())
+    f'- {rule.ai_key}: ' + (", ".join(f"{f} ({_values(f)})" for f in _fields(rule)) or "no fields")
+    for rule in RULES.values())
 SYSTEM_PROMPT = (PROMPT_TEMPLATE.replace("{ITEM_LINES}", ITEM_LINES)
                  .replace("{ITEM_KEYS}", ITEM_KEYS).replace("{FIELD_LINES}", FIELD_LINES))
 
@@ -175,8 +175,9 @@ def observe(image: bytes, prev_image: bytes | None = None, item_hint: str | None
     text = ("Two images follow: BEFORE, then CURRENT. Return the observation JSON for the CURRENT photo."
             if prev_image else "Inspect this photo and return the observation JSON.")
     if item_hint in RULES:
-        text += (f' The user says the subject is "{item_hint}" ({RULES[item_hint].ai_hint})'
-                 f' Use item "{item_hint}" and report the fields listed for it.')
+        key = RULES[item_hint].ai_key
+        text += (f' The user says the subject is "{key}" ({RULES[item_hint].ai_hint})'
+                 f' Use item "{key}" and report the fields listed for it.')
     content = [{"type": "text", "text": text}]
     if prev_image:
         # the BEFORE photo is only for "same item?" so low detail is enough (faster, cheaper)
