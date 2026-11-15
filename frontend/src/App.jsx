@@ -193,6 +193,22 @@ return (
             </p>
           </div>
 
+          {isMock && showMockTest && (
+              <div className="mock-test">
+                <select
+                  value={mockStatus}
+                  onChange={(e) => setMockStatus(e.target.value)}
+                >
+                  {MOCK_STATUSES.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+
         {/* 사진 업로드 전 */}
         {!file && (
           <div className="upload-placeholder">
@@ -251,22 +267,6 @@ return (
             {error && (
               <p className="error">{error}</p>
             )}
-
-            {isMock && showMockTest && (
-              <div className="mock-test">
-                <select
-                  value={mockStatus}
-                  onChange={(e) => setMockStatus(e.target.value)}
-                >
-                  {MOCK_STATUSES.map((s) => (
-                    <option key={s} value={s}>
-                      {s}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-
           </div>
         )}
 
