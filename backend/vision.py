@@ -34,8 +34,9 @@ A separate rule engine makes all decisions based on your observations.
 1. Report only what you can actually see. Never infer from typical products or common sense.
 2. If a feature is hidden, blurry, too dark, cut off, or ambiguous, answer "unknown".
    A wrong answer is far worse than "unknown": "unknown" triggers a retake, a wrong answer misleads the user.
-3. Be conservative: when a value is between two options, choose the worse one
-   (e.g. between contamination level 2 and 3, answer "3"; if a label might remain, do not answer "absent").
+3. Be conservative only about what you actually see: when a value is between two options, choose the worse one
+   (e.g. between contamination level 2 and 3, answer "3"; if a torn label edge remains, answer "present").
+   But never report a part that is not visible in the photo: if the relevant surface is clearly visible and clean, answer "absent".
 4. Output a single JSON object only. No markdown, no explanations outside the JSON.
 
 # Choosing the subject (do this first)
@@ -45,9 +46,21 @@ The photo is taken by a user who wants to throw away ONE object. Other things of
 - Ignore everything else completely. Background objects must never change your answer and never make it "other".
 - All observation fields describe the SUBJECT only.
 
+# Identify the material before the category
+Many objects have the same shape (cup, bottle, tray) but different materials, and the material decides the category.
+Look at the visual cues of the SUBJECT itself, not its contents or background:
+- glass: hard, thick walls, shiny reflections and highlights, sharp see-through edges, heavy-looking base.
+- rigid plastic: lighter, thinner walls, molded seams, often slightly cloudy or tinted, may be squeezable.
+- paper: opaque and matte, printed surface, rolled or folded paper edges.
+- styrofoam: light white foam with a fine bead-like texture, thick soft-looking walls.
+- soft film: thin, crinkled, flexible plastic film.
+- metal: metallic shine, rolled rim, seams.
+A drink inside (e.g. coffee in a glass) does not change the material of the container.
+
 # Item categories (choose exactly one item name for the SUBJECT, spelled exactly as listed)
 {ITEM_LINES}
-- "other": the SUBJECT is clearly none of the categories above (e.g. a spoon, a phone, clothing, food itself).
+- "other": the SUBJECT is clearly none of the categories above (e.g. a phone charger, a hair tie, food itself).
+  For "other", still report general_class in observations.
 - "unknown": there is no recognizable subject at all (blank, extremely dark or blurred, only background).
 Choose a category only when the subject IS that kind of object (a real example of it).
 - If it is that kind of object but partly hidden, unusual or hard to see, still choose it, with confidence below 0.6.
@@ -61,8 +74,9 @@ Include ONLY the fields listed for the chosen item. Leave every other field out.
 # Field definitions
 - is_clear: "true" if the bottle plastic itself is colorless and see-through; "false" if the plastic is tinted
   (green, brown, blue, white...). The color of the liquid or the label does NOT count.
-- label: "present" if any plastic film or paper label remains on the body, even partially;
-  "absent" only if the full body is visible with no label remnant. If a side that could hide a label is not visible, "unknown".
+- label: "present" if a SEPARATE plastic film, paper label or sticker remains on the body, even partially;
+  "absent" if the visible body has no such separate label. Text, logos or patterns printed directly on the plastic, and
+  embossed marks molded into it, are NOT labels. If a large side that could hide a label is not visible, "unknown".
 - liquid: "present" if any liquid or contents are visible inside (a layer at the bottom, foam, residue of the product);
   "absent" if the interior is visibly empty (small water droplets from rinsing count as "absent").
 - crushed: "true" if the container or box is visibly flattened, crushed, or folded flat.
@@ -85,13 +99,22 @@ Include ONLY the fields listed for the chosen item. Leave every other field out.
 - foreign_object: "present" if something that does not belong is inside the bottle or cup (cigarette butt, straw, paper).
 - pump_attached: "true" if the pump head is still attached to the container.
 - is_white: "true" if the styrofoam is plain white; "false" if colored, printed all over, or coated.
-- tape_label: "present" if tape, a shipping label, or a sticker remains on the box (styrofoam or cardboard).
+- tape_label: "present" if tape, a shipping label, a sticker, or plastic wrap film covering a tray remains on the styrofoam
+  or cardboard; "absent" if the visible surface has none of these.
 - umbrella_type: "long" for a straight long umbrella, "folding" for a compact folding umbrella.
+- general_class: only for "other". The broad kind of the SUBJECT. Check in this order and pick the first that fits:
+  "electronic" if it runs on electricity or batteries (has a plug, cable, battery, screen or circuit board);
+  "large" if it is too big to fit in a 50-liter trash bag (bicycle, large toy, big plastic storage box);
+  "non_combustible" if it is made mainly of glass, ceramic, stone, concrete or soil;
+  "general" for everything else (fabric, plastic, wood, rubber or mixed small items, e.g. a hair tie, a phone case, a small plastic toy).
+  "unknown" if you cannot tell.
 
 # Before/after comparison (only when two images are given)
 The FIRST image is the BEFORE photo taken earlier. The SECOND image is the CURRENT photo after the user's cleanup.
 - Report every observation field for the CURRENT photo only.
 - Use the BEFORE photo only to (a) decide "same_item" and (b) judge changes more carefully.
+- Do NOT copy observations from the BEFORE photo. If a label, wrap, tape or contents seen BEFORE is gone in the CURRENT photo,
+  report it as "absent" for the CURRENT photo.
 - same_item: "true" if the CURRENT object is very likely the same physical object (same shape, size, brand, print, damage);
   "false" if it is clearly a different object; "unknown" if you cannot tell.
 When only one image is given, set "same_item" to "unknown".
@@ -105,7 +128,7 @@ Use below 0.6 when the object is partially visible, unusual, or could be another
 written so a person can tell exactly what it is: what the object is, plus its key material or contents if that matters.
 Do NOT generalize to a broader word (a nail-clipper case is NOT "가방"; a cosmetics jar is NOT "용기").
 It must agree with "notes". Always fill it, even when the item is "other".
-Examples: "투명 페트병", "손톱깎이 세트 케이스", "안경", "물티슈 포장지", "플라스틱 화장품 용기", "고무줄 머리끈".
+Examples: "투명 페트병", "케첩 통", "커피가 든 유리컵", "손톱깎이 세트 케이스", "랩 씌운 스티로폼 트레이", "고무줄 머리끈".
 
 # Notes
 "notes" is one short English sentence: name the subject you chose and the key visual evidence. This is for debugging only.
@@ -122,13 +145,28 @@ Examples: "투명 페트병", "손톱깎이 세트 케이스", "안경", "물티
 
 # Examples
 Photo: a pair of glasses on a desk, a phone and papers in the background.
-{"item":"other","confidence":0.9,"same_item":"unknown","observations":{},"subject":"안경","notes":"Eyeglasses in the center; not a listed category."}
+{"item":"eyeglasses","confidence":0.9,"same_item":"unknown","observations":{},"subject":"검은 뿔테 안경","notes":"Eyeglasses in the center; background ignored."}
+
+Photo: a wooden chair in a room.
+{"item":"furniture","confidence":0.9,"same_item":"unknown","observations":{},"subject":"나무 의자","notes":"A chair is furniture."}
+
+Photo: a hair dryer with its power cord on a bathroom counter.
+{"item":"other","confidence":0.9,"same_item":"unknown","observations":{"general_class":"electronic"},"subject":"헤어드라이어","notes":"Electric appliance with a plug."}
 
 Photo: a black zippered case holding nail clippers and small scissors.
-{"item":"other","confidence":0.9,"same_item":"unknown","observations":{},"subject":"손톱깎이 세트 케이스","notes":"A black case with nail clippers and scissors; not a listed category."}
+{"item":"other","confidence":0.9,"same_item":"unknown","observations":{"general_class":"general"},"subject":"손톱깎이 세트 케이스","notes":"A black case with nail clippers and scissors; not a listed category."}
 
 Photo: a clear water bottle, blue label around the middle, cap on, empty, not crushed.
 {"item":"pet_bottle","confidence":0.95,"same_item":"unknown","observations":{"is_clear":"true","label":"present","liquid":"absent","crushed":"false","cap":"closed"},"subject":"투명 페트병","notes":"Blue label wraps a clear, empty bottle."}
+
+Photo: a ketchup squeeze bottle, red sauce visible inside, brand text printed directly on the plastic.
+{"item":"other_rigid_plastic_container","confidence":0.9,"same_item":"unknown","observations":{"liquid":"present"},"subject":"케첩 통","notes":"Squeeze sauce bottle, not a drink bottle; printing is on the plastic itself."}
+
+Photo: a clear drinking glass with iced coffee, thick walls and shiny highlights, on a cafe table.
+{"item":"ceramic_or_special_glass","confidence":0.9,"same_item":"unknown","observations":{},"subject":"커피가 든 유리컵","notes":"Thick shiny glass cup; the coffee is the contents, the container is glass."}
+
+Photo: a white styrofoam meat tray, plastic wrap and price sticker removed, a few red drops on the tray.
+{"item":"styrofoam_box","confidence":0.9,"same_item":"unknown","observations":{"is_white":"true","tape_label":"absent","contamination_level":"2"},"subject":"스티로폼 트레이","notes":"White foam tray, no wrap or sticker left, small red drops."}
 
 Photo: a styrofoam ramen cup seen from above, thin broth film at the bottom, orange tint on the inner wall.
 {"item":"cup_noodle_container","confidence":0.9,"same_item":"unknown","observations":{"contamination_level":"2","stain":"present"},"subject":"컵라면 용기","notes":"Thin broth film and orange tint on the inner wall."}
@@ -155,7 +193,7 @@ ITEM_LINES = "\n".join(f'- "{rule.ai_key}": {rule.ai_hint}' for rule in RULES.va
 ITEM_KEYS = " | ".join(f'"{rule.ai_key}"' for rule in RULES.values()) + ' | "other" | "unknown"'
 FIELD_LINES = "\n".join(
     f'- {rule.ai_key}: ' + (", ".join(f"{f} ({_values(f)})" for f in _fields(rule)) or "no fields")
-    for rule in RULES.values())
+    for rule in RULES.values()) + f'\n- other: general_class ({_values("general_class")})\n- unknown: no fields'
 SYSTEM_PROMPT = (PROMPT_TEMPLATE.replace("{ITEM_LINES}", ITEM_LINES)
                  .replace("{ITEM_KEYS}", ITEM_KEYS).replace("{FIELD_LINES}", FIELD_LINES))
 
@@ -198,9 +236,13 @@ def observe(image: bytes, prev_image: bytes | None = None, item_hint: str | None
         content.append(_image_part(prev_image, PREV_IMAGE_DETAIL))
     content.append(_image_part(image))
 
+    extra = {}
+    if MODEL.startswith(("gpt-4", "gpt-3")):
+        extra["temperature"] = 0     # same photo -> same answer (reasoning models do not accept this option)
     res = _get_client().chat.completions.create(
         model=MODEL,
         response_format={"type": "json_object"},
+        **extra,
         messages=[{"role": "system", "content": SYSTEM_PROMPT},
                   {"role": "user", "content": content}],
     )

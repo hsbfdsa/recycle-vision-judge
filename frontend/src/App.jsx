@@ -133,6 +133,16 @@ function App() {
     );
   }
 
+  // "품목이 달라요" → 고른 품목 기준으로 지금 사진을 처음부터 다시 판정 (이전 답은 버림)
+  function handleCorrect(itemId) {
+    const next = { item_hint: itemId };
+    setAttempt(1);
+    setFirstFile(null);
+    setFirstItem(null);
+    setAnswers(next);
+    runJudge(next, null, file, true);
+  }
+
   // 재촬영
   function handleRetake(countsAsAttempt) {
     if (countsAsAttempt) {
@@ -272,6 +282,7 @@ return (
               onRetake={handleRetake}
               onAnswer={handleAnswer}
               onRestart={handleRestart}
+              onCorrect={handleCorrect}
             />
 
             {error && (

@@ -16,6 +16,21 @@ export function wakeServer() {
   if (!USE_MOCK) fetch(`${API_URL}/health`).catch(() => {});
 }
 
+// "품목이 달라요" 버튼용 품목 목록 (자주 찾는 품목이 앞). 실패하면 빈 목록
+export async function getItems() {
+  if (USE_MOCK) {
+    const q = responses.unsupported.judgement.questions.find((x) => x.key === "item_hint");
+    return { text: q?.text ?? "찍은 물건이 무엇인가요?", items: q?.options ?? [] };
+  }
+  try {
+    const res = await fetch(`${API_URL}/items`);
+    if (!res.ok) throw new Error();
+    return await res.json();
+  } catch {
+    return { text: "", items: [] };
+  }
+}
+
 export async function judgeImage({ image, attempt, prevImage = null, prevItem = null, answers = {}, observation = null, mockStatus = "pass" }) {
   if (USE_MOCK) {
     await new Promise((r) => setTimeout(r, 400)); // 로딩 화면 확인용

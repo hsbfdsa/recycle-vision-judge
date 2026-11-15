@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ItemPicker from "./ItemPicker";
+import { getItems } from "../services/judgeApi";
 
 // 상태별 화면. 백엔드 judgement.status 와 1:1 대응
-function JudgeResult({ result, loading, onRetake, onAnswer, onRestart }) {
+function JudgeResult({ result, loading, onRetake, onAnswer, onRestart, onCorrect }) {
   const [checked, setChecked] = useState({});
+  // "품목이 달라요": AI가 품목을 잘못 봤을 때 검색해서 고르면 그 품목 기준으로 다시 판정
+  const [picker, setPicker] = useState(null);   // null = 닫힘, {text, items} = 열림
+
+  useEffect(() => setPicker(null), [result]);   // 새 결과가 오면 닫기
 
   if (!result?.judgement) return null;
   const j = result.judgement;
@@ -11,13 +16,45 @@ function JudgeResult({ result, loading, onRetake, onAnswer, onRestart }) {
 
   const allChecked = (j.checklist ?? []).every((item) => checked[item.key]);
 
+  async function openPicker() {
+    const data = await getItems();
+    setPicker({ text: data.text || "찍은 물건이 무엇인가요? 검색해서 고르면 그 품목 기준으로 다시 확인할게요.",
+                items: data.items ?? [] });
+  }
+
+  // 품목 고르기 목록이 이미 있는 화면(지원 안 함)에서는 버튼을 따로 두지 않음
+  const canCorrect = onCorrect && !(j.questions ?? []).some((q) => q.key === "item_hint");
+
   function toggle(key) {
     setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
   }
 
   return (
     <div className={`result-card status-${j.status}`}>
-      {j.name && <p className="item-name">{j.name}</p>}
+      {(j.name || canCorrect) && (
+        <div className="item-row">
+          {j.name && <p className="item-name">{j.name}</p>}
+          {canCorrect && !picker && (
+            <button type="button" className="correct-link" disabled={loading} onClick={openPicker}>
+              품목이 달라요
+            </button>
+          )}
+        </div>
+      )}
+      {picker && (
+        <div className="correct-picker">
+          {picker.items.length > 0 ? (
+            <ItemPicker
+              question={{ key: "item_hint", text: picker.text, options: picker.items }}
+              disabled={loading}
+              onPick={(_, value) => onCorrect(value)}
+            />
+          ) : (
+            <p className="picker-hint">품목 목록을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.</p>
+          )}
+          <button type="button" className="correct-link" onClick={() => setPicker(null)}>닫기</button>
+        </div>
+      )}
       <h2 className="message">{j.message}</h2>
 
       {/* 통과 / 대체 안내: 배출 방법을 크게 */}
