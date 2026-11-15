@@ -1,18 +1,63 @@
 
 .app {
-  max-width: 600px;
-  margin: 50px auto;
+  width: 85%;
+  min-width: 400px;
+  height: 100vh;
   padding: 24px;
+  margin:0 auto;
   text-align: center;
+  align-items: center;
+}
+
+.site {
+  width: 70%;
+  height: 70%;
+
+  min-width: 340px;
+  padding: 20px 16px 14px;
+  margin: 10% auto;
+
+  text-align: left;
+
+  background: #F4F8F3;
+  border: 1px solid rgba(96, 142, 105, 0.3);
+  border-radius: 22px;
+  box-shadow: 0 8px 24px rgba(53, 100, 59, 0.08);
+  backdrop-filter: blur(10px);
 }
 
 .upload-area {
-  margin: 24px 0;
+  height: 45%;
+  background: #E0EDE2;
+  margin: 5% auto;
   padding: 20px;
-  border: 2px dashed #aaa;
+  border: 2px dashed #27845C;
   border-radius: 12px;
 }
 
+.action-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.action-row button {
+  margin: 10px 0;
+}
+
+.action-row .mock-test {
+  margin: 10px 0;
+  padding: 8px 12px;
+  background: #f3f4f6;
+  border-radius: 10px;
+}
+
+.action-row .mock-test select {
+  padding: 8px;
+  border-radius: 6px;
+}
 .preview {
   margin-top: 20px;
 }

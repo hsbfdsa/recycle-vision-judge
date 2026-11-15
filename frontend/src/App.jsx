@@ -16,6 +16,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [mockStatus, setMockStatus] = useState("pass");
+  const [showMockTest, setShowMockTest] = useState(false);
 
   useEffect(() => {
     if (!file) {
@@ -104,29 +105,52 @@ function App() {
 
   return (
     <div className="app">
-      <h1>AI 분리배출 판정</h1>
-      <p>{attempt === 1 ? "버릴 물건을 찍어 주세요." : "처리한 뒤 같은 물건을 다시 찍어 주세요."}</p>
-
+      <div className="site">
+      <h2>오늘도 올바르게</h2>
+      <p>버릴 준비가 되었나요?</p>
       {!result && (
         <>
-          <div className="upload-area">
-            {/* capture: 휴대폰에서 바로 후면 카메라 실행 */}
-            <input type="file" accept="image/*" capture="environment" onChange={handleFileChange} />
-            {preview && (
-              <div className="preview">
-                <img src={preview} alt="업로드한 사진" />
-              </div>
-            )}
-          </div>
-
-          <button onClick={() => runJudge()} disabled={!file || loading}>
-            {loading ? "AI가 확인하는 중..." : "판정하기"}
-          </button>
+        <div className="upload-area">
+          <input
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={handleFileChange}
+          />
+          {preview && (
+            <div className="preview">
+              <img src={preview} alt="업로드한 사진" />
+            </div>
+          )}
+        </div>
         </>
       )}
 
       {error && <p className="error">{error}</p>}
 
+      {/* 판정 버튼 + Mock 선택창 */}
+      <div className="action-row">
+      {!result && (
+        <button onClick={() => runJudge()} disabled={!file || loading}>
+          {loading ? "AI가 확인하는 중..." : "판정하기"}
+        </button>
+      )}
+      </div>
+
+        {isMock && showMockTest && (
+          <div className="mock-test">
+            <select
+              value={mockStatus}
+              onChange={(e) => setMockStatus(e.target.value)}
+            >
+              {MOCK_STATUSES.map((s) => (
+                <option key={s} value={s}>{s}</option>
+              ))}
+            </select>
+          </div>
+        )}
+      </div>
+      
       <JudgeResult
         key={`${attempt}-${result?.judgement?.status}`}
         result={result}
@@ -135,18 +159,6 @@ function App() {
         onAnswer={handleAnswer}
         onRestart={handleRestart}
       />
-
-      {/* Mock 모드에서만 보이는 테스트 도구 */}
-      {isMock && (
-        <div className="mock-test">
-          <h3>Mock 응답 선택 (백엔드 없이 화면 테스트)</h3>
-          <select value={mockStatus} onChange={(e) => setMockStatus(e.target.value)}>
-            {MOCK_STATUSES.map((s) => (
-              <option key={s} value={s}>{s}</option>
-            ))}
-          </select>
-        </div>
-      )}
     </div>
   );
 }
