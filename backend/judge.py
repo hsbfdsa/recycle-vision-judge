@@ -8,6 +8,7 @@ status 종류 (프론트 화면 분기 기준, API.md 참고)
   fallback       재촬영 한도 도달 또는 오염도 5단계 → 대체 안내로 종료
   different_item 처음과 다른 물건을 찍음 → 같은 물건 다시
   unsupported    지원하지 않는 품목 (X00)
+                 단, AI가 물건의 큰 분류(general_class)를 알려 주면 일반 원칙 안내로 pass (type "general")
 
 조건 종류 (기준표 '구분')
   required       필수. 미통과면 체크리스트, unknown이면 조건표의 'unknown 시'(retake/fail/ignore)
@@ -27,6 +28,7 @@ MESSAGES = RULESET.messages                          # 화면 문구도 rules.js
 LEVELS = RULESET.contamination                       # 오염도 5단계
 LABELS = RULESET.field_labels                        # "label" → "라벨"
 PLACES = RULESET.places                              # "plastic" → {title, where}
+GUIDE = RULESET.general_guide                        # "general" → 일반쓰레기 안내 ...
 
 YES_NO = [{"label": "예", "value": "true"}, {"label": "아니요", "value": "false"}]
 CHECKBOX_KEY = "checkbox"                            # answers에서 체크박스 답의 키
@@ -83,9 +85,11 @@ def judge(result, attempt=1, answers=None, prev_item=None):
             return _unsupported(out, answers, MESSAGES["not_confirmed"])
         subject = str(result.get("subject") or "").strip()
         # 두 번째 줄에 "(확인된 품목: 안경)" — 문구는 rules.json의 unsupported_subject
-        message = MESSAGES["unsupported"] + ("\n" + MESSAGES["unsupported_subject"].replace("{subject}", subject)
-                                             if subject else "")
-        return _unsupported(out, answers, message)
+        subject_line = "\n" + MESSAGES["unsupported_subject"].replace("{subject}", subject) if subject else ""
+        cls = clean_observations(result.get("observations")).get("general_class")
+        if item == UNSUPPORTED and cls in GUIDE:
+            return _general(out, GUIDE[cls], subject_line)
+        return _unsupported(out, answers, MESSAGES["unsupported"] + subject_line)
 
     # 재촬영인데 다른 물건이면 판정하지 않음 (깨끗한 다른 병으로 통과하는 꼼수 방지)
     if prev_item:
@@ -113,14 +117,24 @@ def judge(result, attempt=1, answers=None, prev_item=None):
     return _evaluate(item, clean_observations(result.get("observations")), attempt, answers, out)
 
 
+def _general(out, g, subject_line):
+    """기준표에 없는 물건: AI가 본 큰 분류(일반·불연성·대형·전자제품)에 따라 일반 원칙으로 안내.
+    판정은 여전히 규칙표(general_guide)가 하고, 화면에는 '일반 원칙'이라고 분명히 표시한다."""
+    out.update({"name": g.name, "type": "general", "disposal": g.disposal, "how": list(g.how),
+                "places": _places(g.places), "warnings": [MESSAGES["general_warning"]], "source": g.source})
+    return _done(out, "pass", g.message + subject_line)
+
+
+def item_options():
+    """품목 직접 선택 목록. 자주 찾는 품목을 앞에 (화면은 앞의 몇 개만 먼저, 나머지는 검색으로)"""
+    order = RULESET.popular_items + [k for k in RULES if k not in RULESET.popular_items]
+    return [{"label": RULES[k].name, "value": k, "keywords": RULES[k].keywords} for k in order]
+
+
 def _unsupported(out, answers, message=None):
     """인식 실패·지원 안 함 → 사용자가 품목을 직접 고를 수 있게 목록 제공 (이미 골랐으면 다시 묻지 않음)"""
     if not answers.get(HINT_KEY):
-        # 자주 찾는 품목을 앞에 → 화면은 앞의 몇 개만 먼저 보여 주고 나머지는 검색으로
-        order = RULESET.popular_items + [k for k in RULES if k not in RULESET.popular_items]
-        out["questions"].append({"key": HINT_KEY, "text": MESSAGES["pick_item_question"],
-                                 "options": [{"label": RULES[k].name, "value": k, "keywords": RULES[k].keywords}
-                                             for k in order]})
+        out["questions"].append({"key": HINT_KEY, "text": MESSAGES["pick_item_question"], "options": item_options()})
     return _done(out, "unsupported", message)
 
 

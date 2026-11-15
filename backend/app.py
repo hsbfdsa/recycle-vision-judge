@@ -16,7 +16,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from config import ALLOWED_ORIGINS, HOST, MAX_BYTES, PORT, RATE_LIMIT_PER_MIN
-from judge import judge, normalize_item, RULES
+from judge import MESSAGES, item_options, judge, normalize_item, RULES
 from schemas import ErrorResponse, JudgeResponse, Observation
 from vision import observe, prepare_image
 
@@ -104,6 +104,12 @@ def read_upload(f: UploadFile) -> bytes:
 @app.get("/health")
 def health():
     return {"ok": True}
+
+
+@app.get("/items")
+def items():
+    """품목 직접 선택 목록 ("품목이 달라요" 버튼). 고른 값은 answers의 item_hint로 보낸다"""
+    return {"text": MESSAGES["pick_item_question"], "items": item_options()}
 
 
 @app.post("/judge", response_model=JudgeResponse, response_model_exclude_none=True, responses=ERRORS)

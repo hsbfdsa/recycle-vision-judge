@@ -30,6 +30,7 @@ def status_of(res):
 # (이름, 요청 함수, 기대 HTTP 코드, 기대 status 또는 오류 code)
 cases = [
     ("서버 확인", lambda: client.get("/health"), 200, None),
+    ("품목 목록 (품목이 달라요 버튼)", lambda: client.get("/items"), 200, None),
     ("첫 판정: 체크박스 질문", lambda: client.post("/judge", files={"image": jpg()}, data={"attempt": "1"}), 200, "question"),
     ("체크하고 다시 판정 → 통과", lambda: client.post("/judge", files={"image": jpg()}, data={"attempt": "1", "answers": '{"checkbox": "true"}'}), 200, "pass"),
     ("사진 없음", lambda: client.post("/judge", data={"attempt": "1"}), 400, "NO_IMAGE"),
