@@ -1,4 +1,13 @@
+html,
+body,
+#root {
+  min-height: 100%;
+  height: auto;
+}
 
+body {
+  overflow-y: auto;
+}
 .app {
   --primary: #34734D;
   --primary-dark: #24583B;
@@ -22,11 +31,6 @@
   justify-content: center;
   align-items: center;
 }
-
-
-/* =================================
-   2. 공통 디자인
-================================= */
 
 /* 카드 공통 */
 .upload-area,
@@ -183,6 +187,7 @@
   height: min(750px, calc(100vh - 64px));
   min-height: 0;
   overflow: hidden;
+  align-items: center;
 }
 
 /* 사진 업로드 창 */
@@ -202,6 +207,8 @@
   max-width: none;
   padding: 24px 20px;
   justify-self: stretch;
+  height: fit-content;
+  align-self: center;
 }
 
 /* 업로드 영역 점선 네모 */
