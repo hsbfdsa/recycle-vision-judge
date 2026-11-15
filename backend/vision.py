@@ -59,7 +59,8 @@ A drink inside (e.g. coffee in a glass) does not change the material of the cont
 
 # Item categories (choose exactly one item name for the SUBJECT, spelled exactly as listed)
 {ITEM_LINES}
-- "other": the SUBJECT is clearly none of the categories above (e.g. a spoon, a phone, clothing, food itself).
+- "other": the SUBJECT is clearly none of the categories above (e.g. glasses, a stuffed doll, a phone, food itself).
+  For "other", still report general_class in observations.
 - "unknown": there is no recognizable subject at all (blank, extremely dark or blurred, only background).
 Choose a category only when the subject IS that kind of object (a real example of it).
 - If it is that kind of object but partly hidden, unusual or hard to see, still choose it, with confidence below 0.6.
@@ -101,6 +102,12 @@ Include ONLY the fields listed for the chosen item. Leave every other field out.
 - tape_label: "present" if tape, a shipping label, a sticker, or plastic wrap film covering a tray remains on the styrofoam
   or cardboard; "absent" if the visible surface has none of these.
 - umbrella_type: "long" for a straight long umbrella, "folding" for a compact folding umbrella.
+- general_class: only for "other". The broad kind of the SUBJECT. Check in this order and pick the first that fits:
+  "electronic" if it runs on electricity or batteries (has a plug, cable, battery, screen or circuit board);
+  "large" if it is too big to fit in a 50-liter trash bag (furniture, mattress, bicycle, large toy);
+  "non_combustible" if it is made mainly of glass, ceramic, stone, concrete or soil;
+  "general" for everything else (fabric, plastic, wood, rubber or mixed small items, e.g. glasses, a stuffed doll, a hair tie).
+  "unknown" if you cannot tell.
 
 # Before/after comparison (only when two images are given)
 The FIRST image is the BEFORE photo taken earlier. The SECOND image is the CURRENT photo after the user's cleanup.
@@ -138,10 +145,16 @@ Examples: "투명 페트병", "케첩 통", "커피가 든 유리컵", "손톱�
 
 # Examples
 Photo: a pair of glasses on a desk, a phone and papers in the background.
-{"item":"other","confidence":0.9,"same_item":"unknown","observations":{},"subject":"안경","notes":"Eyeglasses in the center; not a listed category."}
+{"item":"other","confidence":0.9,"same_item":"unknown","observations":{"general_class":"general"},"subject":"안경","notes":"Eyeglasses in the center; not a listed category."}
+
+Photo: a small plush teddy bear held in a hand.
+{"item":"other","confidence":0.9,"same_item":"unknown","observations":{"general_class":"general"},"subject":"곰 인형","notes":"A stuffed fabric doll; no electronics visible."}
+
+Photo: a hair dryer with its power cord on a bathroom counter.
+{"item":"other","confidence":0.9,"same_item":"unknown","observations":{"general_class":"electronic"},"subject":"헤어드라이어","notes":"Electric appliance with a plug."}
 
 Photo: a black zippered case holding nail clippers and small scissors.
-{"item":"other","confidence":0.9,"same_item":"unknown","observations":{},"subject":"손톱깎이 세트 케이스","notes":"A black case with nail clippers and scissors; not a listed category."}
+{"item":"other","confidence":0.9,"same_item":"unknown","observations":{"general_class":"general"},"subject":"손톱깎이 세트 케이스","notes":"A black case with nail clippers and scissors; not a listed category."}
 
 Photo: a clear water bottle, blue label around the middle, cap on, empty, not crushed.
 {"item":"pet_bottle","confidence":0.95,"same_item":"unknown","observations":{"is_clear":"true","label":"present","liquid":"absent","crushed":"false","cap":"closed"},"subject":"투명 페트병","notes":"Blue label wraps a clear, empty bottle."}
@@ -180,7 +193,7 @@ ITEM_LINES = "\n".join(f'- "{rule.ai_key}": {rule.ai_hint}' for rule in RULES.va
 ITEM_KEYS = " | ".join(f'"{rule.ai_key}"' for rule in RULES.values()) + ' | "other" | "unknown"'
 FIELD_LINES = "\n".join(
     f'- {rule.ai_key}: ' + (", ".join(f"{f} ({_values(f)})" for f in _fields(rule)) or "no fields")
-    for rule in RULES.values())
+    for rule in RULES.values()) + f'\n- other: general_class ({_values("general_class")})\n- unknown: no fields'
 SYSTEM_PROMPT = (PROMPT_TEMPLATE.replace("{ITEM_LINES}", ITEM_LINES)
                  .replace("{ITEM_KEYS}", ITEM_KEYS).replace("{FIELD_LINES}", FIELD_LINES))
 
