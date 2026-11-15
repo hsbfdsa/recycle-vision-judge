@@ -28,7 +28,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
 
-  background-image: url('./image/background.png');
+  background-image: url('./image/background.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
