@@ -1,5 +1,5 @@
 {
-  "version": "판정기준표 v1.3 (서울특별시) · 2026-11-14 · 품목 51개",
+  "version": "1.3.1",
   "messages": {
     "pass": "분리배출할 수 있어요!",
     "need_action": "버리기 전에 아래 항목을 처리하고 다시 찍어 주세요.",
@@ -31,7 +31,7 @@
     "foreign_object": "병 안 이물질",
     "pump_attached": "펌프",
     "is_white": "스티로폼 색",
-    "tape_label": "테이프·송장",
+    "tape_label": "테이프·송장·랩",
     "umbrella_type": "우산 종류"
   },
   "places": {
@@ -213,7 +213,7 @@
       "name": "투명 페트병",
       "type": "state",
       "ai_key": "pet_bottle",
-      "ai_hint": "a PET beverage bottle (water, soda, juice, tea), clear or tinted. Report the tint with is_clear.",
+      "ai_hint": "ONLY a PET bottle for drinks or water (water, soda, juice, tea, sports drink), clear or tinted. NOT a sauce, ketchup, mayonnaise, dressing, oil, honey or syrup bottle, and NOT a detergent or cosmetics bottle (those are other_rigid_plastic_container or pump_bottle). Report the tint with is_clear.",
       "keywords": [
         "생수병",
         "음료수병",
@@ -296,13 +296,16 @@
       "name": "유색 페트병·일반 플라스틱 용기",
       "type": "state",
       "ai_key": "other_rigid_plastic_container",
-      "ai_hint": "a tinted PET bottle or another rigid plastic container that is not a delivery food container (delivery_food_container), cup noodle (cup_noodle_container), pump bottle (pump_bottle), disposable cup (disposable_plastic_cup) or instant rice tray (instant_rice_tray).",
+      "ai_hint": "a tinted PET bottle or another rigid plastic container, e.g. a ketchup, mayonnaise, sauce, dressing, oil or honey squeeze bottle, a yogurt cup, or a side-dish container. Not a delivery food container (delivery_food_container), cup noodle (cup_noodle_container), pump bottle (pump_bottle), disposable cup (disposable_plastic_cup) or instant rice tray (instant_rice_tray).",
       "keywords": [
         "유색 페트",
         "초록 페트",
         "플라스틱 통",
         "반찬통",
-        "요거트 통"
+        "요거트 통",
+        "케첩 통",
+        "마요네즈 통",
+        "소스 통"
       ],
       "disposal": "플라스틱류 (뚜껑과 함께 통합배출)",
       "how": [
@@ -658,19 +661,23 @@
       "source": "S13"
     },
     "P09": {
-      "name": "스티로폼 상자",
+      "name": "스티로폼 상자·트레이",
       "type": "state",
       "ai_key": "styrofoam_box",
-      "ai_hint": "a styrofoam (expanded polystyrene) box, e.g. a fruit or fish delivery box.",
+      "ai_hint": "a styrofoam (expanded polystyrene, light white foam) box or food tray, e.g. a fruit or fish delivery box, or a meat, fish, fruit or vegetable tray from a supermarket (often wrapped in plastic wrap with a price sticker). Choose this for the tray even when it is still wrapped.",
       "keywords": [
         "스티로폼",
         "스티로폼 박스",
-        "아이스박스"
+        "아이스박스",
+        "스티로폼 접시",
+        "스티로폼 트레이",
+        "고기 트레이",
+        "정육 접시"
       ],
       "disposal": "스티로폼",
       "how": [
-        "테이프·송장·라벨을 모두 떼요.",
-        "이물질은 닦아 내요.",
+        "테이프·송장·상표 스티커를 모두 떼요. 트레이에 씌운 랩도 벗겨서 종량제봉투로 버려요.",
+        "이물질은 닦아 내요. 음식물이 많이 묻어 지워지지 않으면 종량제봉투로 버려요.",
         "흰색 스티로폼만 스티로폼으로 버려요."
       ],
       "places": [
@@ -705,7 +712,7 @@
             "absent"
           ],
           "unknown": "retake",
-          "action": "테이프·송장·라벨을 떼어 주세요."
+          "action": "테이프·송장·상표 스티커와 씌운 랩을 떼어 주세요. 랩은 종량제봉투로 버려요."
         },
         {
           "id": "C28",
@@ -714,13 +721,13 @@
           "unknown": "retake"
         }
       ],
-      "source": "S01, S06, S09, S12"
+      "source": "S01, S06, S09, S12, S29"
     },
     "P10": {
       "name": "비닐류 (과자·라면 봉지, 포장 비닐)",
       "type": "state",
       "ai_key": "plastic_film_bag",
-      "ai_hint": "a soft plastic film package such as a snack bag, ramen wrapper, coffee pouch, wet-wipe pouch, delivery poly bag, bubble wrap, or onion mesh bag (not plastic wrap).",
+      "ai_hint": "a soft plastic film package such as a snack bag, ramen wrapper, coffee pouch, wet-wipe pouch, delivery poly bag, bubble wrap, or onion mesh bag (not plastic wrap). A styrofoam tray covered with wrap is styrofoam_box, not this.",
       "keywords": [
         "과자 봉지",
         "라면 봉지",
@@ -889,7 +896,7 @@
       "name": "일회용 플라스틱 컵",
       "type": "state",
       "ai_key": "disposable_plastic_cup",
-      "ai_hint": "a disposable plastic cup such as a takeout coffee cup, with or without its lid.",
+      "ai_hint": "a thin, light disposable plastic cup such as a takeout coffee cup, with or without its lid. NOT a glass cup (thick, heavy, hard glass) and NOT a paper cup.",
       "keywords": [
         "커피 컵",
         "테이크아웃 컵",
@@ -1223,11 +1230,14 @@
       "source": "S01, S11, S16"
     },
     "I07": {
-      "name": "내열·크리스탈 유리, 도자기, 거울",
+      "name": "유리컵·유리 식기, 내열 유리, 도자기, 거울",
       "type": "info",
       "ai_key": "ceramic_or_special_glass",
-      "ai_hint": "heat-resistant glass cookware, crystal glass, flat window glass, a ceramic or porcelain dish, or a mirror.",
+      "ai_hint": "an ordinary drinking glass or glass tableware (glass cup, glass mug, glass bowl or plate), heat-resistant glass cookware, crystal glass, flat window glass, a ceramic or porcelain dish, or a mirror. A glass cup is NOT a paper cup, plastic cup or glass bottle.",
       "keywords": [
+        "유리컵",
+        "유리잔",
+        "유리 그릇",
         "도자기",
         "사기 그릇",
         "내열 유리",
@@ -1243,7 +1253,7 @@
       "warnings": [
         "유리병류에 넣으면 안 돼요."
       ],
-      "source": "S01, S09"
+      "source": "S01, S09, S29"
     },
     "I08": {
       "name": "칫솔·옷걸이·CD",
@@ -1343,7 +1353,7 @@
       "name": "종이컵",
       "type": "info",
       "ai_key": "paper_cup",
-      "ai_hint": "a disposable paper cup.",
+      "ai_hint": "a disposable cup made of PAPER: opaque matte paper wall, usually printed, with a rolled paper rim. NOT a glass cup (hard, shiny, thick, see-through glass), a ceramic mug or a plastic cup.",
       "keywords": [
         "종이컵"
       ],
