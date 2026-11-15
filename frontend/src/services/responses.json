@@ -179,7 +179,7 @@
     },
     "judgement": {
       "status": "question",
-      "message": "마지막으로 확인할게요. 아래 항목을 하셨나요?",
+      "message": "마지막으로 확인할게요. \n아래 항목을 하셨나요?",
       "item": "P01",
       "attempt": 1,
       "max_attempts": 3,
