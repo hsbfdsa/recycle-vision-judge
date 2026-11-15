@@ -625,6 +625,7 @@ body {
 
   .judgement-panel {
     height: auto;
+    max-height: none;      /* PC용 최대 높이가 폰에서는 결과를 잘라서 해제 (페이지 전체가 스크롤) */
     overflow: visible;
   }
 
