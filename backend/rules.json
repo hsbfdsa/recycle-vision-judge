@@ -1,5 +1,5 @@
 {
-  "version": "1.4",
+  "version": "1.5",
   "messages": {
     "pass": "분리배출할 수 있어요!",
     "need_action": "버리기 전에 아래 항목을 처리하고 다시 찍어 주세요.",
@@ -1020,14 +1020,18 @@
       "name": "종이류 (신문·책·노트·종이 상자류)",
       "type": "state",
       "ai_key": "paper_newspaper_book",
-      "ai_hint": "ordinary paper such as newspapers, books, notebooks, magazines, or paper shopping bags (not cartons paper_carton, not corrugated boxes cardboard_box, not coated paper coated_paper_or_photo).",
+      "ai_hint": "ordinary paper such as newspapers, books, notebooks, magazines, paper shopping bags, or thin paper boxes (cereal, tissue, mask or snack boxes; a plastic window film counts as other_material). Not cartons paper_carton, not corrugated boxes cardboard_box, not coated paper coated_paper_or_photo.",
       "keywords": [
         "신문",
         "책",
         "노트",
         "잡지",
         "종이 쇼핑백",
-        "종이"
+        "종이",
+        "종이 상자",
+        "과자 상자",
+        "마스크 상자",
+        "휴지 상자"
       ],
       "disposal": "종이류",
       "how": [
@@ -1055,7 +1059,7 @@
             "absent"
           ],
           "unknown": "ignore",
-          "action": "스프링·비닐 표지 같은 다른 재질을 떼어 주세요."
+          "action": "스프링·비닐 표지·상자의 비닐 창 같은 다른 재질을 떼어 주세요."
         }
       ],
       "source": "S01, S20"
@@ -1624,7 +1628,7 @@
       "name": "플라스틱 장난감·문구",
       "type": "info",
       "ai_key": "toy_or_stationery",
-      "ai_hint": "ONLY a children's toy or a stationery item (pen, ruler, file binder, scissors-free office supplies).",
+      "ai_hint": "ONLY a children's toy or a stationery item (pen, ruler, file binder, scissors-free office supplies). Not a stuffed fabric doll (stuffed_doll).",
       "keywords": [
         "장난감",
         "문구",
@@ -2084,6 +2088,180 @@
       "message": "여러 합성수지가 섞여 재활용이 어려워요. 종량제봉투에 들어가면 종량제봉투로, 크면 대형폐기물로 신고해 주세요.",
       "warnings": [],
       "source": "S28"
+    },
+    "I38": {
+      "name": "가구 (의자·책상·선반·매트리스)",
+      "type": "info",
+      "ai_key": "furniture",
+      "ai_hint": "furniture of any size: a chair, stool, desk, table, shelf, drawer, cabinet, sofa, bed frame or mattress.",
+      "keywords": [
+        "의자",
+        "책상",
+        "식탁",
+        "선반",
+        "책장",
+        "서랍장",
+        "소파",
+        "침대",
+        "매트리스",
+        "가구"
+      ],
+      "disposal": "대형폐기물 신고",
+      "places": [
+        "bulky"
+      ],
+      "message": "가구는 종량제봉투가 아니라 대형폐기물로 신고해서 버려요. 수수료는 품목과 크기에 따라 달라요.",
+      "how": [
+        "구청 홈페이지나 앱에서 대형폐기물로 신고해요.",
+        "받은 신고번호(스티커)를 붙여 정해진 날 내놓아요."
+      ],
+      "warnings": [],
+      "source": "S01, S25"
+    },
+    "I39": {
+      "name": "안경·안경집",
+      "type": "info",
+      "ai_key": "eyeglasses",
+      "ai_hint": "eyeglasses or sunglasses (frame with or without lenses), or a glasses case.",
+      "keywords": [
+        "안경",
+        "선글라스",
+        "안경테",
+        "안경집"
+      ],
+      "disposal": "테 재질에 따라 고철 또는 종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "안경은 테 재질에 따라 버리는 곳이 달라요.",
+      "warnings": [],
+      "split": {
+        "key": "glasses_frame",
+        "method": "question",
+        "question": "안경테가 어떤 재질인가요?",
+        "options": [
+          {
+            "label": "금속테",
+            "value": "metal"
+          },
+          {
+            "label": "플라스틱테",
+            "value": "plastic"
+          },
+          {
+            "label": "모르겠어요",
+            "value": "unknown"
+          }
+        ],
+        "cases": [
+          {
+            "when": [
+              "metal"
+            ],
+            "disposal": "금속테는 고철, 렌즈·안경집은 종량제봉투",
+            "message": "렌즈를 빼고 금속테는 고철로 버려요. 렌즈와 안경집은 종량제봉투에 버려요.",
+            "places": [
+              "metal",
+              "general"
+            ]
+          },
+          {
+            "when": [
+              "plastic",
+              "unknown"
+            ],
+            "disposal": "종량제봉투 (통째로)",
+            "message": "플라스틱 테 안경은 통째로 종량제봉투에 버려요. 안경집도 종량제봉투에 버려요.",
+            "places": [
+              "general"
+            ]
+          }
+        ]
+      },
+      "source": "S33"
+    },
+    "I40": {
+      "name": "인형 (봉제 인형)",
+      "type": "info",
+      "ai_key": "stuffed_doll",
+      "ai_hint": "a stuffed toy or doll made of fabric (plush teddy bear, character doll). Hard plastic toys are toy_or_stationery.",
+      "keywords": [
+        "인형",
+        "곰인형",
+        "봉제인형",
+        "애착인형"
+      ],
+      "disposal": "크기에 따라 종량제봉투 또는 대형폐기물",
+      "places": [
+        "general"
+      ],
+      "message": "인형은 크기에 따라 버리는 곳이 달라요.",
+      "warnings": [
+        "헌옷 수거함에 넣지 마세요."
+      ],
+      "split": {
+        "key": "doll_size",
+        "method": "question",
+        "question": "종량제봉투에 들어가는 크기인가요?",
+        "options": [
+          {
+            "label": "네, 들어가요",
+            "value": "small"
+          },
+          {
+            "label": "아니요, 커요",
+            "value": "large"
+          }
+        ],
+        "cases": [
+          {
+            "when": [
+              "small"
+            ],
+            "disposal": "종량제봉투",
+            "message": "작은 인형은 일반쓰레기로 종량제봉투에 버려요.",
+            "places": [
+              "general"
+            ]
+          },
+          {
+            "when": [
+              "large"
+            ],
+            "disposal": "대형폐기물 신고",
+            "message": "종량제봉투에 들어가지 않는 큰 인형은 대형폐기물로 신고해서 버려요.",
+            "places": [
+              "bulky"
+            ]
+          }
+        ]
+      },
+      "source": "S34"
+    },
+    "I41": {
+      "name": "통형 제습제 (습기 제거제)",
+      "type": "info",
+      "ai_key": "moisture_absorber",
+      "ai_hint": "a used tub-type moisture absorber (dehumidifier container with calcium chloride granules, usually with collected water inside and a foil or non-woven cover on top).",
+      "keywords": [
+        "제습제",
+        "습기제거제",
+        "습기 제거제",
+        "물먹는 통"
+      ],
+      "disposal": "빈 통은 플라스틱류, 은박·부직포는 종량제봉투",
+      "places": [
+        "plastic",
+        "general"
+      ],
+      "message": "고인 물은 버리고, 은박 덮개·부직포는 종량제봉투에, 빈 통은 씻어서 플라스틱류로 버려요.",
+      "how": [
+        "고인 물은 물을 충분히 흘려보내면서 배수구에 버려요.",
+        "은박 덮개와 부직포는 떼어서 종량제봉투에 버려요.",
+        "빈 통은 깨끗이 씻어서 플라스틱류로 버려요."
+      ],
+      "warnings": [],
+      "source": "S31, S32"
     }
   }
 }
