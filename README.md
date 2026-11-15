@@ -1,346 +1,143 @@
-# 🏫 AI-based Parent Complaint Response Chatbot
+# RE:SCAN · AI 분리배출 판정 도우미
 
-> 서울과학기술대학교 인공지능응용학과
-> Capstone Design I (2023, 2인 팀)
+> 사진 한 장으로 **지금 버려도 되는지**, 아니면 라벨 제거·헹굼처럼 **버리기 전에 무엇을 해야 하는지** 알려 주는 웹 서비스
 
-교사가 직접 응대해야 하는 학부모 민원의 부담을 줄이기 위해 **카카오톡 LLM 챗봇과 민원 담당자용 웹**을 개발한 프로젝트입니다.
+**[서비스 바로 써 보기](https://recycle-vision-judge.vercel.app)** · 2026 인공지능학과 대학 연합 해커톤 23팀 
 
-학부모는 카카오톡으로 민원을 보내고, 챗봇이 1차로 응대하며, 담당 교사는 웹에서 민원을 조회하고 답변을 등록합니다. 악성 민원을 걸러내기 위한 LLM 분류기도 함께 실험했습니다.
+<p align="center"><img src="docs/demo.gif" width="300" alt="유리컵을 찍으면 유리병류가 아니라 특수규격마대에 버리라고 안내"><br><sub>유리컵을 찍으면 "유리병류가 아니에요"와 버리는 곳·방법을 안내합니다 · <a href="docs/RE-SCAN_demo.mp4">전체 시연 영상</a></sub></p>
 
----
-
-## 📌 Project Overview
-
-2023년 학부모의 악성 민원으로 인한 교사들의 피해가 사회적 문제가 되면서, 정부는 학교마다 교원 5명 안팎의 '민원대응팀'을 두는 방안을 내놓았습니다.
-
-하지만 이 방식은 민원으로 인한 스트레스를 담임 교사에서 민원대응팀으로 옮길 뿐이라고 판단했습니다. 그래서 **사람이 아닌 챗봇이 1차로 민원을 받고, 사람이 꼭 답해야 하는 민원만 담당자에게 전달하는 구조**를 목표로 설계했습니다.
-
-전체 설계는 다음과 같습니다.
-
-- 일반 민원 → 챗봇이 자동 응대
-- 악성 민원 → 분류기로 판별해 법적 조치 안내
-- 챗봇이 답하기 어려운 민원 → 담당자 웹으로 전달
-
-이 저장소에는 그중 **카카오톡 챗봇 서버, 담당자 웹, 악성 민원 분류기 실험**이 포함되어 있습니다.
+| | |
+| --- | --- |
+| **최종 판정 정답률** | 71.1% → **91.1%** (실제 사진 30장 × 3회) |
+| **품목 정확도** | 81.1% → **94.4%** |
+| **평균 응답 시간** | 4.8초 → **3.3초** |
+| **지원 품목** | 55개 (상태 판정형 14 · 정보 안내형 41) + 기준이 없는 물건은 일반 원칙으로 안내 |
+| **자동 테스트** | AI 없이 도는 판정 63 · API 15 · 예외 상황 64건, push마다 GitHub Actions 실행 |
 
 ---
 
-## ✨ Features
+## 개요
 
-- 📱 **카카오톡 챗봇 연동**: 카카오 i 오픈빌더 스킬 서버(`POST /api/kakao`)로 학부모 메시지를 받아 OpenAI API로 응답
-- 🌐 **민원 담당자 웹**: 민원 목록, 키워드 검색, 처리 상태 필터, 날짜 정렬, 페이지네이션, 상세 조회, 답변 등록
-- 🔐 **회원가입 · 로그인**: 비밀번호 해시 저장, 세션 기반 로그인, 로그인이 필요한 기능 보호
-- 🗄 **DB 설계와 마이그레이션**: SQLAlchemy 모델(민원 · 답변 · 사용자)과 Flask-Migrate로 스키마 변경 관리
-- 🔍 **악성 민원 분류기 실험**: LangChain few-shot 프롬프트로 악성 / 일반 민원 분류, Streamlit 테스트 화면
-- 🧪 **카카오 요청 시뮬레이터**: 카카오 없이 로컬 서버에 스킬 요청을 보내 테스트
+분리배출 기준은 품목마다, 같은 품목이라도 **상태마다** 다릅니다. 투명 페트병은 라벨을 떼고 비워야 전용 수거함에 넣을 수 있고, 컵라면 용기는 빨간 기름 자국이 남아 있으면 재활용되지 않습니다. 치킨 뼈, 알약 포장재, 안경처럼 애매한 물건은 매번 검색해야 합니다.
 
----
+## 주요 기능
 
-# 🏗 System Architecture
+| 기능 | 설명 |
+| --- | --- |
+| 상태 판정 | 라벨 · 내용물 · 오염도(1~5단계) · 뚜껑 등을 보고 "통과" 또는 "처리할 일" 체크리스트 |
+| 처리 후 다시 찍기 | 같은 물건인지 확인한 뒤 다시 판정. 3번 안에 해결되지 않으면 대체 배출 방법 안내 |
+| 사진으로 모르는 것은 질문 | "헹궜어요?", "아이스팩 내용물이 물인가요, 젤인가요?", "안경테 재질은?" |
+| 버리는 방법과 장소 | 단계별 방법, 아파트 · 단독주택별 배출 장소, 주의사항, 출처 |
+| 기준이 없는 물건 | "지원 안 함"으로 끝내지 않고 일반쓰레기 · 불연성 · 대형폐기물 · 전자제품 원칙으로 안내 |
+| 품목이 달라요 | AI가 틀려도 검색해서 고르면 그 품목 기준으로 지금 사진을 다시 판정 |
 
-<p align="center">
-<img src="assets/architecture.png" width="900">
-</p>
+## 핵심 설계: AI는 관찰, 판정은 규칙표
 
-위 그림은 팀 전체의 설계 구조도입니다. 법적 조치 안내(Alerter)는 팀원 담당 모듈로 이 저장소에 포함되어 있지 않고, 검색 기반 답변(Doc · Web Retriever)은 설계 단계에서 기획한 부분입니다.
-
-이 저장소에 구현된 구조는 다음과 같습니다.
-
-```
-[학부모] 카카오톡
-     │
-     ▼
-카카오 i 오픈빌더 ── POST /api/kakao ──▶ Flask 서버 ──▶ OpenAI API (GPT-3.5)
-                                          │
-[담당 교사] 웹 브라우저 ──────────────────▶ 담당자 웹 (Blueprint: auth · complaint · comment)
-                                          │
-                                          ▼
-                                    SQLite (SQLAlchemy + Flask-Migrate)
-
-[실험] assistant_test/ : LangChain few-shot 악성 민원 분류기 + Streamlit 테스트 화면
+```mermaid
+flowchart LR
+    A[사진] --> B["vision.py<br/>VLM이 보이는 것만 JSON으로<br/>품목 · 라벨 · 내용물 · 오염도"]
+    B --> C["schemas.py<br/>약속 밖 값은 unknown"]
+    C --> D["judge.py<br/>rules.json으로 판정"]
+    D --> E{결과}
+    E --> F[통과 · 배출 방법]
+    E --> G[처리할 일 → 다시 찍기]
+    E --> H[사진으로 모름 → 질문]
 ```
 
-하나의 Flask 앱 안에서 기능별로 Blueprint를 나눴습니다.
+| 결정 | 이유 |
+| --- | --- |
+| AI는 관찰만, 판정은 규칙표 | AI가 배출 기준을 지어내지 못하게. 기준이 바뀌면 코드가 아니라 `rules.json`만 수정 |
+| 모르면 단정하지 않음 | 안 보이면 `unknown` → 다시 찍기나 질문. "처리가 필요한데 통과"를 가장 나쁜 오류로 봄 |
+| 질문에 답할 때 AI 재호출 0회 | 같은 사진의 관찰 결과를 재사용해 빠르고 답이 흔들리지 않음 |
+| 다시 찍을 때 관찰과 비교를 분리 | 두 사진을 한 번에 주면 처음 사진의 라벨을 지금 사진에 옮겨 적는 문제가 있어, 별도 호출로 동시에 실행 |
+| 규칙표를 서버 시작 시 검사 | 키 오타, 없는 품목으로 분기, 빠진 문구가 있으면 서버가 켜지지 않음 |
 
-| Blueprint | URL | 역할 |
+## 검증: 실제 사진 평가
+
+정상 상황과 놓치기 쉬운 상황을 섞은 사진 30장(상태 판정형 17 · 헷갈리는 물건 9 · 기준 없는 물건 2 · 찍기 어려운 조건 2)을 사진마다 3번씩 돌려 개선 전후를 비교했습니다. 모델(gpt-4o-mini), 사진, 정답은 같고 프롬프트와 규칙표만 바꿨습니다.
+
+<p align="center"><img src="docs/eval_chart.png" width="640" alt="유형별 판정 정답률 개선 전후"></p>
+
+| 지표 | 개선 전 | 개선 후 |
 | --- | --- | --- |
-| `main` | `/` | 민원 목록으로 이동 |
-| `complaint` | `/complaint/list/`, `/complaint/detail/<id>/` | 민원 목록 · 검색 · 필터 · 정렬 · 상세 |
-| `comment` | `/comment/create/<id>` | 답변 등록 (로그인 필요) |
-| `auth` | `/auth/signup/`, `/auth/login/`, `/auth/logout/` | 회원가입 · 로그인 |
-| `api` | `/api/kakao` | 카카오 i 오픈빌더 스킬 서버 |
+| 최종 판정 정답 | 64/90 (71.1%) | 82/90 (91.1%) |
+| 품목 정확도 | 73/90 (81.1%) | 85/90 (94.4%) |
+| 잘못된 통과 (0이어야 함) | 3 | 2 |
+| 3번 돌렸을 때 답이 흔들린 사진 | 9/30 | 6/30 |
+| 평균 / 최대 응답 시간 | 4.8초 / 15.4초 | 3.3초 / 8.3초 |
 
----
+재현: `python tests/run_tests.py --repeat 3` · 결과 [`tests/results/`](tests/results/) · 케이스와 정답 [`tests/cases.json`](tests/cases.json)
 
-# 🖥 Service Flow
+## 문제 해결 기록
 
-### 학부모 (카카오톡)
+**1. 라벨을 떼고 다시 찍어도 "라벨을 떼 주세요"**
+- 원인: 처음 사진과 지금 사진을 한 번에 보내 "같은 물건인지 비교 + 지금 사진 관찰"을 함께 시켰더니, AI가 처음 사진의 라벨을 지금 사진에도 있다고 답함
+- 해결: 지금 사진 관찰과 같은 물건 비교를 **별도 호출로 분리해 동시에 실행**. 프롬프트로 막는 대신 구조로 막음
 
-```
-학부모가 카카오톡 채널에 메시지 입력
-   │
-   ▼
-카카오 i 오픈빌더가 스킬 서버로 JSON 전송 (userRequest.utterance)
-   │
-   ▼
-Flask /api/kakao → OpenAI API 호출
-   │
-   ▼
-카카오 응답 형식(version 2.0, simpleText)으로 답변 반환
-```
+**2. 유리컵 → 종이컵, 케첩통 → 투명 페트병**
+- 원인: 모양만 보고 품목을 고르고, 재질은 판단하지 않음
+- 해결: 프롬프트에 "재질을 먼저 판단" 단계(유리 · 플라스틱 · 종이 · 스티로폼의 시각적 단서)를 넣고, 품목 설명에 헷갈리는 짝을 명시. 같은 사진에 같은 답이 나오게 temperature 0
 
-### 담당 교사 (웹)
+**3. 안경 · 의자 · 머리끈이 "지원하지 않는 품목"으로 끝남**
+- 원인: 기준표에 없으면 판정을 포기
+- 해결: 근거가 확인된 품목은 추가하고, 그래도 없는 물건은 AI가 큰 분류만 보고 **규칙표가 일반 원칙으로 안내**. 화면에는 "일반 원칙에 따른 안내"라고 분명히 표시
+- 결과: 기준 없는 물건 0/6 → 6/6, 헷갈리는 물건 15/27 → 24/27
 
-```
-로그인
-   │
-   ▼
-민원 목록 (검색 · 처리 상태 필터 · 정렬 · 10개씩 페이지)
-   │
-   ▼
-민원 상세 → 답변 등록 → 처리 완료로 표시
-```
+## 한계와 다음 단계
 
----
+- 화면 끝에 잘린 부품(소주병 뚜껑)을 "없음"으로 보는 경우가 남아 있음 → 잘린 부분은 `unknown`으로 답하게 개선 예정
+- 평가 사진 30장은 작은 표본이라 숫자는 개선 방향을 보여 주는 정도
+- 관찰 부분만 경량 이미지 모델(CNN)로 바꿔 같은 평가 세트로 정확도와 속도 비교 (판정 · 규칙 · 화면은 그대로)
 
-# 📷 User Interface
+## 내 역할
 
-## 관리자 웹 페이지
+**백엔드 · AI 담당** (FastAPI, OpenAI Vision API)
 
-### Home
+- "AI는 관찰만, 판정은 규칙표"로 나누는 판정 구조 설계와 구현
+- 공공기관 분리배출 기준을 규칙표(`rules.json`)로 옮기고, 서버 시작 시 규칙표 오류를 막는 스키마 작성
+- 실제 사진 평가 세트를 만들고 오류 패턴을 찾아 프롬프트와 규칙 개선
+- 자동 테스트와 CI, Render(백엔드) · Vercel(프론트) 배포, 요청 수 제한 등 배포 보호
+- 프론트 기능 일부: 품목 검색 선택, "품목이 달라요", 모바일 레이아웃 수정
 
-<p align="center">
-<img src="assets/web_home.png" width="900">
-</p>
 
-담당자가 접수된 민원을 검색 · 필터 · 정렬하며 확인하는 화면입니다.
-
----
-
-### Register
-
-<p align="center">
-<img src="assets/web_register.png" width="900">
-</p>
-
-민원에 대한 답변을 등록하는 화면입니다.
-
----
-
-## 카카오톡 챗봇
-
-<p align="center">
-<img src="assets/chatbot.png" width="350">
-</p>
-
-학부모는 별도의 애플리케이션 설치 없이 카카오톡을 통해 민원을 보낼 수 있습니다.
-
----
-
-# 🛠 Tech Stack
-
-### Language
-
-- Python
-
-### Backend
-
-- Flask (App Factory, Blueprint)
-- Flask-SQLAlchemy
-- Flask-Migrate (Alembic)
-- Flask-WTF (WTForms)
-
-### Database
-
-- SQLite
-
-### AI
-
-- OpenAI API (GPT-3.5 Turbo)
-- LangChain (few-shot prompt, output parser)
-- Prompt Engineering
-
-### Chatbot
-
-- Kakao i Open Builder (스킬 서버)
-
-### Tools
-
-- Streamlit (분류기 테스트 화면)
-- Azure App Service (2023년 시연 당시 배포)
-
----
-
-# 📂 Project Structure
+## 폴더 구조
 
 ```
-capstone-design-1
-├── app/
-│   ├── __init__.py          # create_app (App Factory), DB · 마이그레이션 · Blueprint 등록
-│   ├── models.py            # Complaint, Comment, User
-│   ├── forms.py             # 회원가입 · 로그인 입력 검증
-│   ├── filter.py            # 날짜 표시 형식 (Jinja 필터)
-│   ├── views/
-│   │   ├── main_views.py
-│   │   ├── complaint_views.py
-│   │   ├── comment_views.py
-│   │   ├── auth_views.py
-│   │   └── api_views.py     # 카카오 스킬 서버
-│   ├── templates/
-│   └── static/
-├── assistant/
-│   └── chat.py              # OpenAI 챗봇
-├── assistant_test/
-│   ├── agent.py             # LangChain 기본 챗봇 · 악성 민원 분류기
-│   ├── test.py              # Streamlit 테스트 화면
-│   └── pages/
-├── test/
-│   ├── kakao_simulate.py    # 카카오 요청 시뮬레이터
-│   └── *_body.json          # 테스트용 카카오 요청
-├── migrations/              # 스키마 변경 기록 27개
-├── assets/
-├── config.py
-└── requirements.txt
+├── backend/
+│   ├── app.py            # FastAPI 서버 (/judge, /items, /health), 오류 형식 통일, 요청 수 제한, 요청 로그
+│   ├── vision.py         # 사진 전처리 + AI 관찰, 재촬영 시 같은 물건 비교 (프롬프트는 rules.json에서 생성)
+│   ├── judge.py          # 규칙표 기반 판정
+│   ├── schemas.py        # Pydantic 스키마 (규칙표 · AI 관찰 · 응답)
+│   ├── rules.json        # 판정기준표: 품목 55개, 조건, 오염도 5단계, 배출 장소, 일반 원칙, 화면 문구
+│   ├── config.py         # 설정값 (.env로 변경)
+│   └── API.md            # 프론트 ↔ 백엔드 약속
+├── frontend/src/
+│   ├── App.jsx           # 촬영 → 판정 → 질문 · 재촬영 흐름
+│   ├── components/       # JudgeResult (결과 화면), ItemPicker (품목 검색 선택)
+│   └── services/         # judgeApi (서버 호출 · 사진 축소), responses.json (Mock)
+├── tests/
+│   ├── test_judge.py · test_api.py · test_edge_cases.py   # AI 없이 도는 자동 테스트
+│   ├── run_tests.py · cases.json                         # 실제 사진 평가
+│   └── results/                                          # 평가 결과 (개선 전 · 후)
+└── .github/workflows/ci.yml
 ```
 
----
+## 기술 스택
 
-# ⚙️ Main Process
+FastAPI · Pydantic v2 · OpenAI Vision API (gpt-4o-mini) · React (Vite) · GitHub Actions · Render · Vercel
 
-### 1. 카카오톡 민원 응대
+## 실행
 
-카카오 i 오픈빌더에서 챗봇 블록에 스킬 서버 주소(`/api/kakao`)를 등록하면, 학부모가 메시지를 보낼 때마다 오픈빌더가 서버로 JSON을 보냅니다.
+```bash
+# 백엔드
+python3 -m venv venv && source venv/bin/activate
+pip install -r backend/requirements.txt
+echo "OPENAI_API_KEY=sk-..." > .env
+cd backend && python app.py                 # http://127.0.0.1:5001/docs
 
-서버는 `userRequest.utterance`에서 메시지를 꺼내 OpenAI API로 답변을 만들고, 카카오 응답 형식으로 감싸 돌려줍니다.
+# 프론트엔드 (다른 터미널)
+cd frontend && npm install && npm run dev   # http://localhost:5173
 
-```json
-{"version": "2.0", "template": {"outputs": [{"simpleText": {"text": "답변"}}]}}
+# 테스트 (AI 호출 없음)
+python tests/test_judge.py && python tests/test_api.py && python tests/test_edge_cases.py
 ```
-
-↓
-
-### 2. 민원 조회
-
-담당자 웹의 민원 목록은 SQLAlchemy 쿼리로 구성했습니다.
-
-- 키워드 검색: 작성자 · 내용에 대한 부분 일치 검색 (`ilike`)
-- 처리 상태 필터: 답변이 달린 민원 / 아직 없는 민원 (`comment_set.any()`)
-- 정렬: 접수일 오름차순 / 내림차순
-- 페이지네이션: 10개씩
-
-↓
-
-### 3. 답변 등록
-
-로그인한 담당자만 답변을 등록할 수 있도록 `login_required` 데코레이터로 보호했습니다. 민원과 답변은 1:N 관계이며, 민원이 삭제되면 답변도 함께 삭제됩니다(CASCADE).
-
-↓
-
-### 4. 악성 민원 분류 (실험)
-
-모델을 따로 학습시키지 않고, GPT-3.5에 판단 기준과 예시를 주는 few-shot 방식으로 분류했습니다.
-
-- 시스템 프롬프트에 악성 민원의 정의(욕설, 인신공격, 경멸적 말투, 협박)와 판단 순서를 명시
-- 실제 사례를 바탕으로 라벨을 붙인 예시 30개를 few-shot으로 제공
-- 출력은 `malicious` / `non-malicious` 중 하나만 나오도록 Output Parser로 고정
-- 같은 입력에 일관된 결과가 나오도록 낮은 temperature(0.1) 사용
-
----
-
-# 👨‍💻 My Role
-
-### 민원 담당자 웹 애플리케이션
-
-- Flask App Factory · Blueprint 구조 설계
-- 민원 · 답변 · 사용자 DB 모델 설계와 마이그레이션 관리
-- 민원 목록(검색 · 필터 · 정렬 · 페이지네이션), 상세, 답변 등록 기능 구현
-- 회원가입 · 로그인 구현 (비밀번호 해시, 세션, 로그인 필요 기능 보호)
-
-### 악성 민원 분류기
-
-- 악성 민원 정의와 판단 기준 설계
-- LangChain Output Parser로 출력 형식 고정
-- Streamlit 테스트 화면 구성
-
-### 파이프라인 (팀원과 공동)
-
-- 카카오 i 오픈빌더 ↔ Flask 서버 ↔ OpenAI API 연결
-- 카카오 요청 시뮬레이터로 연동 테스트
-
----
-
-# 💡 What I Learned
-
-### LLM 활용
-
-분류 결과가 기대에 못 미쳤을 때, 프롬프트 문구보다 **예시 데이터의 구성**이 결과에 더 큰 영향을 준다는 것을 확인했습니다. 어떤 예시를 어떤 비율로 보여주느냐에 따라 판단 기준 자체가 달라졌습니다.
-
----
-
-### LangChain
-
-프롬프트, 모델, 출력 파서를 하나의 체인으로 묶는 방법과 few-shot 템플릿, 대화 요약 메모리를 사용해 보며 LLM을 서비스 구성 요소로 다루는 방법을 익혔습니다.
-
----
-
-### Backend
-
-App Factory와 Blueprint로 기능을 나누고, ORM과 마이그레이션으로 DB 구조 변경을 관리하며, 세션 기반 인증을 구현하는 웹 서비스의 기본 구조를 경험했습니다.
-
----
-
-### 외부 서비스 연동
-
-카카오 i 오픈빌더가 정한 요청 · 응답 형식에 맞춰 스킬 서버를 만들면서, 외부 플랫폼과 연동할 때는 정해진 데이터 형식과 응답 시간 제한을 먼저 확인해야 한다는 것을 배웠습니다.
-
----
-
-### Team Project
-
-모듈별로 역할을 나눠 개발하면서, 모듈 사이의 연결(데이터 형식, 통합 담당)을 처음부터 정해 두는 것이 중요하다는 것을 체감했습니다.
-
----
-
-# 🔧 Improvement Plan
-
-프로젝트를 다시 검토하며 정리한 개선 방향입니다.
-
-| 항목 | 현재 | 개선 방향 |
-| --- | --- | --- |
-| 대화 관리 | 챗봇 객체 하나가 모든 대화를 기록 | 카카오 사용자 ID별로 대화를 DB에 저장하고 최근 몇 턴만 전달 |
-| 분류기 | 실험 코드(`assistant_test/`)로 분리 | API에 연결해 분류 결과에 따라 응답 분기 |
-| 애매한 민원 | 악성으로 처리 | '판단 보류'로 분리해 담당자가 확인 (Human-in-the-Loop) |
-| 분류 평가 | 테스트 문장으로 확인 | 라벨별로 균형 잡힌 평가셋으로 정확도 · 오탐률 측정 |
-| 민원 저장 | 카카오 민원과 담당자 웹이 별도 | 모든 민원을 DB에 저장하고 처리 상태 컬럼으로 관리 |
-| 보안 | 설정값이 코드에 포함, 가입한 사용자 모두 열람 | 비밀값 환경변수 분리, 담당자 권한, CSRF · 리다이렉트 검증 |
-| 응답 시간 | 별도 처리 없음 | 카카오 응답 제한 시간에 맞춘 타임아웃과 담당자 이관 |
-| 테스트 | 수동 시뮬레이터 | LLM을 대역 객체로 바꾼 자동 테스트 |
-
----
-
-# 📈 Expected Effect
-
-- 교사의 민원 응대 부담 감소
-- 반복적인 일반 민원 자동 응대
-- 민원 처리 현황을 한 화면에서 관리
-- 악성 민원을 교사가 직접 받지 않는 구조 마련
-
----
-
-# 👥 Team
-
-| Name | Role |
-|------|------|
-| 홍승범 | 민원 담당자 웹 애플리케이션, 악성 민원 분류기 |
-| 차승언 | LLM 테스트 모듈, 법적 조치 안내(Alerter) |
-| 공동 | 카카오톡 ↔ 서버 ↔ LLM 파이프라인, 테스트 코드 |
-
----
-
-# 📄 Reference
-
-- Flask
-- Flask-SQLAlchemy / Flask-Migrate
-- OpenAI API
-- LangChain
-- Kakao i Open Builder
