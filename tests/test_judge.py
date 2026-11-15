@@ -1,40 +1,102 @@
-"""AI 호출 없이 판정 로직만 검사. 실행: python tests/test_judge.py"""
+"""AI 호출 없이 판정 로직만 검사 (판정기준표 v1). 실행: python tests/test_judge.py"""
 import os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
-from judge import judge
+from judge import judge, MAX_ATTEMPTS
 
-PET_LABEL = {"item": "pet_bottle", "observations": {"is_transparent": "true", "label_attached": "true", "liquid_inside": "false"}}
-PET_CLEAN = {"item": "pet_bottle", "observations": {"is_transparent": "true", "label_attached": "false", "liquid_inside": "false"}}
 
-PET_HIDDEN = {"item": "pet_bottle", "observations": {"is_transparent": "true", "label_attached": "unknown", "liquid_inside": "false"}}
-YES = {"rinsed": "true"}      # "내부를 물로 헹구셨나요?"에 '예'
-NO = {"rinsed": "false"}      # '아니요'
+def pet(**obs):
+    """투명 페트병. 기본은 '라벨 없음 · 빈 병', 바꿀 필드만 넘긴다."""
+    return {"item": "P01", "confidence": 0.9,
+            "observations": {"is_clear": "true", "label": "absent", "liquid": "absent", **obs}}
 
-# (이름, 관찰 결과, attempt, prev_item, 질문 답, 기대 status)
+
+def item(item_id, **obs):
+    return {"item": item_id, "confidence": 0.9, "observations": obs}
+
+
+YES = {"checkbox": "true"}      # 체크박스 '했어요'
+NO = {"checkbox": "false"}      # '아직 안 했어요'
+LAST = MAX_ATTEMPTS
+
+# (이름, 관찰 결과, attempt, prev_item, 질문 답, 기대 status, 추가 확인 함수 또는 None)
 cases = [
-    ("라벨 붙은 투명 페트병", PET_LABEL, 1, None, YES, "need_action"),
-    ("깨끗한 투명 페트병", PET_CLEAN, 1, None, YES, "pass"),
-    ("라벨이 안 보임", PET_HIDDEN, 1, None, YES, "retake"),
-    ("3번째에도 라벨이 안 보임", PET_HIDDEN, 3, None, YES, "fallback"),
-    ("3번째에도 착색 남음", {"item": "cup_noodle", "observations": {"food_residue": "none", "red_oil_stain": "true"}}, 3, None, {}, "fallback"),
-    ("재촬영: 같은 페트병, 라벨 제거됨", PET_CLEAN, 2, "pet_bottle", YES, "pass"),
-    ("재촬영: 다른 품목을 찍음", {"item": "receipt", "observations": {}}, 2, "pet_bottle", {}, "different_item"),
-    ("재촬영: AI가 다른 물건이라고 봄", {**PET_CLEAN, "same_item": "false"}, 2, "pet_bottle", YES, "different_item"),
-    ("영수증", {"item": "receipt", "observations": {}}, 1, None, {}, "pass"),
-    ("숫가락", {"item": "unsupported"}, 1, None, {}, "unsupported"),
-    ("질문: 아직 답 안 함", PET_CLEAN, 1, None, {}, "question"),
-    ("질문: '아니요' → 헹구기가 체크리스트로", PET_CLEAN, 1, None, NO, "need_action"),
-    ("질문: 라벨도 붙어 있으면 질문이 먼저", PET_LABEL, 1, None, {}, "question"),
-    ("확신 낮음: 품목 확인 질문", {**PET_CLEAN, "confidence": 0.4}, 1, None, YES, "question"),
-    ("확신 낮음: '예' → 평소대로 판정", {**PET_CLEAN, "confidence": 0.4}, 1, None, {**YES, "confirm_pet_bottle": "true"}, "pass"),
-    ("확신 낮음: '아니요' → 판정 안 함", {**PET_CLEAN, "confidence": 0.4}, 1, None, {"confirm_pet_bottle": "false"}, "unsupported"),
-    ("확신 높음: 확인 질문 없음", {**PET_CLEAN, "confidence": 0.9}, 1, None, YES, "pass"),
+    # 투명 페트병 (P01)
+    ("깨끗한 페트병: 체크박스 질문", pet(), 1, None, {}, "question", lambda r: r["questions"][0]["key"] == "checkbox"),
+    ("깨끗한 페트병 + 체크 → 통과", pet(), 1, None, YES, "pass", lambda r: r["disposal"] == "투명 페트병 전용 수거함"),
+    ("체크 '아직' → 할 일로", pet(), 1, None, NO, "need_action", None),
+    ("라벨 있음 → 라벨 + 체크박스가 체크리스트에", pet(label="present"), 1, None, {}, "need_action",
+     lambda r: [c["key"] for c in r["checklist"]] == ["label", "checkbox"]),
+    ("라벨 있음, 이미 체크함 → 체크박스는 다시 안 넣음", pet(label="present"), 1, None, YES, "need_action",
+     lambda r: [c["key"] for c in r["checklist"]] == ["label"]),
+    ("라벨 안 보임(unknown) → 재촬영", pet(label="unknown"), 1, None, YES, "retake", None),
+    ("남은 음료 안 보임(unknown) → 미통과(보수적)", pet(liquid="unknown"), 1, None, YES, "need_action", None),
+    ("유색 페트병 → P02로 분기", pet(is_clear="false", label="present"), 1, None, YES, "pass",
+     lambda r: r["item"] == "P02" and r["disposal"].startswith("플라스틱류")),
+    ("투명 여부 안 보임 → 재촬영", pet(is_clear="unknown"), 1, None, YES, "retake", None),
+    ("권고 조건 미통과는 팁만 (통과에 영향 없음)", pet(crushed="false", cap="absent"), 1, None, YES, "pass",
+     lambda r: len(r["tips"]) == 2),
+    ("권고 조건 unknown은 무시", pet(crushed="unknown"), 1, None, YES, "pass", lambda r: r["tips"] == []),
+    ("마지막 촬영에도 라벨 안 보임 → 대체 안내", pet(label="unknown"), LAST, None, YES, "fallback", None),
+    # 오염도 (P03, P04, P09)
+    ("컵라면 1단계 → 통과 (체크박스 없음)", item("P04", contamination_level="1", stain="absent"), 1, None, {}, "pass", None),
+    ("컵라면 2단계 → '헹궜어요' 질문", item("P04", contamination_level="2", stain="absent"), 1, None, {}, "question",
+     lambda r: r["questions"][0]["text"] == "헹궜어요"),
+    ("컵라면 2단계 + 체크 → 통과", item("P04", contamination_level="2", stain="absent"), 1, None, YES, "pass", None),
+    ("컵라면 3단계 → 처리 후 재촬영", item("P04", contamination_level="3", stain="absent"), 1, None, {}, "need_action", None),
+    ("컵라면 5단계 → 바로 종량제봉투", item("P04", contamination_level="5", stain="absent"), 1, None, {}, "fallback",
+     lambda r: r["disposal"] == "종량제봉투"),
+    ("컵라면 착색 남음 → 미통과", item("P04", contamination_level="1", stain="present"), 1, None, {}, "need_action", None),
+    ("컵라면 안쪽 안 보임 → 재촬영", item("P04", contamination_level="unknown", stain="absent"), 1, None, {}, "retake", None),
+    ("마지막 촬영에도 착색 → 종량제봉투", item("P04", contamination_level="1", stain="present"), LAST, None, {}, "fallback",
+     lambda r: r["disposal"] == "종량제봉투"),
+    ("색깔 스티로폼 → 종량제봉투 안내", item("P09", is_white="false"), 1, None, {}, "pass", lambda r: r["disposal"] == "종량제봉투"),
+    # 분기·정보 안내형
+    ("깨진 유리병 → 깨진 유리(I06)", item("P07", broken="true"), 1, None, {}, "pass", lambda r: r["item"] == "I06"),
+    ("유리병 깨짐 여부 모름 → 안전 우선으로 깨진 유리", item("P07", broken="unknown"), 1, None, {}, "pass", lambda r: r["item"] == "I06"),
+    ("영수증 → 종량제봉투", item("I01"), 1, None, {}, "pass", lambda r: r["disposal"] == "종량제봉투"),
+    ("형광등 깨짐 → 종량제봉투 안내", item("I03", broken="true"), 1, None, {}, "pass", lambda r: "종량제봉투" in r["disposal"]),
+    ("아이스팩 → 물/젤 질문", item("I05"), 1, None, {}, "question", lambda r: r["questions"][0]["key"] == "ice_content"),
+    ("아이스팩 젤 → 종량제봉투", item("I05"), 1, None, {"ice_content": "gel"}, "pass", None),
+    ("지원 안 하는 물건(X00)", item("X00"), 1, None, {}, "unsupported", None),
+    # 추가 품목 (v1.1)
+    ("과자 봉지, 내용물 없음·깨끗함 → 비닐류", item("P10", liquid="absent", contamination_level="1", plastic_part="absent"), 1, None, {}, "pass",
+     lambda r: r["places"][0]["title"] == "비닐류"),
+    ("물티슈 포장에 플라스틱 뚜껑 → 떼라는 체크리스트", item("P10", liquid="absent", contamination_level="1", plastic_part="present"), 1, None, {}, "need_action", None),
+    ("우유팩에 빨대 꽂힘 → 빼고 다시", item("P11", liquid="absent", plastic_part="present"), 1, None, YES, "need_action", None),
+    ("우유팩 깨끗 + 헹궈 말림 → 종이팩 수거함", item("P11", liquid="absent", plastic_part="absent"), 1, None, YES, "pass",
+     lambda r: r["places"][0]["title"] == "종이팩 전용 수거함"),
+    ("택배 상자 송장 붙음 → 떼라는 체크리스트", item("P12", tape_label="present"), 1, None, {}, "need_action", None),
+    ("플라스틱 컵에 빨대 → 빨대 빼기", item("P13", liquid="absent", foreign_object="present"), 1, None, YES, "need_action", None),
+    ("폐의약품 → 어떤 약인지 질문", item("I13"), 1, None, {}, "question", None),
+    ("폐의약품 알약 → 우체통 안내", item("I13"), 1, None, {"medicine_type": "solid"}, "pass", lambda r: "우체통" in r["disposal"]),
+    ("즉석밥 용기 → 종량제봉투", item("I16"), 1, None, {}, "pass", lambda r: r["disposal"] == "종량제봉투"),
+    # 추가 품목 (v1.2, 서울시 재활용 비해당 품목 표준안)
+    ("노트에 스프링 → 떼라는 체크리스트", item("P14", other_material="present"), 1, None, {}, "need_action", None),
+    ("신문지 → 종이류", item("P14", other_material="absent"), 1, None, {}, "pass", lambda r: r["disposal"] == "종이류"),
+    ("배터리 든 장난감 → 초소형 전자제품 배출함", item("I20"), 1, None, {"has_battery": "true"}, "pass",
+     lambda r: r["places"][0]["title"] == "초소형 전자제품 배출함"),
+    ("헌옷 상태 질문", item("I25"), 1, None, {}, "question", None),
+    ("치킨 뼈 → 종량제봉투", item("I27"), 1, None, {}, "pass", lambda r: r["disposal"] == "종량제봉투"),
+    # 추가 품목 (v1.3)
+    ("커피 찌꺼기 → 종량제봉투", item("I28"), 1, None, {}, "pass", lambda r: r["disposal"] == "종량제봉투"),
+    ("화분 흙 → 불연성 마대", item("I29"), 1, None, {}, "pass", lambda r: "마대" in r["disposal"]),
+    ("스테인리스 냄비 → 고철류", item("I35"), 1, None, {}, "pass", lambda r: r["disposal"] == "고철류"),
+    # 재촬영
+    ("재촬영: 같은 페트병, 라벨 제거됨", pet(), 2, "P01", YES, "pass", None),
+    ("재촬영: 다른 품목을 찍음", item("I01"), 2, "P01", {}, "different_item", None),
+    ("재촬영: AI가 다른 물건이라고 봄", {**pet(), "same_item": "false"}, 2, "P01", YES, "different_item", None),
+    ("재촬영: 처음엔 유색(P02)으로 판정, 이번엔 P01로 봄 → 같은 물건으로 인정", pet(is_clear="false"), 2, "P02", YES, "pass", None),
+    # 품목 확신도
+    ("확신 낮음: 품목 확인 질문", {**pet(), "confidence": 0.4}, 1, None, YES, "question",
+     lambda r: r["questions"][0]["key"] == "confirm_P01"),
+    ("확신 낮음: '예' → 평소대로 판정", {**pet(), "confidence": 0.4}, 1, None, {**YES, "confirm_P01": "true"}, "pass", None),
+    ("확신 낮음: '아니요' → 판정 안 함", {**pet(), "confidence": 0.4}, 1, None, {"confirm_P01": "false"}, "unsupported", None),
 ]
 
 failed = 0
-for name, obs, attempt, prev_item, answers, expected in cases:
+for name, obs, attempt, prev_item, answers, expected, extra in cases:
     got = judge(obs, attempt, answers, prev_item=prev_item)
-    ok = got["status"] == expected and got.get("message")
+    ok = got["status"] == expected and bool(got.get("message")) and (extra is None or extra(got))
     failed += not ok
     print("O" if ok else "X", name, "→", got["status"])
 

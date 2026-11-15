@@ -7,9 +7,10 @@ from fastapi.testclient import TestClient
 from PIL import Image
 
 import app as server
+server.RATE_LIMIT_PER_MIN = 0                      # 테스트는 요청이 많으므로 요청 수 제한 끄기 (아래에서 따로 검사)
 
-FAKE = {"item": "pet_bottle", "confidence": 0.9, "same_item": "unknown",
-        "observations": {"is_transparent": "true", "label_attached": "true", "liquid_inside": "false"},
+FAKE = {"item": "P01", "confidence": 0.9, "same_item": "unknown",
+        "observations": {"is_clear": "true", "label": "absent", "liquid": "absent"},
         "notes": "fake"}
 server.observe = lambda cur, prev=None: FAKE          # AI 대신 가짜 관찰
 client = TestClient(server.app)
@@ -29,14 +30,14 @@ def status_of(res):
 # (이름, 요청 함수, 기대 HTTP 코드, 기대 status 또는 오류 code)
 cases = [
     ("서버 확인", lambda: client.get("/health"), 200, None),
-    ("첫 판정: 헹굼 질문", lambda: client.post("/judge", files={"image": jpg()}, data={"attempt": "1"}), 200, "question"),
-    ("답 보내고 다시 판정", lambda: client.post("/judge", files={"image": jpg()}, data={"attempt": "1", "answers": '{"rinsed": "true"}'}), 200, "need_action"),
+    ("첫 판정: 체크박스 질문", lambda: client.post("/judge", files={"image": jpg()}, data={"attempt": "1"}), 200, "question"),
+    ("체크하고 다시 판정 → 통과", lambda: client.post("/judge", files={"image": jpg()}, data={"attempt": "1", "answers": '{"checkbox": "true"}'}), 200, "pass"),
     ("사진 없음", lambda: client.post("/judge", data={"attempt": "1"}), 400, "NO_IMAGE"),
     ("attempt가 숫자 아님", lambda: client.post("/judge", files={"image": jpg()}, data={"attempt": "abc"}), 400, "BAD_REQUEST"),
     ("answers가 JSON 아님", lambda: client.post("/judge", files={"image": jpg()}, data={"answers": "{oops"}), 400, "BAD_REQUEST"),
     ("이미지가 아닌 파일", lambda: client.post("/judge", files={"image": ("a.jpg", b"not image", "image/jpeg")}), 400, "BAD_IMAGE"),
     ("재촬영: 다른 품목", lambda: client.post("/judge", files={"image": jpg(), "prev_image": jpg()},
-                                         data={"attempt": "2", "prev_item": "receipt"}), 200, "different_item"),
+                                         data={"attempt": "2", "prev_item": "I01"}), 200, "different_item"),
 ]
 
 failed = 0
@@ -47,7 +48,7 @@ for name, call, code, expected in cases:
     print("O" if ok else "X", name, "→", res.status_code, "" if expected is None else status_of(res))
 
 # 응답에 None 값이 섞여 나가지 않는지 (unsupported면 name 등이 아예 빠져야 함)
-server.observe = lambda cur, prev=None: {"item": "unsupported"}
+server.observe = lambda cur, prev=None: {"item": "X00"}
 res = client.post("/judge", files={"image": jpg()})
 ok = res.status_code == 200 and "name" not in res.json()["judgement"]
 failed += not ok
@@ -58,7 +59,7 @@ print("O" if ok else "X", "지원 안 하는 품목은 name 없이 응답 →", 
 server.observe = lambda cur, prev=None: {**FAKE, "confidence": 0.3}
 res = client.post("/judge", files={"image": jpg()})
 q = res.json()["judgement"]["questions"]
-ok = res.status_code == 200 and q and q[0]["key"] == "confirm_pet_bottle"
+ok = res.status_code == 200 and q and q[0]["key"] == "confirm_P01"
 failed += not ok
 print("O" if ok else "X", "확신 낮음 → 품목 확인 질문 →", q[0]["text"] if q else None)
 
@@ -66,8 +67,8 @@ print("O" if ok else "X", "확신 낮음 → 품목 확인 질문 →", q[0]["te
 # 질문에 답할 때 직전 관찰을 보내면 AI를 부르지 않음 (사진도 필요 없음)
 calls = []
 server.observe = lambda cur, prev=None: calls.append(1) or FAKE
-res = client.post("/judge", data={"observation": json.dumps(FAKE), "answers": '{"rinsed": "true"}'})
-ok = res.status_code == 200 and status_of(res) == "need_action" and not calls
+res = client.post("/judge", data={"observation": json.dumps(FAKE), "answers": '{"checkbox": "true"}'})
+ok = res.status_code == 200 and status_of(res) == "pass" and not calls
 failed += not ok
 print("O" if ok else "X", "관찰 재사용 → AI 호출 없이 판정 →", status_of(res), "/ AI 호출", len(calls), "회")
 
@@ -81,6 +82,28 @@ ok = res.status_code == 502 and status_of(res) == "AI_FAILED"
 failed += not ok
 print("O" if ok else "X", "AI 실패 →", res.status_code, status_of(res))
 
-total = len(cases) + 4
+# 같은 IP가 1분에 너무 많이 요청하면 429 (AI 비용 보호)
+server.observe = lambda cur, prev=None: FAKE
+server.RATE_LIMIT_PER_MIN = 2
+server._recent.clear()
+res_list = [client.post("/judge", files={"image": jpg()},
+                       headers={"x-forwarded-for": "1.2.3.4", "origin": "http://localhost:5173"}) for _ in range(3)]
+codes = [r.status_code for r in res_list]
+# 429에도 CORS 헤더가 있어야 브라우저가 안내 문구를 보여 줌 (없으면 'CORS 오류'로만 보임)
+cors_on_429 = res_list[2].headers.get("access-control-allow-origin") == "http://localhost:5173"
+other = client.post("/judge", files={"image": jpg()}, headers={"x-forwarded-for": "5.6.7.8"}).status_code
+ok = codes == [200, 200, 429] and other == 200 and cors_on_429
+failed += not ok
+print("O" if ok else "X", "요청 수 제한 → 같은 IP 3번째는 429(CORS 헤더 포함), 다른 IP는 통과 →", codes, other, cors_on_429)
+server.RATE_LIMIT_PER_MIN = 0
+
+# 본문 크기를 받기 전에 확인 (Content-Length가 너무 크면 바로 413)
+res = client.post("/judge", content=b"x", headers={"content-length": str(100 * 1024 * 1024),
+                                                    "content-type": "multipart/form-data; boundary=x"})
+ok = res.status_code == 413 and status_of(res) == "TOO_LARGE"
+failed += not ok
+print("O" if ok else "X", "100MB 요청 → 본문 받기 전에 413 →", res.status_code)
+
+total = len(cases) + 6
 print(f"\n{total - failed}/{total} 통과")
 sys.exit(1 if failed else 0)

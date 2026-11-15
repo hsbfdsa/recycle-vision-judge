@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import JudgeResult from "./components/JudgeResult";
-import { judgeImage, isMock } from "./services/judgeApi";
+import { judgeImage, isMock, wakeServer } from "./services/judgeApi";
 import "./App.css";
 
 const MOCK_STATUSES = ["pass", "need_action", "retake", "question", "fallback", "different_item", "unsupported"];
@@ -17,6 +17,10 @@ function App() {
   const [error, setError] = useState("");
   const [mockStatus, setMockStatus] = useState("pass");
   const [showMockTest, setShowMockTest] = useState(false);
+
+  useEffect(() => {
+    wakeServer();
+  }, []);
 
   useEffect(() => {
     if (!file) {
@@ -77,17 +81,21 @@ function App() {
   function handleAnswer(key, value) {
     const next = { ...answers, [key]: value };
     setAnswers(next);
-    runJudge(next, result?.observation ?? null);
+    // 품목을 직접 고른 경우엔 그 품목 기준으로 사진을 다시 봐야 하므로 AI를 다시 부른다
+    runJudge(next, key === "item_hint" ? null : result?.observation ?? null);
   }
 
   // countsAsAttempt: 처리 후 재촬영이면 true, 다른 물건을 찍어서 다시 찍는 거면 false
   function handleRetake(countsAsAttempt) {
     if (countsAsAttempt) setAttempt((prev) => prev + 1);
-    // 질문에 '아니요'해서 체크리스트가 된 항목은, 처리했다고 했으니 다음 촬영에서 다시 물어본다
-    const handledKeys = (result?.judgement?.checklist ?? []).map((item) => item.key);
-    setAnswers((prev) =>
-      Object.fromEntries(Object.entries(prev).filter(([key]) => !handledKeys.includes(key)))
-    );
+    // 체크리스트의 체크박스 항목(예: "헹궈 주세요")은 체크하고 다시 찍었으니 '했어요'로 기억 → 다음 판정에서 다시 묻지 않음
+    const checkedBox = (result?.judgement?.checklist ?? []).some((item) => item.key === "checkbox");
+    setAnswers((prev) => {
+      const next = { ...prev };
+      delete next.confirm_same_item; // "같은 물건이 맞나요?"는 새 사진마다 다시 확인
+      if (countsAsAttempt && checkedBox) next.checkbox = "true";
+      return next;
+    });
     setFile(null);
     setResult(null);
     setError("");
