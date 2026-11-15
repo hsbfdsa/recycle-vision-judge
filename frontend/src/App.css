@@ -312,6 +312,46 @@ body {
   font-size: 13px;
 }
 
+.item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.app .correct-link {
+  flex-shrink: 0;
+  width: auto;
+  min-height: 0;
+  padding: 4px 0;
+  font-weight: 500;
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-family: inherit;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.app .correct-link:hover {
+  background: none;
+  color: var(--primary-dark);
+}
+
+.app .correct-link:disabled {
+  background: none;
+  opacity: 0.5;
+  cursor: default;
+}
+
+.correct-picker {
+  margin: 8px 0 12px;
+  padding: 12px;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+}
+
 .status-pass {
   border-color: #8EBB92;
 }

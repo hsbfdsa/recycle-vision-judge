@@ -25,6 +25,7 @@ FIELD_VALUES = {
     "is_white":            {"true", "false"},
     "tape_label":          {"present", "absent"},
     "umbrella_type":       {"long", "folding"},
+    "general_class":       {"general", "non_combustible", "large", "electronic"},   # 기준표에 없는 물건(other)의 큰 분류
 }
 OBSERVATION_FIELDS = set(FIELD_VALUES)
 UNSUPPORTED = "X00"            # 지원하지 않는 품목 (기준표 품목ID)
@@ -172,6 +173,17 @@ REQUIRED_MESSAGES = set(STATUSES) | {"not_confirmed", "confirm_question", "same_
                                      "checkbox_question", "checkbox_yes", "checkbox_no"}
 
 
+class GeneralGuide(BaseModel):
+    """기준표에 개별 기준이 없는 물건(AI 답 other)을 일반 원칙으로 안내 (general_class 값마다 하나)"""
+    model_config = ConfigDict(extra="forbid")
+    name: str
+    disposal: str
+    message: str
+    how: List[str] = []
+    places: List[str]
+    source: str
+
+
 class RuleSet(BaseModel):
     model_config = ConfigDict(extra="forbid")
     version: str
@@ -179,6 +191,7 @@ class RuleSet(BaseModel):
     field_labels: Dict[str, str]                # AI 출력 키의 한국어 이름 (재촬영 이유 안내용)
     places: Dict[str, Place]                    # 배출 장소 안내 (아파트 / 단독주택)
     popular_items: List[str] = []               # 품목 직접 선택에서 검색 전에 먼저 보여 줄 품목
+    general_guide: Dict[str, GeneralGuide] = {} # 개별 기준이 없는 물건의 일반 원칙 안내
     contamination: Dict[str, Level]             # 오염도 5단계
     items: Dict[str, Rule]
 
@@ -195,6 +208,14 @@ class RuleSet(BaseModel):
             raise ValueError("contamination에는 1~5단계가 모두 있어야 해요")
         if self.contamination["2"].result == "checkbox" and not self.contamination["2"].checkbox:
             raise ValueError("contamination 2단계에는 checkbox 문구가 필요해요")
+        if self.general_guide:
+            if set(self.general_guide) != FIELD_VALUES["general_class"]:
+                raise ValueError(f"general_guide에는 {sorted(FIELD_VALUES['general_class'])}가 모두 있어야 해요")
+            if "general_warning" not in self.messages:
+                raise ValueError("general_guide를 쓰려면 messages에 general_warning이 필요해요")
+            for k, g in self.general_guide.items():
+                if set(g.places) - set(self.places):
+                    raise ValueError(f"general_guide.{k}: 없는 배출 장소 {sorted(set(g.places) - set(self.places))}")
         bad_popular = set(self.popular_items) - set(self.items)
         if bad_popular:
             raise ValueError(f"popular_items에 없는 품목ID: {sorted(bad_popular)}")
