@@ -17,51 +17,61 @@
 | `attempt` | O | 몇 번째 촬영인지. 1부터 시작, 처리 후 재촬영할 때마다 +1 |
 | `prev_image` | 재촬영 시 | 처음 찍은 사진. AI가 전후를 비교해 오염도와 같은 물건인지 판단 |
 | `prev_item` | 재촬영 시 | 첫 판정의 `judgement.item`. 다른 품목이면 `different_item` |
-| `answers` | 질문 답변 시 | JSON 문자열. 예: `{"rinsed": "true"}` |
+| `answers` | 질문 답변 시 | JSON 문자열. 예: `{"checkbox": "true"}`, `{"confirm_P01": "true"}`, `{"ice_content": "gel"}` |
+| `observation` | 질문 답변 시 (선택) | 직전 응답의 `observation`을 그대로 JSON 문자열로. 보내면 서버가 AI를 다시 부르지 않음 (`image` 생략 가능) |
 
 ### 성공 응답 (200)
 
 ```json
 {
   "observation": {
-    "item": "pet_bottle",
+    "item": "P01",
     "confidence": 0.95,
     "same_item": "unknown",
-    "observations": {"is_transparent": "true", "label_attached": "true", "liquid_inside": "false"},
+    "observations": {"is_clear": "true", "label": "present", "liquid": "absent", "crushed": "false", "cap": "closed"},
     "notes": "Blue label wraps a clear, empty bottle."
   },
   "judgement": {
     "status": "need_action",
     "message": "버리기 전에 아래 항목을 처리하고 다시 찍어 주세요.",
-    "item": "pet_bottle",
+    "item": "P01",
     "name": "투명 페트병",
     "type": "state",
     "attempt": 1,
     "max_attempts": 3,
     "disposal": "투명 페트병 전용 수거함",
-    "checklist": [{"key": "label_attached", "text": "라벨을 떼어 주세요"}],
+    "checklist": [
+      {"key": "label", "text": "라벨을 떼어 주세요. 뗀 라벨은 비닐류로 버려요."},
+      {"key": "checkbox", "text": "내용물을 비우고 물로 헹궈 주세요."}
+    ],
     "questions": [],
     "retake": [],
-    "warnings": [],
-    "source": "출처 링크"
+    "tips": ["찌그러뜨리면 더 좋아요."],
+    "warnings": ["뚜껑은 분리하지 말고 닫아서 함께 버려요."],
+    "source": "S03, S04, S06"
   }
 }
 ```
 
 - `observation`: AI가 사진에서 본 것 (판정 근거 표시용)
-- `judgement`: 규칙표(`rules.json`)로 내린 판정. **화면은 `judgement.status`로 분기**하고, 문구는 `message`를 그대로 쓰면 된다.
+- `judgement`: 판정기준표(`rules.json`)로 내린 판정. **화면은 `judgement.status`로 분기**하고, 문구는 `message`를 그대로 쓰면 된다.
+- `item`: 판정기준표의 품목ID (AI는 `pet_bottle` 같은 영어 이름으로 답하고, 서버가 품목ID로 바꿔서 돌려줌) (P01~P14 상태 판정형, I01~I37 정보 안내형, X00 지원 안 함). 분기가 일어나면 바뀐 품목 (예: 유색 페트병이면 P02)
+- `tips`: 권고 조건 (안 해도 배출 가능). 통과 화면에도 나올 수 있음
+- `how`: 버리는 순서 (통과 화면에 번호 목록으로). 대체 안내(`fallback`)에서는 빈 목록
+- `places`: 어디에 버리는지 `[{"title": "플라스틱류", "where": ["아파트: ...", "단독주택·빌라: ..."]}]`. `pass`·`fallback`에서 표시
+- `source`: 출처ID (판정기준표 ⑥출처 탭)
 
 ### status별 화면
 
 | status | 뜻 | 화면 |
 | --- | --- | --- |
-| `pass` | 통과 | `disposal` 크게 + `warnings` |
-| `need_action` | 처리할 일 남음 | `checklist` 체크박스 → 다 체크하면 "다시 찍기" (attempt +1) |
-| `retake` | AI가 일부를 못 봄 | `message` + "다시 찍기" (attempt +1) |
-| `question` | 사진으로 알 수 없음 | `questions[].text` + `options` 버튼 → 같은 사진으로 `answers` 붙여 재요청 (attempt 그대로) |
-| `fallback` | 재촬영 한도 도달 | 대체 `disposal` 안내하고 종료 |
-| `different_item` | 처음과 다른 물건 | "같은 물건 다시 찍기" (attempt 그대로) |
-| `unsupported` | 지원하지 않는 품목 | `message` + 처음으로 |
+| `pass` | 통과 (정보 안내형 품목 포함) | `message` + `disposal` 크게 + `tips` + `warnings` |
+| `need_action` | 처리할 일 남음 | `checklist` 체크박스 → 다 체크하면 "다시 찍기" (attempt +1). `checklist`에 `key: "checkbox"`가 있었으면 다음 요청 `answers`에 `{"checkbox": "true"}`를 넣어 다시 묻지 않게 |
+| `retake` | AI가 일부를 못 봄 | `message`(안 보인 부분 포함, 예: "라벨") + "다시 찍기" (attempt +1) |
+| `question` | 사진으로 알 수 없음 | `questions[].text` + `options` 버튼 → 같은 사진으로 `answers` 붙여 재요청 (attempt 그대로). 질문은 3종류: 품목 확인(`confirm_P01`), 체크박스(`checkbox`, 예: "헹궜어요"), 정보 안내형 질문(`ice_content`, `tumbler_single`) |
+| `fallback` | 재촬영 한도 도달, 또는 오염도 5단계 | `message`(품목별 대체 안내)와 `disposal` 안내하고 종료. `checklist`가 있으면 "직접 확인할 항목"으로 표시 |
+| `different_item` | 처음과 다른 물건 | "같은 물건 다시 찍기" (attempt 그대로). 품목은 같은데 AI만 다르다고 본 경우 `questions`에 "같은 물건이 맞나요?"(`confirm_same_item`)가 옴 → '예'면 같은 사진으로 재요청 |
+| `unsupported` | 지원하지 않는 품목, 인식 실패 | `message` + `questions`의 품목 목록(`item_hint`) 버튼. 고르면 `answers`에 `{"item_hint": "P01"}`를 넣고 **사진과 함께**(observation 없이) 재요청 → 서버가 그 품목 기준으로 AI를 다시 부름 |
 
 ### 오류 응답
 
@@ -73,8 +83,9 @@
 | --- | --- | --- |
 | 400 | `NO_IMAGE` | `image` 없음 |
 | 400 | `BAD_REQUEST` | `attempt`가 숫자가 아니거나 `answers`가 JSON이 아님 |
-| 400 | `BAD_IMAGE` | 이미지로 읽을 수 없는 파일 |
+| 400 | `BAD_IMAGE` | 이미지로 읽을 수 없는 파일, 너무 작은 사진 |
 | 413 | `TOO_LARGE` | 15MB 초과 |
+| 429 | `RATE_LIMITED` | 같은 IP에서 1분에 너무 많이 요청 (기본 20회, `RATE_LIMIT_PER_MIN`) |
 | 502 | `AI_FAILED` | AI 호출 실패 (키 없음, 네트워크 등) |
 
 프론트는 `error.message`를 그대로 보여주면 된다.

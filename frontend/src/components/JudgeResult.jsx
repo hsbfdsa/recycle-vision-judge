@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ItemPicker from "./ItemPicker";
 
 // 상태별 화면. 백엔드 judgement.status 와 1:1 대응
 function JudgeResult({ result, loading, onRetake, onAnswer, onRestart }) {
@@ -17,13 +18,42 @@ function JudgeResult({ result, loading, onRetake, onAnswer, onRestart }) {
   return (
     <div className={`result-card status-${j.status}`}>
       {j.name && <p className="item-name">{j.name}</p>}
-      <h2>{j.message}</h2>
+      <h2 className="message">{j.message}</h2>
 
       {/* 통과 / 대체 안내: 배출 방법을 크게 */}
       {(j.status === "pass" || j.status === "fallback") && (
         <div className="disposal">
           <span className="disposal-label">배출 방법</span>
           <strong>{j.disposal}</strong>
+        </div>
+      )}
+
+      {/* 버리는 순서 (통과했을 때만) */}
+      {j.status === "pass" && j.how?.length > 0 && (
+        <div className="how">
+          <strong>이렇게 버려요</strong>
+          <ol>
+            {j.how.map((step) => (
+              <li key={step}>{step}</li>
+            ))}
+          </ol>
+        </div>
+      )}
+
+      {/* 어디에 버리는지: 아파트 / 단독주택 */}
+      {(j.status === "pass" || j.status === "fallback") && j.places?.length > 0 && (
+        <div className="places">
+          {j.places.map((p) => (
+            <div key={p.title} className="place">
+              <strong>📍 {p.title}</strong>
+              <ul>
+                {p.where.map((w) => (
+                  <li key={w}>{w}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <p className="place-note">배출 요일과 장소는 사는 구마다 달라요. 구청 홈페이지에서 확인해 주세요.</p>
         </div>
       )}
 
@@ -41,9 +71,24 @@ function JudgeResult({ result, loading, onRetake, onAnswer, onRestart }) {
         </ul>
       )}
 
+      {/* 대체 안내: 사진으로 확인하지 못한 항목은 직접 확인 */}
+      {j.status === "fallback" && j.checklist?.length > 0 && (
+        <div className="self-check">
+          <strong>버리기 전에 직접 확인해 주세요</strong>
+          <ul>
+            {j.checklist.map((item) => (
+              <li key={item.key}>{item.text}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {/* 질문: 선택지를 누르면 같은 사진으로 다시 판정 */}
-      {j.status === "question" &&
-        j.questions.map((q) => (
+      {j.questions?.length > 0 &&
+        j.questions.map((q) =>
+          q.key === "item_hint" ? (
+            <ItemPicker key={q.key} question={q} disabled={loading} onPick={onAnswer} />
+          ) : (
           <div key={q.key} className="question">
             <p>{q.text}</p>
             {q.options.map((opt) => (
@@ -52,7 +97,20 @@ function JudgeResult({ result, loading, onRetake, onAnswer, onRestart }) {
               </button>
             ))}
           </div>
-        ))}
+          )
+        )}
+
+      {/* 팁: 권고 조건 (안 해도 배출 가능) */}
+      {j.tips?.length > 0 && (
+        <div className="tips">
+          <strong>💡 이렇게 하면 더 좋아요</strong>
+          <ul>
+            {j.tips.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* 주의사항 (깨진 유리 등) */}
       {j.warnings?.length > 0 && (
