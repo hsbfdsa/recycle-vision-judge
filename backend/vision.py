@@ -59,7 +59,7 @@ A drink inside (e.g. coffee in a glass) does not change the material of the cont
 
 # Item categories (choose exactly one item name for the SUBJECT, spelled exactly as listed)
 {ITEM_LINES}
-- "other": the SUBJECT is clearly none of the categories above (e.g. glasses, a stuffed doll, a phone, food itself).
+- "other": the SUBJECT is clearly none of the categories above (e.g. a phone charger, a hair tie, food itself).
   For "other", still report general_class in observations.
 - "unknown": there is no recognizable subject at all (blank, extremely dark or blurred, only background).
 Choose a category only when the subject IS that kind of object (a real example of it).
@@ -104,9 +104,9 @@ Include ONLY the fields listed for the chosen item. Leave every other field out.
 - umbrella_type: "long" for a straight long umbrella, "folding" for a compact folding umbrella.
 - general_class: only for "other". The broad kind of the SUBJECT. Check in this order and pick the first that fits:
   "electronic" if it runs on electricity or batteries (has a plug, cable, battery, screen or circuit board);
-  "large" if it is too big to fit in a 50-liter trash bag (furniture, mattress, bicycle, large toy);
+  "large" if it is too big to fit in a 50-liter trash bag (bicycle, large toy, big plastic storage box);
   "non_combustible" if it is made mainly of glass, ceramic, stone, concrete or soil;
-  "general" for everything else (fabric, plastic, wood, rubber or mixed small items, e.g. glasses, a stuffed doll, a hair tie).
+  "general" for everything else (fabric, plastic, wood, rubber or mixed small items, e.g. a hair tie, a phone case, a small plastic toy).
   "unknown" if you cannot tell.
 
 # Before/after comparison (only when two images are given)
@@ -145,10 +145,10 @@ Examples: "투명 페트병", "케첩 통", "커피가 든 유리컵", "손톱�
 
 # Examples
 Photo: a pair of glasses on a desk, a phone and papers in the background.
-{"item":"other","confidence":0.9,"same_item":"unknown","observations":{"general_class":"general"},"subject":"안경","notes":"Eyeglasses in the center; not a listed category."}
+{"item":"eyeglasses","confidence":0.9,"same_item":"unknown","observations":{},"subject":"검은 뿔테 안경","notes":"Eyeglasses in the center; background ignored."}
 
-Photo: a small plush teddy bear held in a hand.
-{"item":"other","confidence":0.9,"same_item":"unknown","observations":{"general_class":"general"},"subject":"곰 인형","notes":"A stuffed fabric doll; no electronics visible."}
+Photo: a wooden chair in a room.
+{"item":"furniture","confidence":0.9,"same_item":"unknown","observations":{},"subject":"나무 의자","notes":"A chair is furniture."}
 
 Photo: a hair dryer with its power cord on a bathroom counter.
 {"item":"other","confidence":0.9,"same_item":"unknown","observations":{"general_class":"electronic"},"subject":"헤어드라이어","notes":"Electric appliance with a plug."}
