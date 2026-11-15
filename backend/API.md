@@ -65,13 +65,13 @@
 
 | status | 뜻 | 화면 |
 | --- | --- | --- |
-| `pass` | 통과 (정보 안내형 품목 포함) | `message` + `disposal` 크게 + `tips` + `warnings` |
+| `pass` | 통과 (정보 안내형 품목 포함) | `message` + `disposal` 크게 + `tips` + `warnings`. `type: "general"`이면 기준표에 없는 물건을 일반 원칙(일반쓰레기·불연성·대형·전자제품)으로 안내한 것 (`item`은 `X00`, `warnings`에 "일반 원칙" 표시) |
 | `need_action` | 처리할 일 남음 | `checklist` 체크박스 → 다 체크하면 "다시 찍기" (attempt +1). `checklist`에 `key: "checkbox"`가 있었으면 다음 요청 `answers`에 `{"checkbox": "true"}`를 넣어 다시 묻지 않게 |
 | `retake` | AI가 일부를 못 봄 | `message`(안 보인 부분 포함, 예: "라벨") + "다시 찍기" (attempt +1) |
 | `question` | 사진으로 알 수 없음 | `questions[].text` + `options` 버튼 → 같은 사진으로 `answers` 붙여 재요청 (attempt 그대로). 질문은 3종류: 품목 확인(`confirm_P01`), 체크박스(`checkbox`, 예: "헹궜어요"), 정보 안내형 질문(`ice_content`, `tumbler_single`) |
 | `fallback` | 재촬영 한도 도달, 또는 오염도 5단계 | `message`(품목별 대체 안내)와 `disposal` 안내하고 종료. `checklist`가 있으면 "직접 확인할 항목"으로 표시 |
 | `different_item` | 처음과 다른 물건 | "같은 물건 다시 찍기" (attempt 그대로). 품목은 같은데 AI만 다르다고 본 경우 `questions`에 "같은 물건이 맞나요?"(`confirm_same_item`)가 옴 → '예'면 같은 사진으로 재요청 |
-| `unsupported` | 지원하지 않는 품목, 인식 실패 | `message` + `questions`의 품목 목록(`item_hint`) 버튼. 고르면 `answers`에 `{"item_hint": "P01"}`를 넣고 **사진과 함께**(observation 없이) 재요청 → 서버가 그 품목 기준으로 AI를 다시 부름 |
+| `unsupported` | 지원하지 않는 품목인데 큰 분류도 모름, 인식 실패 | `message` + `questions`의 품목 목록(`item_hint`) 버튼. 고르면 `answers`에 `{"item_hint": "P01"}`를 넣고 **사진과 함께**(observation 없이) 재요청 → 서버가 그 품목 기준으로 AI를 다시 부름 |
 
 ### 오류 응답
 
@@ -93,3 +93,8 @@
 ## GET /health
 
 서버가 켜져 있는지 확인. `{"ok": true}`
+
+## GET /items
+
+"품목이 달라요" 버튼용 품목 목록. `{"text": "찍은 물건이 무엇인가요? ...", "items": [{"label", "value", "keywords"}, ...]}`
+(자주 찾는 품목이 앞). 고른 `value`를 `answers`에 `{"item_hint": "P01"}`로 넣고 **사진과 함께** attempt 1로 재요청한다.
