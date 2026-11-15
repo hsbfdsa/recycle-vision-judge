@@ -1,5 +1,5 @@
 {
-  "version": "판정기준표 v1.3 (서울특별시) · 2026-11-14 · 품목 51개",
+  "version": "1.5",
   "messages": {
     "pass": "분리배출할 수 있어요!",
     "need_action": "버리기 전에 아래 항목을 처리하고 다시 찍어 주세요.",
@@ -15,7 +15,8 @@
     "confirm_question": "사진 속 물건이 '{name}' 맞나요?",
     "checkbox_question": "마지막으로 확인할게요. 아래 항목을 하셨나요?",
     "checkbox_yes": "네, 했어요",
-    "checkbox_no": "아직 안 했어요"
+    "checkbox_no": "아직 안 했어요",
+    "general_warning": "품목별 기준이 아니라 일반 원칙에 따른 안내예요. 정확한 방법은 사는 구의 구청에 확인해 주세요."
   },
   "field_labels": {
     "is_clear": "병 색(투명한지)",
@@ -31,8 +32,9 @@
     "foreign_object": "병 안 이물질",
     "pump_attached": "펌프",
     "is_white": "스티로폼 색",
-    "tape_label": "테이프·송장",
-    "umbrella_type": "우산 종류"
+    "tape_label": "테이프·송장·랩",
+    "umbrella_type": "우산 종류",
+    "general_class": "물건 종류"
   },
   "places": {
     "pet": {
@@ -180,6 +182,62 @@
     "P04",
     "I12"
   ],
+  "general_guide": {
+    "general": {
+      "name": "개별 기준 없음 · 일반쓰레기",
+      "disposal": "종량제봉투",
+      "message": "개별 분리배출 기준이 없는 물건이에요. 재활용 품목이 아니면 일반쓰레기로 종량제봉투에 버려요.",
+      "how": [
+        "종이 포장, 플라스틱 뚜껑처럼 따로 뗄 수 있는 재활용 부분이 있으면 떼어서 그 재질로 버려요.",
+        "나머지는 종량제봉투에 담아 버려요."
+      ],
+      "places": [
+        "general"
+      ],
+      "source": "S01, S30"
+    },
+    "non_combustible": {
+      "name": "개별 기준 없음 · 불연성 쓰레기",
+      "disposal": "불연성 쓰레기 마대",
+      "message": "개별 분리배출 기준이 없는 물건이에요. 유리·도자기·돌처럼 타지 않는 재질은 불연성 쓰레기 마대에 버려요.",
+      "how": [
+        "깨지거나 날카로운 부분은 신문지 등으로 싸요.",
+        "불연성 쓰레기 마대(특수규격마대)에 담아 버려요."
+      ],
+      "places": [
+        "nonburn"
+      ],
+      "source": "S27"
+    },
+    "large": {
+      "name": "개별 기준 없음 · 대형폐기물",
+      "disposal": "대형폐기물 신고",
+      "message": "개별 분리배출 기준이 없는 물건이에요. 종량제봉투에 들어가지 않는 큰 물건은 대형폐기물로 신고해서 버려요.",
+      "how": [
+        "구청 홈페이지나 앱에서 대형폐기물로 신고해요.",
+        "받은 신고번호(스티커)를 붙여 정해진 날 내놓아요."
+      ],
+      "places": [
+        "bulky"
+      ],
+      "source": "S01, S25"
+    },
+    "electronic": {
+      "name": "개별 기준 없음 · 전자제품",
+      "disposal": "폐가전 수거 (작은 전자제품은 소형 폐가전 배출함)",
+      "message": "개별 분리배출 기준이 없는 전자제품이에요. 전기·전자제품은 종량제봉투가 아니라 폐가전으로 버려요.",
+      "how": [
+        "건전지나 배터리가 들어 있으면 빼서 폐건전지 수거함에 버려요.",
+        "작은 전자제품은 소형 폐가전 배출함에, 큰 가전은 무상 방문 수거를 신청해요."
+      ],
+      "places": [
+        "ebox",
+        "appliance",
+        "battery"
+      ],
+      "source": "S01, S11, S28"
+    }
+  },
   "contamination": {
     "1": {
       "name": "깨끗함",
@@ -213,7 +271,7 @@
       "name": "투명 페트병",
       "type": "state",
       "ai_key": "pet_bottle",
-      "ai_hint": "a PET beverage bottle (water, soda, juice, tea), clear or tinted. Report the tint with is_clear.",
+      "ai_hint": "ONLY a PET bottle for drinks or water (water, soda, juice, tea, sports drink), clear or tinted. NOT a sauce, ketchup, mayonnaise, dressing, oil, honey or syrup bottle, and NOT a detergent or cosmetics bottle (those are other_rigid_plastic_container or pump_bottle). Report the tint with is_clear.",
       "keywords": [
         "생수병",
         "음료수병",
@@ -296,13 +354,16 @@
       "name": "유색 페트병·일반 플라스틱 용기",
       "type": "state",
       "ai_key": "other_rigid_plastic_container",
-      "ai_hint": "a tinted PET bottle or another rigid plastic container that is not a delivery food container (delivery_food_container), cup noodle (cup_noodle_container), pump bottle (pump_bottle), disposable cup (disposable_plastic_cup) or instant rice tray (instant_rice_tray).",
+      "ai_hint": "a tinted PET bottle or another rigid plastic container, e.g. a ketchup, mayonnaise, sauce, dressing, oil or honey squeeze bottle, a yogurt cup, or a side-dish container. Not a delivery food container (delivery_food_container), cup noodle (cup_noodle_container), pump bottle (pump_bottle), disposable cup (disposable_plastic_cup) or instant rice tray (instant_rice_tray).",
       "keywords": [
         "유색 페트",
         "초록 페트",
         "플라스틱 통",
         "반찬통",
-        "요거트 통"
+        "요거트 통",
+        "케첩 통",
+        "마요네즈 통",
+        "소스 통"
       ],
       "disposal": "플라스틱류 (뚜껑과 함께 통합배출)",
       "how": [
@@ -658,19 +719,23 @@
       "source": "S13"
     },
     "P09": {
-      "name": "스티로폼 상자",
+      "name": "스티로폼 상자·트레이",
       "type": "state",
       "ai_key": "styrofoam_box",
-      "ai_hint": "a styrofoam (expanded polystyrene) box, e.g. a fruit or fish delivery box.",
+      "ai_hint": "a styrofoam (expanded polystyrene, light white foam) box or food tray, e.g. a fruit or fish delivery box, or a meat, fish, fruit or vegetable tray from a supermarket (often wrapped in plastic wrap with a price sticker). Choose this for the tray even when it is still wrapped.",
       "keywords": [
         "스티로폼",
         "스티로폼 박스",
-        "아이스박스"
+        "아이스박스",
+        "스티로폼 접시",
+        "스티로폼 트레이",
+        "고기 트레이",
+        "정육 접시"
       ],
       "disposal": "스티로폼",
       "how": [
-        "테이프·송장·라벨을 모두 떼요.",
-        "이물질은 닦아 내요.",
+        "테이프·송장·상표 스티커를 모두 떼요. 트레이에 씌운 랩도 벗겨서 종량제봉투로 버려요.",
+        "이물질은 닦아 내요. 음식물이 많이 묻어 지워지지 않으면 종량제봉투로 버려요.",
         "흰색 스티로폼만 스티로폼으로 버려요."
       ],
       "places": [
@@ -705,7 +770,7 @@
             "absent"
           ],
           "unknown": "retake",
-          "action": "테이프·송장·라벨을 떼어 주세요."
+          "action": "테이프·송장·상표 스티커와 씌운 랩을 떼어 주세요. 랩은 종량제봉투로 버려요."
         },
         {
           "id": "C28",
@@ -714,13 +779,13 @@
           "unknown": "retake"
         }
       ],
-      "source": "S01, S06, S09, S12"
+      "source": "S01, S06, S09, S12, S29"
     },
     "P10": {
       "name": "비닐류 (과자·라면 봉지, 포장 비닐)",
       "type": "state",
       "ai_key": "plastic_film_bag",
-      "ai_hint": "a soft plastic film package such as a snack bag, ramen wrapper, coffee pouch, wet-wipe pouch, delivery poly bag, bubble wrap, or onion mesh bag (not plastic wrap).",
+      "ai_hint": "a soft plastic film package such as a snack bag, ramen wrapper, coffee pouch, wet-wipe pouch, delivery poly bag, bubble wrap, or onion mesh bag (not plastic wrap). A styrofoam tray covered with wrap is styrofoam_box, not this.",
       "keywords": [
         "과자 봉지",
         "라면 봉지",
@@ -889,7 +954,7 @@
       "name": "일회용 플라스틱 컵",
       "type": "state",
       "ai_key": "disposable_plastic_cup",
-      "ai_hint": "a disposable plastic cup such as a takeout coffee cup, with or without its lid.",
+      "ai_hint": "a thin, light disposable plastic cup such as a takeout coffee cup, with or without its lid. NOT a glass cup (thick, heavy, hard glass) and NOT a paper cup.",
       "keywords": [
         "커피 컵",
         "테이크아웃 컵",
@@ -955,14 +1020,18 @@
       "name": "종이류 (신문·책·노트·종이 상자류)",
       "type": "state",
       "ai_key": "paper_newspaper_book",
-      "ai_hint": "ordinary paper such as newspapers, books, notebooks, magazines, or paper shopping bags (not cartons paper_carton, not corrugated boxes cardboard_box, not coated paper coated_paper_or_photo).",
+      "ai_hint": "ordinary paper such as newspapers, books, notebooks, magazines, paper shopping bags, or thin paper boxes (cereal, tissue, mask or snack boxes; a plastic window film counts as other_material). Not cartons paper_carton, not corrugated boxes cardboard_box, not coated paper coated_paper_or_photo.",
       "keywords": [
         "신문",
         "책",
         "노트",
         "잡지",
         "종이 쇼핑백",
-        "종이"
+        "종이",
+        "종이 상자",
+        "과자 상자",
+        "마스크 상자",
+        "휴지 상자"
       ],
       "disposal": "종이류",
       "how": [
@@ -990,7 +1059,7 @@
             "absent"
           ],
           "unknown": "ignore",
-          "action": "스프링·비닐 표지 같은 다른 재질을 떼어 주세요."
+          "action": "스프링·비닐 표지·상자의 비닐 창 같은 다른 재질을 떼어 주세요."
         }
       ],
       "source": "S01, S20"
@@ -1223,11 +1292,14 @@
       "source": "S01, S11, S16"
     },
     "I07": {
-      "name": "내열·크리스탈 유리, 도자기, 거울",
+      "name": "유리컵·유리 식기, 내열 유리, 도자기, 거울",
       "type": "info",
       "ai_key": "ceramic_or_special_glass",
-      "ai_hint": "heat-resistant glass cookware, crystal glass, flat window glass, a ceramic or porcelain dish, or a mirror.",
+      "ai_hint": "an ordinary drinking glass or glass tableware (glass cup, glass mug, glass bowl or plate), heat-resistant glass cookware, crystal glass, flat window glass, a ceramic or porcelain dish, or a mirror. A glass cup is NOT a paper cup, plastic cup or glass bottle.",
       "keywords": [
+        "유리컵",
+        "유리잔",
+        "유리 그릇",
         "도자기",
         "사기 그릇",
         "내열 유리",
@@ -1243,7 +1315,7 @@
       "warnings": [
         "유리병류에 넣으면 안 돼요."
       ],
-      "source": "S01, S09"
+      "source": "S01, S09, S29"
     },
     "I08": {
       "name": "칫솔·옷걸이·CD",
@@ -1343,7 +1415,7 @@
       "name": "종이컵",
       "type": "info",
       "ai_key": "paper_cup",
-      "ai_hint": "a disposable paper cup.",
+      "ai_hint": "a disposable cup made of PAPER: opaque matte paper wall, usually printed, with a rolled paper rim. NOT a glass cup (hard, shiny, thick, see-through glass), a ceramic mug or a plastic cup.",
       "keywords": [
         "종이컵"
       ],
@@ -1556,7 +1628,7 @@
       "name": "플라스틱 장난감·문구",
       "type": "info",
       "ai_key": "toy_or_stationery",
-      "ai_hint": "ONLY a children's toy or a stationery item (pen, ruler, file binder, scissors-free office supplies).",
+      "ai_hint": "ONLY a children's toy or a stationery item (pen, ruler, file binder, scissors-free office supplies). Not a stuffed fabric doll (stuffed_doll).",
       "keywords": [
         "장난감",
         "문구",
@@ -2016,6 +2088,180 @@
       "message": "여러 합성수지가 섞여 재활용이 어려워요. 종량제봉투에 들어가면 종량제봉투로, 크면 대형폐기물로 신고해 주세요.",
       "warnings": [],
       "source": "S28"
+    },
+    "I38": {
+      "name": "가구 (의자·책상·선반·매트리스)",
+      "type": "info",
+      "ai_key": "furniture",
+      "ai_hint": "furniture of any size: a chair, stool, desk, table, shelf, drawer, cabinet, sofa, bed frame or mattress.",
+      "keywords": [
+        "의자",
+        "책상",
+        "식탁",
+        "선반",
+        "책장",
+        "서랍장",
+        "소파",
+        "침대",
+        "매트리스",
+        "가구"
+      ],
+      "disposal": "대형폐기물 신고",
+      "places": [
+        "bulky"
+      ],
+      "message": "가구는 종량제봉투가 아니라 대형폐기물로 신고해서 버려요. 수수료는 품목과 크기에 따라 달라요.",
+      "how": [
+        "구청 홈페이지나 앱에서 대형폐기물로 신고해요.",
+        "받은 신고번호(스티커)를 붙여 정해진 날 내놓아요."
+      ],
+      "warnings": [],
+      "source": "S01, S25"
+    },
+    "I39": {
+      "name": "안경·안경집",
+      "type": "info",
+      "ai_key": "eyeglasses",
+      "ai_hint": "eyeglasses or sunglasses (frame with or without lenses), or a glasses case.",
+      "keywords": [
+        "안경",
+        "선글라스",
+        "안경테",
+        "안경집"
+      ],
+      "disposal": "테 재질에 따라 고철 또는 종량제봉투",
+      "places": [
+        "general"
+      ],
+      "message": "안경은 테 재질에 따라 버리는 곳이 달라요.",
+      "warnings": [],
+      "split": {
+        "key": "glasses_frame",
+        "method": "question",
+        "question": "안경테가 어떤 재질인가요?",
+        "options": [
+          {
+            "label": "금속테",
+            "value": "metal"
+          },
+          {
+            "label": "플라스틱테",
+            "value": "plastic"
+          },
+          {
+            "label": "모르겠어요",
+            "value": "unknown"
+          }
+        ],
+        "cases": [
+          {
+            "when": [
+              "metal"
+            ],
+            "disposal": "금속테는 고철, 렌즈·안경집은 종량제봉투",
+            "message": "렌즈를 빼고 금속테는 고철로 버려요. 렌즈와 안경집은 종량제봉투에 버려요.",
+            "places": [
+              "metal",
+              "general"
+            ]
+          },
+          {
+            "when": [
+              "plastic",
+              "unknown"
+            ],
+            "disposal": "종량제봉투 (통째로)",
+            "message": "플라스틱 테 안경은 통째로 종량제봉투에 버려요. 안경집도 종량제봉투에 버려요.",
+            "places": [
+              "general"
+            ]
+          }
+        ]
+      },
+      "source": "S33"
+    },
+    "I40": {
+      "name": "인형 (봉제 인형)",
+      "type": "info",
+      "ai_key": "stuffed_doll",
+      "ai_hint": "a stuffed toy or doll made of fabric (plush teddy bear, character doll). Hard plastic toys are toy_or_stationery.",
+      "keywords": [
+        "인형",
+        "곰인형",
+        "봉제인형",
+        "애착인형"
+      ],
+      "disposal": "크기에 따라 종량제봉투 또는 대형폐기물",
+      "places": [
+        "general"
+      ],
+      "message": "인형은 크기에 따라 버리는 곳이 달라요.",
+      "warnings": [
+        "헌옷 수거함에 넣지 마세요."
+      ],
+      "split": {
+        "key": "doll_size",
+        "method": "question",
+        "question": "종량제봉투에 들어가는 크기인가요?",
+        "options": [
+          {
+            "label": "네, 들어가요",
+            "value": "small"
+          },
+          {
+            "label": "아니요, 커요",
+            "value": "large"
+          }
+        ],
+        "cases": [
+          {
+            "when": [
+              "small"
+            ],
+            "disposal": "종량제봉투",
+            "message": "작은 인형은 일반쓰레기로 종량제봉투에 버려요.",
+            "places": [
+              "general"
+            ]
+          },
+          {
+            "when": [
+              "large"
+            ],
+            "disposal": "대형폐기물 신고",
+            "message": "종량제봉투에 들어가지 않는 큰 인형은 대형폐기물로 신고해서 버려요.",
+            "places": [
+              "bulky"
+            ]
+          }
+        ]
+      },
+      "source": "S34"
+    },
+    "I41": {
+      "name": "통형 제습제 (습기 제거제)",
+      "type": "info",
+      "ai_key": "moisture_absorber",
+      "ai_hint": "a used tub-type moisture absorber (dehumidifier container with calcium chloride granules, usually with collected water inside and a foil or non-woven cover on top).",
+      "keywords": [
+        "제습제",
+        "습기제거제",
+        "습기 제거제",
+        "물먹는 통"
+      ],
+      "disposal": "빈 통은 플라스틱류, 은박·부직포는 종량제봉투",
+      "places": [
+        "plastic",
+        "general"
+      ],
+      "message": "고인 물은 버리고, 은박 덮개·부직포는 종량제봉투에, 빈 통은 씻어서 플라스틱류로 버려요.",
+      "how": [
+        "고인 물은 물을 충분히 흘려보내면서 배수구에 버려요.",
+        "은박 덮개와 부직포는 떼어서 종량제봉투에 버려요.",
+        "빈 통은 깨끗이 씻어서 플라스틱류로 버려요."
+      ],
+      "warnings": [],
+      "source": "S31, S32"
     }
   }
 }
