@@ -185,8 +185,43 @@ function JudgeResult({ result, loading, onRetake, onAnswer, onRestart, onCorrect
       {result.observation && (
         <details className="evidence">
           <summary>판정 근거 보기</summary>
-          <p>AI 관찰: {result.observation.notes}</p>
-          <pre>{JSON.stringify(result.observation.observations, null, 2)}</pre>
+          <div className="evidence-content">
+  <h4>AI 관찰 데이터</h4>
+
+  {Object.entries(
+    result.observation.observations || {}
+  ).map(([key, value]) => {
+    const labels = {
+      contamination_level: "오염도",
+      stain: "착색 흔적",
+      other_material: "다른 재질",
+      label: "라벨",
+      liquid: "내용물",
+      cap: "뚜껑",
+      crushed: "압축 여부",
+      is_clear: "투명 여부",
+      general_class: "일반 분류",
+    };
+
+    const values = {
+      present: "있음",
+      absent: "없음",
+      true: "예",
+      false: "아니요",
+      unknown: "확인 어려움",
+      general: "일반 분류",
+    };
+
+    return (
+      <p key={key}>
+        <strong>{labels[key] || key}: </strong>
+        {key === "contamination_level"
+          ? `${value}단계`
+          : values[String(value)] || String(value)}
+      </p>
+    );
+  })}
+</div>
           {j.source && <p>기준 출처: {j.source}</p>}
         </details>
       )}
