@@ -61,18 +61,29 @@ function App() {
       return;
     }
 
+    // 결과를 보던 중에 사진 카드의 "다시 촬영하기"로 새 사진을 고르면 처음부터 새로 판정
+    // (재촬영 흐름은 결과 카드의 버튼으로. 이전 답·직접 고른 품목이 새 물건에 남지 않게)
+    const fresh = result !== null;
+    if (fresh) {
+      setAttempt(1);
+      setFirstFile(null);
+      setFirstItem(null);
+      setAnswers({});
+    }
+
     setFile(selected);
     setResult(null);
     setError("");
 
-    runJudge(answers, null, selected);
+    runJudge(fresh ? {} : answers, null, selected, fresh);
   }
 
   // AI 판정
   async function runJudge(
     nextAnswers = answers,
     reuseObservation = null,
-    imageOverride = file
+    imageOverride = file,
+    fresh = false
   ) {
     if (!imageOverride) {
       setError("먼저 사진을 선택해 주세요.");
@@ -83,11 +94,12 @@ function App() {
       setLoading(true);
       setError("");
 
-      const isRetake = attempt > 1;
+      const currentAttempt = fresh ? 1 : attempt;
+      const isRetake = currentAttempt > 1;
 
       const data = await judgeImage({
         image: imageOverride,
-        attempt,
+        attempt: currentAttempt,
         prevImage: isRetake ? firstFile : null,
         prevItem: isRetake ? firstItem : null,
         answers: nextAnswers,
@@ -253,6 +265,15 @@ return (
         {/* 사진 업로드 후 오른쪽에 나타나는 AI 결과 */}
         {file && (
           <div className="judgement-panel">
+
+            {/* AI 판정 중: 서버가 잠들어 있으면 첫 판정은 30초 이상 걸릴 수 있음 */}
+            {loading && !result && (
+              <div className="loading-card">
+                <div className="spinner" />
+                <p>AI가 사진을 확인하고 있어요...</p>
+                <p className="loading-sub">처음 판정은 조금 오래 걸릴 수 있어요.</p>
+              </div>
+            )}
 
             <JudgeResult
               key={`${attempt}-${result?.judgement?.status}`}
