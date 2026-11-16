@@ -1,5 +1,5 @@
 {
-  "version": "1.5",
+  "version": "1.6",
   "messages": {
     "pass": "분리배출할 수 있어요!",
     "need_action": "버리기 전에 아래 항목을 처리하고 다시 찍어 주세요.",
@@ -169,6 +169,13 @@
       "where": [
         "일반 종량제봉투가 아닌 불연성 쓰레기 전용 마대(특수규격마대)에 담아 내놓아요.",
         "마대는 구청 청소행정과나 행정복지센터(주민센터)에서 사요."
+      ]
+    },
+    "food": {
+      "title": "음식물 쓰레기 전용 봉투·수거함",
+      "where": [
+        "아파트: 단지 안 음식물 쓰레기 수거함에 넣어요.",
+        "단독주택·빌라: 음식물 쓰레기 전용 봉투나 용기에 담아 배출일에 집 앞에 내놓아요."
       ]
     }
   },
@@ -537,6 +544,16 @@
           ],
           "unknown": "retake",
           "action": "플라스틱 마개를 떼어 주세요."
+        },
+        {
+          "id": "C41",
+          "key": "liquid",
+          "kind": "required",
+          "pass": [
+            "absent"
+          ],
+          "unknown": "fail",
+          "action": "남은 음료나 내용물을 비우고 헹궈 주세요."
         },
         {
           "id": "C15",
@@ -1020,7 +1037,7 @@
       "name": "종이류 (신문·책·노트·종이 상자류)",
       "type": "state",
       "ai_key": "paper_newspaper_book",
-      "ai_hint": "ordinary paper such as newspapers, books, notebooks, magazines, paper shopping bags, or thin paper boxes (cereal, tissue, mask or snack boxes; a plastic window film counts as other_material). Not cartons paper_carton, not corrugated boxes cardboard_box, not coated paper coated_paper_or_photo.",
+      "ai_hint": "ordinary paper such as newspapers, books, notebooks, magazines, paper shopping bags, or thin paper boxes (cereal, tissue, mask or snack boxes; a plastic window film counts as other_material; a window opening in a paper box normally has clear film over it, so report other_material \"present\" unless the window is clearly an empty cutout). Not cartons paper_carton, not corrugated boxes cardboard_box, not coated paper coated_paper_or_photo.",
       "keywords": [
         "신문",
         "책",
@@ -1295,7 +1312,7 @@
       "name": "유리컵·유리 식기, 내열 유리, 도자기, 거울",
       "type": "info",
       "ai_key": "ceramic_or_special_glass",
-      "ai_hint": "an ordinary drinking glass or glass tableware (glass cup, glass mug, glass bowl or plate), heat-resistant glass cookware, crystal glass, flat window glass, a ceramic or porcelain dish, or a mirror. A glass cup is NOT a paper cup, plastic cup or glass bottle.",
+      "ai_hint": "an ordinary drinking glass or glass tableware (glass cup, glass mug, glass bowl or plate), heat-resistant glass cookware, crystal glass, flat window glass, a ceramic or porcelain dish, or a mirror. A glass cup is NOT a paper cup, plastic cup or glass bottle. If food scraps are left on a dish and the user is throwing away the food, the subject is food_waste.",
       "keywords": [
         "유리컵",
         "유리잔",
@@ -2262,6 +2279,30 @@
       ],
       "warnings": [],
       "source": "S31, S32"
+    },
+    "I42": {
+      "name": "음식물 쓰레기 (남은 밥·반찬·국수 등)",
+      "type": "info",
+      "ai_key": "food_waste",
+      "ai_hint": "leftover food itself: rice, side dishes, noodles, soft fruit or vegetable scraps, including food scraps left on a plate or in a bowl. Not bones, shells, hard pits or tea bags (bones_shells_pits_teabags), not coffee grounds (coffee_or_tea_grounds), not an empty dish.",
+      "keywords": [
+        "음식물",
+        "음식물 쓰레기",
+        "남은 음식",
+        "잔반",
+        "남은 밥",
+        "반찬"
+      ],
+      "disposal": "음식물 쓰레기 전용 봉투·수거함",
+      "places": [
+        "food"
+      ],
+      "message": "물기를 빼고 음식물 쓰레기 전용 봉투나 수거함에 버려 주세요. 담겨 있던 그릇이나 용기는 따로 씻어서 버려요.",
+      "warnings": [
+        "뼈·껍데기·딱딱한 씨·티백, 커피 찌꺼기는 음식물 쓰레기가 아니에요(종량제봉투).",
+        "비닐·이쑤시개 같은 이물질은 빼고 버려요."
+      ],
+      "source": "S01, S25"
     }
   }
 }

@@ -1,0 +1,121 @@
+[
+ {
+  "image": "syntitan/s01.jpg",
+  "desc": "소스가 안쪽에 남은 케첩·마요네즈 통 (뚜껑 닫음)",
+  "syntitan": "내용물 남은 용기",
+  "expected": {
+   "item": "P02",
+   "liquid": "present"
+  },
+  "expected_status": "need_action",
+  "source": "직접 촬영 (새로 찍은 사진)"
+ },
+ {
+  "image": "syntitan/s03.jpg",
+  "desc": "접시나 그릇에 담긴 음식물 찌꺼기 (밥알·반찬)",
+  "syntitan": "음식물류",
+  "expected": {
+   "item": "I42"
+  },
+  "expected_status": "pass",
+  "source": "직접 촬영 (새로 찍은 사진)"
+ },
+ {
+  "image": "syntitan/s04.jpg",
+  "desc": "비닐 창이 붙은 종이 상자 (과자 상자·티슈 곽 등)",
+  "syntitan": "택배상자 부착물·비닐 창",
+  "expected": {
+   "item": [
+    "P14",
+    "P12"
+   ],
+   "other_material": "present"
+  },
+  "expected_status": "need_action",
+  "source": "직접 촬영 (새로 찍은 사진)"
+ },
+ {
+  "image": "syntitan/s05.jpg",
+  "desc": "송장과 테이프가 붙은 택배 상자",
+  "syntitan": "택배상자 부착물",
+  "expected": {
+   "item": "P12",
+   "tape_label": "present"
+  },
+  "expected_status": "need_action",
+  "source": "직접 촬영 (새로 찍은 사진)"
+ },
+ {
+  "image": "syntitan/s06.jpg",
+  "desc": "펌프가 달린 빈 샴푸·세제 통",
+  "syntitan": "펌프 용기",
+  "expected": {
+   "item": "P08",
+   "pump_attached": "true"
+  },
+  "expected_status": "need_action",
+  "source": "웹 이미지"
+ },
+ {
+  "image": "syntitan/s07.jpg",
+  "desc": "음료가 조금 남은 캔 (따서 마시다 만 것)",
+  "syntitan": "잔여 음료 캔",
+  "expected": {
+   "item": "P05",
+   "liquid": "present"
+  },
+  "expected_status": "need_action",
+  "source": "웹 이미지"
+ },
+ {
+  "image": "syntitan/s08.jpg",
+  "desc": "음식물이 묻은 알루미늄 호일",
+  "syntitan": "알루미늄 호일",
+  "expected": {
+   "item": "I19"
+  },
+  "expected_status": "pass",
+  "source": "웹 이미지"
+ },
+ {
+  "image": "syntitan/s09.jpg",
+  "desc": "커피 찌꺼기 또는 사용한 티백",
+  "syntitan": "커피·차 잔여물",
+  "expected": {
+   "item": "I28"
+  },
+  "expected_status": "pass",
+  "source": "웹 이미지"
+ },
+ {
+  "image": "syntitan/s10.jpg",
+  "desc": "부스러기와 양념 가루가 많이 남은 과자 봉지",
+  "syntitan": "과자봉지 잔여물",
+  "expected": {
+   "item": "P10"
+  },
+  "expected_status": "need_action",
+  "source": "웹 이미지"
+ },
+ {
+  "image": "syntitan/s11.jpg",
+  "desc": "음료가 남고 빨대가 꽂힌 플라스틱 컵",
+  "syntitan": "음료 컵",
+  "expected": {
+   "item": "P13",
+   "liquid": "present"
+  },
+  "expected_status": "need_action",
+  "source": "직접 촬영 (새로 찍은 사진)"
+ },
+ {
+  "image": "syntitan/s14.jpg",
+  "desc": "씻어 말린 즉석밥 용기 (필름 일부 붙음)",
+  "syntitan": "복합재질 용기",
+  "expected": {
+   "item": "I16"
+  },
+  "expected_status": "pass",
+  "source": "웹 이미지"
+ }
+]

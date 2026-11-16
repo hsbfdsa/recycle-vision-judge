@@ -3,12 +3,14 @@
     python tests/run_tests.py                 # 사진마다 1번
     python tests/run_tests.py --repeat 3      # 사진마다 3번 (답이 흔들리는지 확인)
     python tests/run_tests.py --save before.json   # 결과 저장 (프롬프트 수정 전후 비교용)
+    python tests/run_tests.py --cases cases_final.json --repeat 3   # 다른 사진 세트 (개선에 안 쓴 최종 검증용)
 
 cases.json 한 줄 = 사진 하나와 정답
   {"image": "images/p01_label.jpg",
    "expected": {"item": "P01", "label": "present"},   # 사람이 확인한 관찰 정답 (모르는 필드는 안 적어도 됨)
    "expected_status": "need_action"}                   # 질문에 모두 '예/했어요'라고 했을 때 최종 판정
                                                        # 둘 다 맞는 경우는 목록으로: ["retake", "need_action"]
+                                                       # 품목도 둘 다 맞으면 목록으로: "item": ["I20", "X00"]
 """
 import argparse, json, os, statistics, sys, time
 
@@ -40,9 +42,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--repeat", type=int, default=1, help="사진마다 몇 번 보낼지")
     ap.add_argument("--save", help="결과를 저장할 JSON 파일")
+    ap.add_argument("--cases", default="cases.json", help="정답 파일 (tests 폴더 기준)")
     args = ap.parse_args()
 
-    cases = json.load(open(os.path.join(HERE, "cases.json"), encoding="utf-8"))
+    cases = json.load(open(os.path.join(HERE, args.cases), encoding="utf-8"))
     n = {"item_ok": 0, "status_ok": 0, "status_total": 0, "wrong_pass": 0,
          "correct": 0, "cautious": 0, "wrong": 0, "errors": 0, "runs": 0}
     times, rows, wrong_fields, unstable = [], [], [], []
@@ -67,7 +70,9 @@ def main():
             answers_seen.add(json.dumps({"item": obs["item"], "observations": obs["observations"]}, sort_keys=True))
 
             # 분기로 이어진 품목(투명 P01 ↔ 유색 P02 등)은 같은 품목으로 인정
-            n["item_ok"] += obs["item"] == exp["item"] or (obs["item"] in RULES and _related(obs["item"], exp["item"]))
+            want_items = exp["item"] if isinstance(exp["item"], list) else [exp["item"]]
+            n["item_ok"] += any(obs["item"] == w or (obs["item"] in RULES and w in RULES and _related(obs["item"], w))
+                                for w in want_items)
             for key, want in exp.items():
                 if key == "item":
                     continue
@@ -86,9 +91,9 @@ def main():
                 n["status_ok"] += status in want
                 # 가장 나쁜 오류: 처리가 필요한데 '통과'라고 안내 (판정 원칙 2)
                 n["wrong_pass"] += status == "pass" and "pass" not in want
-            rows.append({"image": case["image"], "item": obs["item"], "confidence": obs["confidence"],
+            rows.append({"image": case["image"], "desc": case.get("desc", ""), "item": obs["item"], "confidence": obs["confidence"],
                          "status": status, "expected_status": case.get("expected_status"),
-                         "seconds": round(seconds, 2), "notes": obs["notes"]})
+                         "seconds": round(seconds, 2), "subject": obs.get("subject", ""), "notes": obs["notes"]})
         if len(answers_seen) > 1:
             unstable.append(case["image"])
 
@@ -114,7 +119,8 @@ def main():
             want = r["expected_status"]
             ok = want is None or r["status"] in (want if isinstance(want, list) else [want])
             mark = "" if ok else f"  (정답 {want})"
-            print(f"  {r['image']}  {r['item']}({r['confidence']})  {r['status']}{mark}  {r['seconds']}초")
+            label = f"{r['image']} [{r['desc']}]" if r.get("desc") else r["image"]
+            print(f"  {label}  {r['item']}({r['confidence']})  {r['status']}{mark}  {r['seconds']}초")
 
     if args.save:
         with open(args.save, "w", encoding="utf-8") as f:

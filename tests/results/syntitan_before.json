@@ -1,0 +1,381 @@
+{
+  "summary": {
+    "item_ok": 24,
+    "status_ok": 28,
+    "status_total": 33,
+    "wrong_pass": 5,
+    "correct": 13,
+    "cautious": 3,
+    "wrong": 2,
+    "errors": 0,
+    "runs": 33
+  },
+  "unstable": [
+    "syntitan/s04.jpg"
+  ],
+  "rows": [
+    {
+      "image": "syntitan/s01.jpg",
+      "desc": "소스가 안쪽에 남은 케첩·마요네즈 통 (뚜껑 닫음)",
+      "item": "P02",
+      "confidence": 0.95,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 3.75,
+      "subject": "케첩 플라스틱 통",
+      "notes": "A translucent squeeze bottle with ketchup residue and a yellow cap."
+    },
+    {
+      "image": "syntitan/s01.jpg",
+      "desc": "소스가 안쪽에 남은 케첩·마요네즈 통 (뚜껑 닫음)",
+      "item": "P02",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 2.74,
+      "subject": "소스가 남은 투명 플라스틱 통",
+      "notes": "A rigid clear plastic sauce bottle with visible sauce remaining inside."
+    },
+    {
+      "image": "syntitan/s01.jpg",
+      "desc": "소스가 안쪽에 남은 케첩·마요네즈 통 (뚜껑 닫음)",
+      "item": "P02",
+      "confidence": 0.98,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 2.05,
+      "subject": "케첩 통",
+      "notes": "A clear plastic ketchup bottle with red sauce remaining inside."
+    },
+    {
+      "image": "syntitan/s03.jpg",
+      "desc": "접시나 그릇에 담긴 음식물 찌꺼기 (밥알·반찬)",
+      "item": "I07",
+      "confidence": 0.95,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 3.38,
+      "subject": "음식물이 남은 도자기 접시",
+      "notes": "A ceramic plate with visible food remnants and two forks."
+    },
+    {
+      "image": "syntitan/s03.jpg",
+      "desc": "접시나 그릇에 담긴 음식물 찌꺼기 (밥알·반찬)",
+      "item": "I07",
+      "confidence": 0.98,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 3.58,
+      "subject": "음식물이 남은 도자기 접시",
+      "notes": "A ceramic plate with visible food residue and two forks on it."
+    },
+    {
+      "image": "syntitan/s03.jpg",
+      "desc": "접시나 그릇에 담긴 음식물 찌꺼기 (밥알·반찬)",
+      "item": "I07",
+      "confidence": 0.97,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.41,
+      "subject": "음식물이 남은 도자기 접시",
+      "notes": "A ceramic plate with visible food residue and two forks."
+    },
+    {
+      "image": "syntitan/s04.jpg",
+      "desc": "비닐 창이 붙은 종이 상자 (과자 상자·티슈 곽 등)",
+      "item": "P14",
+      "confidence": 0.78,
+      "status": "pass",
+      "expected_status": "need_action",
+      "seconds": 5.33,
+      "subject": "흰 종이 포장 상자",
+      "notes": "A white paperboard packaging box with a long open window; no attached material is visible."
+    },
+    {
+      "image": "syntitan/s04.jpg",
+      "desc": "비닐 창이 붙은 종이 상자 (과자 상자·티슈 곽 등)",
+      "item": "P14",
+      "confidence": 0.72,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 7.76,
+      "subject": "긴 흰 종이 상자",
+      "notes": "A long white paperboard box with a clear-looking window or lining."
+    },
+    {
+      "image": "syntitan/s04.jpg",
+      "desc": "비닐 창이 붙은 종이 상자 (과자 상자·티슈 곽 등)",
+      "item": "P14",
+      "confidence": 0.78,
+      "status": "pass",
+      "expected_status": "need_action",
+      "seconds": 7.35,
+      "subject": "긴 흰 종이 상자",
+      "notes": "A long white paperboard box with an open rectangular window; no attached film is visible."
+    },
+    {
+      "image": "syntitan/s05.jpg",
+      "desc": "송장과 테이프가 붙은 택배 상자",
+      "item": "P12",
+      "confidence": 0.98,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 2.46,
+      "subject": "택배 송장이 붙은 골판지 상자",
+      "notes": "A corrugated cardboard shipping box with a large shipping label attached; it is not visibly flattened."
+    },
+    {
+      "image": "syntitan/s05.jpg",
+      "desc": "송장과 테이프가 붙은 택배 상자",
+      "item": "P12",
+      "confidence": 0.99,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 2.25,
+      "subject": "송장 붙은 골판지 상자",
+      "notes": "A corrugated cardboard shipping box has a large shipping label attached and is not visibly crushed."
+    },
+    {
+      "image": "syntitan/s05.jpg",
+      "desc": "송장과 테이프가 붙은 택배 상자",
+      "item": "P12",
+      "confidence": 0.98,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 1.83,
+      "subject": "배송용 골판지 상자",
+      "notes": "A corrugated shipping box has a large shipping label on top and is not visibly crushed."
+    },
+    {
+      "image": "syntitan/s06.jpg",
+      "desc": "펌프가 달린 빈 샴푸·세제 통",
+      "item": "P08",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 2.78,
+      "subject": "투명 플라스틱 펌프 용기",
+      "notes": "A clear plastic bottle with an attached white pump and no visible label."
+    },
+    {
+      "image": "syntitan/s06.jpg",
+      "desc": "펌프가 달린 빈 샴푸·세제 통",
+      "item": "P08",
+      "confidence": 0.95,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 2.16,
+      "subject": "투명 플라스틱 펌프 용기",
+      "notes": "A clear plastic container with an attached white pump and no visible label."
+    },
+    {
+      "image": "syntitan/s06.jpg",
+      "desc": "펌프가 달린 빈 샴푸·세제 통",
+      "item": "P08",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 2.05,
+      "subject": "투명 플라스틱 펌프 용기",
+      "notes": "A clear rigid plastic bottle has a white pump attached and no visible label."
+    },
+    {
+      "image": "syntitan/s07.jpg",
+      "desc": "음료가 조금 남은 캔 (따서 마시다 만 것)",
+      "item": "P05",
+      "confidence": 0.98,
+      "status": "pass",
+      "expected_status": "need_action",
+      "seconds": 2.56,
+      "subject": "매실 음료 금속 캔",
+      "notes": "A green-printed beverage can with a metal pull tab; it is not visibly crushed."
+    },
+    {
+      "image": "syntitan/s07.jpg",
+      "desc": "음료가 조금 남은 캔 (따서 마시다 만 것)",
+      "item": "P05",
+      "confidence": 0.98,
+      "status": "pass",
+      "expected_status": "need_action",
+      "seconds": 2.56,
+      "subject": "매실 음료 금속 캔",
+      "notes": "A printed beverage can with a metal pull-tab top; no plastic parts are visible."
+    },
+    {
+      "image": "syntitan/s07.jpg",
+      "desc": "음료가 조금 남은 캔 (따서 마시다 만 것)",
+      "item": "P05",
+      "confidence": 0.97,
+      "status": "pass",
+      "expected_status": "need_action",
+      "seconds": 2.04,
+      "subject": "매실 음료 금속 캔",
+      "notes": "A printed beverage can with a metal pull-tab top; no plastic part is visible."
+    },
+    {
+      "image": "syntitan/s08.jpg",
+      "desc": "음식물이 묻은 알루미늄 호일",
+      "item": "X00",
+      "confidence": 0.95,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.97,
+      "subject": "음식 찌꺼기가 남은 알루미늄 용기",
+      "notes": "A formed aluminum food tray with visible food scraps; it is not kitchen foil."
+    },
+    {
+      "image": "syntitan/s08.jpg",
+      "desc": "음식물이 묻은 알루미늄 호일",
+      "item": "X00",
+      "confidence": 0.94,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 4.91,
+      "subject": "음식물 남은 알루미늄 트레이",
+      "notes": "A shallow aluminum food tray with visible food scraps; it is not a listed container type."
+    },
+    {
+      "image": "syntitan/s08.jpg",
+      "desc": "음식물이 묻은 알루미늄 호일",
+      "item": "X00",
+      "confidence": 0.95,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 3.33,
+      "subject": "음식물 찌꺼기가 남은 알루미늄 용기",
+      "notes": "A shallow aluminum food tray with visible food scraps; no listed category specifically covers this container."
+    },
+    {
+      "image": "syntitan/s09.jpg",
+      "desc": "커피 찌꺼기 또는 사용한 티백",
+      "item": "I27",
+      "confidence": 0.98,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.47,
+      "subject": "찻잎이 든 사용한 티백",
+      "notes": "A used tea bag with visible tea leaves and its attached string and tag."
+    },
+    {
+      "image": "syntitan/s09.jpg",
+      "desc": "커피 찌꺼기 또는 사용한 티백",
+      "item": "I27",
+      "confidence": 0.98,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.44,
+      "subject": "사용한 티백",
+      "notes": "A used tea bag with visible tea leaves and an attached string and tag."
+    },
+    {
+      "image": "syntitan/s09.jpg",
+      "desc": "커피 찌꺼기 또는 사용한 티백",
+      "item": "I27",
+      "confidence": 0.98,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 1.8,
+      "subject": "사용한 티백",
+      "notes": "A used tea bag with visible tea leaves and an attached string and tag."
+    },
+    {
+      "image": "syntitan/s10.jpg",
+      "desc": "부스러기와 양념 가루가 많이 남은 과자 봉지",
+      "item": "P10",
+      "confidence": 0.91,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 5.03,
+      "subject": "과자가 든 은박 안감 봉지",
+      "notes": "An open flexible snack package with a metallic-looking inner lining and visible puffed snacks."
+    },
+    {
+      "image": "syntitan/s10.jpg",
+      "desc": "부스러기와 양념 가루가 많이 남은 과자 봉지",
+      "item": "P10",
+      "confidence": 0.98,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 4.63,
+      "subject": "과자가 든 은박 안감 봉지",
+      "notes": "An opened flexible snack bag contains visible puffed snacks and has a shiny foil-like lining."
+    },
+    {
+      "image": "syntitan/s10.jpg",
+      "desc": "부스러기와 양념 가루가 많이 남은 과자 봉지",
+      "item": "P10",
+      "confidence": 0.94,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 3.86,
+      "subject": "과자가 든 은박 안감 봉지",
+      "notes": "An open red flexible snack package with a metallic lining and solid puffed snacks inside."
+    },
+    {
+      "image": "syntitan/s11.jpg",
+      "desc": "음료가 남고 빨대가 꽂힌 플라스틱 컵",
+      "item": "P13",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 3.58,
+      "subject": "종이 슬리브를 두른 아이스커피 플라스틱 컵",
+      "notes": "A clear disposable plastic cup contains iced coffee and a straw, with a paper sleeve around it."
+    },
+    {
+      "image": "syntitan/s11.jpg",
+      "desc": "음료가 남고 빨대가 꽂힌 플라스틱 컵",
+      "item": "P13",
+      "confidence": 0.95,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 2.87,
+      "subject": "종이 슬리브를 두른 아이스커피 플라스틱 컵",
+      "notes": "A clear disposable plastic cup contains iced coffee and a straw, with a paper sleeve around it."
+    },
+    {
+      "image": "syntitan/s11.jpg",
+      "desc": "음료가 남고 빨대가 꽂힌 플라스틱 컵",
+      "item": "P13",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 3.79,
+      "subject": "커피가 든 투명 플라스틱 컵",
+      "notes": "A clear disposable plastic cup contains dark iced coffee and a straw, with a paper sleeve attached."
+    },
+    {
+      "image": "syntitan/s14.jpg",
+      "desc": "씻어 말린 즉석밥 용기 (필름 일부 붙음)",
+      "item": "I16",
+      "confidence": 0.78,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 5.45,
+      "subject": "흰 즉석밥 용기",
+      "notes": "A shallow white molded tray with a peeled-back film tab is centered in the photo."
+    },
+    {
+      "image": "syntitan/s14.jpg",
+      "desc": "씻어 말린 즉석밥 용기 (필름 일부 붙음)",
+      "item": "I16",
+      "confidence": 0.79,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 4.36,
+      "subject": "빈 즉석밥 용기",
+      "notes": "A shallow molded microwavable rice tray is centered in the foreground."
+    },
+    {
+      "image": "syntitan/s14.jpg",
+      "desc": "씻어 말린 즉석밥 용기 (필름 일부 붙음)",
+      "item": "I16",
+      "confidence": 0.9,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 4.12,
+      "subject": "즉석밥 플라스틱 용기",
+      "notes": "A shallow, round white instant-rice tray is centered in the photo."
+    }
+  ]
+}

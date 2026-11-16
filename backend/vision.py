@@ -59,7 +59,7 @@ A drink inside (e.g. coffee in a glass) does not change the material of the cont
 
 # Item categories (choose exactly one item name for the SUBJECT, spelled exactly as listed)
 {ITEM_LINES}
-- "other": the SUBJECT is clearly none of the categories above (e.g. a phone charger, a hair tie, food itself).
+- "other": the SUBJECT is clearly none of the categories above (e.g. a phone charger, a hair tie).
   For "other", still report general_class in observations.
 - "unknown": there is no recognizable subject at all (blank, extremely dark or blurred, only background).
 Choose a category only when the subject IS that kind of object (a real example of it).
