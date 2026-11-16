@@ -1,0 +1,416 @@
+[
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-14 001.jpeg",
+  "desc": "라벨 붙은 빈 생수병",
+  "expected": {
+   "item": "P01",
+   "label": "present"
+  },
+  "expected_status": "need_action"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-15 002.jpeg",
+  "desc": "라벨 없는 생수병, 가까이 기울여 찍음",
+  "expected": {
+   "item": "P01",
+   "label": "absent"
+  },
+  "expected_status": [
+   "pass",
+   "retake"
+  ]
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-15 003.jpeg",
+  "desc": "라벨 붙고 물이 남은 생수병",
+  "expected": {
+   "item": "P01",
+   "label": "present",
+   "liquid": "present"
+  },
+  "expected_status": "need_action"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-20.jpeg",
+  "desc": "천 곱창 머리끈 (기준표에 없음)",
+  "expected": {
+   "item": [
+    "X00",
+    "I25"
+   ]
+  },
+  "expected_status": [
+   "pass",
+   "question"
+  ]
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-1.jpeg",
+  "desc": "영수증",
+  "expected": {
+   "item": "I01"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-10.jpeg",
+  "desc": "건전지 3개",
+  "expected": {
+   "item": "I02"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-11.jpeg",
+  "desc": "금속테 안경",
+  "expected": {
+   "item": "I39"
+  },
+  "expected_status": "question"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-12.jpeg",
+  "desc": "라벨 없는 빈 생수병 (파란 뚜껑)",
+  "expected": {
+   "item": "P01",
+   "label": "absent",
+   "liquid": "absent"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-13.jpeg",
+  "desc": "라벨 없는 빈 대용량 생수병",
+  "expected": {
+   "item": "P01",
+   "label": "absent",
+   "liquid": "absent"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-14.jpeg",
+  "desc": "라벨 붙고 음료가 남은 스포츠음료 병",
+  "expected": {
+   "item": "P01",
+   "label": "present",
+   "liquid": "present"
+  },
+  "expected_status": "need_action"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-15.jpeg",
+  "desc": "라벨 없는 빈 페트병 (검은 뚜껑)",
+  "expected": {
+   "item": "P01",
+   "label": "absent"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-16.jpeg",
+  "desc": "통형 제습제 (옆)",
+  "expected": {
+   "item": "I41"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-17.jpeg",
+  "desc": "통형 제습제 (위)",
+  "expected": {
+   "item": "I41"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-18.jpeg",
+  "desc": "통형 제습제 (라벨 보임)",
+  "expected": {
+   "item": "I41"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-19.jpeg",
+  "desc": "뜯은 빈 알약 포장재",
+  "expected": {
+   "item": "I33"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-2.jpeg",
+  "desc": "달걀 껍데기",
+  "expected": {
+   "item": "I27"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-20.jpeg",
+  "desc": "빈 알약 포장재 (주황색 칸)",
+  "expected": {
+   "item": "I33"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-21.jpeg",
+  "desc": "음료·얼음이 남은 플라스틱 컵 (빨대, 라벨)",
+  "expected": {
+   "item": "P13",
+   "liquid": "present"
+  },
+  "expected_status": "need_action"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-22.jpeg",
+  "desc": "음료가 조금 남은 플라스틱 컵 (빨대 꽂힘)",
+  "expected": {
+   "item": "P13"
+  },
+  "expected_status": "need_action"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-23.jpeg",
+  "desc": "비닐 창이 붙은 종이 상자",
+  "expected": {
+   "item": "P14",
+   "other_material": "present"
+  },
+  "expected_status": "need_action"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-24.jpeg",
+  "desc": "비닐 창을 뗀 종이 상자",
+  "expected": {
+   "item": "P14",
+   "other_material": "absent"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-25.jpeg",
+  "desc": "뿔테 안경 (손 위)",
+  "expected": {
+   "item": "I39"
+  },
+  "expected_status": "question"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-26.jpeg",
+  "desc": "테이프·송장이 붙은 택배 상자",
+  "expected": {
+   "item": "P12",
+   "tape_label": "present"
+  },
+  "expected_status": "need_action"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-27.jpeg",
+  "desc": "테이프를 떼고 펼친 택배 상자",
+  "expected": {
+   "item": "P12",
+   "tape_label": "absent"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-28.jpeg",
+  "desc": "봉제 인형",
+  "expected": {
+   "item": "I40"
+  },
+  "expected_status": "question"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-29.jpeg",
+  "desc": "영수증 (두 번째)",
+  "expected": {
+   "item": "I01"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-3.jpeg",
+  "desc": "접시 위 음식 찌꺼기 (음식물 쓰레기 품목이 기준표에 없음 → 종량제로 안내하면 틀림)",
+  "expected": {
+   "item": "FOOD"
+  },
+  "expected_status": "unsupported"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-30.jpeg",
+  "desc": "소스가 남은 케첩 통",
+  "expected": {
+   "item": "P02",
+   "liquid": "present"
+  },
+  "expected_status": "need_action"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-31.jpeg",
+  "desc": "내용물이 남은 마요네즈 통",
+  "expected": {
+   "item": "P02"
+  },
+  "expected_status": "need_action"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-32.jpeg",
+  "desc": "음식물이 묻은 샐러드 용기 (라벨 붙음)",
+  "expected": {
+   "item": [
+    "P03",
+    "P02"
+   ]
+  },
+  "expected_status": "need_action"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-33.jpeg",
+  "desc": "음식물이 남은 샐러드 용기와 뚜껑",
+  "expected": {
+   "item": [
+    "P03",
+    "P02"
+   ]
+  },
+  "expected_status": "need_action"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-34.jpeg",
+  "desc": "랩과 가격표가 붙은 스티로폼 트레이",
+  "expected": {
+   "item": "P09",
+   "tape_label": "present"
+  },
+  "expected_status": "need_action"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-35.jpeg",
+  "desc": "랩을 벗긴 흰 스티로폼 트레이",
+  "expected": {
+   "item": "P09",
+   "is_white": "true",
+   "tape_label": "absent"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-36.jpeg",
+  "desc": "라벨 없는 빈 생수병 (흰 배경)",
+  "expected": {
+   "item": "P01",
+   "label": "absent",
+   "liquid": "absent"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-37.jpeg",
+  "desc": "마스크 (기준표에 없음)",
+  "expected": {
+   "item": "X00"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-38.jpeg",
+  "desc": "마스크, 펼친 상태 (기준표에 없음)",
+  "expected": {
+   "item": "X00"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-39.jpeg",
+  "desc": "플라스틱 뚜껑이 붙은 물티슈 포장",
+  "expected": {
+   "item": "P10",
+   "plastic_part": "present"
+  },
+  "expected_status": "need_action"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-4.jpeg",
+  "desc": "숯 (기준표에 없음)",
+  "expected": {
+   "item": "X00"
+  },
+  "expected_status": "pass"
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-40.jpeg",
+  "desc": "뚜껑을 뗀 물티슈 포장 (뚜껑은 옆에)",
+  "expected": {
+   "item": "P10"
+  },
+  "expected_status": [
+   "pass",
+   "need_action"
+  ]
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-5.jpeg",
+  "desc": "양념이 많이 남은 배달 용기",
+  "expected": {
+   "item": "P03"
+  },
+  "expected_status": [
+   "need_action",
+   "fallback"
+  ]
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-6.jpeg",
+  "desc": "양념이 남은 배달 용기 (칸막이)",
+  "expected": {
+   "item": "P03"
+  },
+  "expected_status": [
+   "need_action",
+   "fallback"
+  ]
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-7.jpeg",
+  "desc": "양념이 남은 배달 용기 (손)",
+  "expected": {
+   "item": "P03"
+  },
+  "expected_status": [
+   "need_action",
+   "fallback"
+  ]
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-8.jpeg",
+  "desc": "볼펜",
+  "expected": {
+   "item": [
+    "I20",
+    "X00"
+   ]
+  },
+  "expected_status": [
+   "question",
+   "pass"
+  ]
+ },
+ {
+  "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-9.jpeg",
+  "desc": "헤어롤 (기준표에 없음)",
+  "expected": {
+   "item": [
+    "X00",
+    "I20"
+   ]
+  },
+  "expected_status": [
+   "pass",
+   "question"
+  ]
+ }
+]

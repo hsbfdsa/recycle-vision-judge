@@ -1,0 +1,1555 @@
+{
+  "summary": {
+    "item_ok": 113,
+    "status_ok": 112,
+    "status_total": 132,
+    "wrong_pass": 11,
+    "correct": 56,
+    "cautious": 7,
+    "wrong": 6,
+    "errors": 0,
+    "runs": 132
+  },
+  "unstable": [
+    "final/KakaoTalk_Photo_2026-11-16-13-12-14 001.jpeg",
+    "final/KakaoTalk_Photo_2026-11-16-13-12-15 002.jpeg",
+    "final/KakaoTalk_Photo_2026-11-16-13-12-57-1.jpeg",
+    "final/KakaoTalk_Photo_2026-11-16-13-12-57-12.jpeg",
+    "final/KakaoTalk_Photo_2026-11-16-13-12-57-13.jpeg",
+    "final/KakaoTalk_Photo_2026-11-16-13-12-57-19.jpeg",
+    "final/KakaoTalk_Photo_2026-11-16-13-12-57-21.jpeg",
+    "final/KakaoTalk_Photo_2026-11-16-13-12-57-23.jpeg",
+    "final/KakaoTalk_Photo_2026-11-16-13-12-57-24.jpeg",
+    "final/KakaoTalk_Photo_2026-11-16-13-12-57-27.jpeg",
+    "final/KakaoTalk_Photo_2026-11-16-13-12-57-31.jpeg",
+    "final/KakaoTalk_Photo_2026-11-16-13-12-57-33.jpeg",
+    "final/KakaoTalk_Photo_2026-11-16-13-12-57-39.jpeg",
+    "final/KakaoTalk_Photo_2026-11-16-13-12-57-6.jpeg"
+  ],
+  "rows": [
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-14 001.jpeg",
+      "desc": "라벨 붙은 빈 생수병",
+      "item": "P01",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 4.25,
+      "subject": "투명 페트병",
+      "notes": "A clear drink bottle has a separate printed label, a closed green cap, and no visible liquid."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-14 001.jpeg",
+      "desc": "라벨 붙은 빈 생수병",
+      "item": "P01",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 4.89,
+      "subject": "투명 페트병",
+      "notes": "A clear plastic drink bottle with a label and closed green cap; the body is visibly crumpled and appears empty."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-14 001.jpeg",
+      "desc": "라벨 붙은 빈 생수병",
+      "item": "P01",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 4.1,
+      "subject": "눌린 투명 페트병",
+      "notes": "A clear drink bottle has a label and closed green cap, with visible dents in the body and no visible liquid."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-15 002.jpeg",
+      "desc": "라벨 없는 생수병, 가까이 기울여 찍음",
+      "item": "P01",
+      "confidence": 0.88,
+      "status": "pass",
+      "expected_status": [
+        "pass",
+        "retake"
+      ],
+      "seconds": 5.94,
+      "subject": "찌그러진 투명 페트병",
+      "notes": "A clear plastic drink bottle is visibly crushed; no label or liquid is visible, and the cap is unclear."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-15 002.jpeg",
+      "desc": "라벨 없는 생수병, 가까이 기울여 찍음",
+      "item": "P01",
+      "confidence": 0.84,
+      "status": "need_action",
+      "expected_status": [
+        "pass",
+        "retake"
+      ],
+      "seconds": 5.52,
+      "subject": "눌린 투명 페트병",
+      "notes": "A clear PET drink bottle is visibly crushed, with a small green label section remaining; no liquid or cap is visible."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-15 002.jpeg",
+      "desc": "라벨 없는 생수병, 가까이 기울여 찍음",
+      "item": "P01",
+      "confidence": 0.72,
+      "status": "retake",
+      "expected_status": [
+        "pass",
+        "retake"
+      ],
+      "seconds": 9.57,
+      "subject": "눌린 투명 페트병",
+      "notes": "A clear plastic drink bottle is visibly deformed; its label and cap are not clearly visible."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-15 003.jpeg",
+      "desc": "라벨 붙고 물이 남은 생수병",
+      "item": "P01",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 2.93,
+      "subject": "라벨 붙은 투명 페트병",
+      "notes": "A clear drink bottle has a label and green cap, with no visible liquid inside."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-15 003.jpeg",
+      "desc": "라벨 붙고 물이 남은 생수병",
+      "item": "P01",
+      "confidence": 0.97,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 3.09,
+      "subject": "투명 음료 페트병",
+      "notes": "A clear drink bottle has a separate label and a green cap screwed on; it appears empty and uncrushed."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-15 003.jpeg",
+      "desc": "라벨 붙고 물이 남은 생수병",
+      "item": "P01",
+      "confidence": 0.98,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 6.23,
+      "subject": "투명 페트 음료병",
+      "notes": "A clear drink bottle has a label and a closed green cap; no liquid is visible."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-20.jpeg",
+      "desc": "천 곱창 머리끈 (기준표에 없음)",
+      "item": "X00",
+      "confidence": 0.97,
+      "status": "pass",
+      "expected_status": [
+        "pass",
+        "question"
+      ],
+      "seconds": 3.06,
+      "subject": "보라색 체크 천 머리끈",
+      "notes": "A fabric scrunchie with a purple check pattern is held in the foreground."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-20.jpeg",
+      "desc": "천 곱창 머리끈 (기준표에 없음)",
+      "item": "X00",
+      "confidence": 0.97,
+      "status": "pass",
+      "expected_status": [
+        "pass",
+        "question"
+      ],
+      "seconds": 2.76,
+      "subject": "체크무늬 천 머리끈",
+      "notes": "A fabric scrunchie hair tie is held in the foreground."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-20.jpeg",
+      "desc": "천 곱창 머리끈 (기준표에 없음)",
+      "item": "X00",
+      "confidence": 0.95,
+      "status": "pass",
+      "expected_status": [
+        "pass",
+        "question"
+      ],
+      "seconds": 2.38,
+      "subject": "체크무늬 천 머리끈",
+      "notes": "A fabric scrunchie with a purple-and-white check pattern is held in the foreground."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-1.jpeg",
+      "desc": "영수증",
+      "item": "X00",
+      "confidence": 0.89,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 4.53,
+      "subject": "인쇄된 할인 쿠폰 티켓",
+      "notes": "A long printed coupon ticket with Korean text, dates, and barcodes; it is not a store or card receipt."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-1.jpeg",
+      "desc": "영수증",
+      "item": "X00",
+      "confidence": 0.82,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 4.97,
+      "subject": "영화 할인 쿠폰 티켓",
+      "notes": "A long printed paper voucher with Korean discount text and barcodes, not an itemized receipt."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-1.jpeg",
+      "desc": "영수증",
+      "item": "I01",
+      "confidence": 0.78,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 4.12,
+      "subject": "바코드가 인쇄된 종이 티켓",
+      "notes": "A long printed paper ticket with Korean text, dates, and barcodes."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-10.jpeg",
+      "desc": "건전지 3개",
+      "item": "I02",
+      "confidence": 0.99,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.33,
+      "subject": "원통형 건전지 여러 개",
+      "notes": "Several cylindrical household batteries are visible on the table."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-10.jpeg",
+      "desc": "건전지 3개",
+      "item": "I02",
+      "confidence": 0.99,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.37,
+      "subject": "AA 건전지 여러 개",
+      "notes": "Several cylindrical household batteries are visible, including Duracell-branded cells."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-10.jpeg",
+      "desc": "건전지 3개",
+      "item": "I02",
+      "confidence": 0.98,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.65,
+      "subject": "AA 건전지 여러 개",
+      "notes": "Several cylindrical household batteries are visible, including Duracell-branded cells."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-11.jpeg",
+      "desc": "금속테 안경",
+      "item": "I39",
+      "confidence": 0.99,
+      "status": "question",
+      "expected_status": "question",
+      "seconds": 2.13,
+      "subject": "금속테 안경",
+      "notes": "Metal-framed eyeglasses with lenses are held in the foreground."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-11.jpeg",
+      "desc": "금속테 안경",
+      "item": "I39",
+      "confidence": 0.98,
+      "status": "question",
+      "expected_status": "question",
+      "seconds": 2.17,
+      "subject": "금속테 안경",
+      "notes": "Metal-framed eyeglasses with two lenses and temple arms are held over the table."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-11.jpeg",
+      "desc": "금속테 안경",
+      "item": "I39",
+      "confidence": 0.98,
+      "status": "question",
+      "expected_status": "question",
+      "seconds": 2.05,
+      "subject": "금속테 안경",
+      "notes": "Metal-framed eyeglasses with lenses are held in the foreground."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-12.jpeg",
+      "desc": "라벨 없는 빈 생수병 (파란 뚜껑)",
+      "item": "P01",
+      "confidence": 0.96,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 3.17,
+      "subject": "찌그러진 투명 페트병",
+      "notes": "A clear PET drink bottle has a blue cap, no separate label, and visible dents; only droplets remain inside."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-12.jpeg",
+      "desc": "라벨 없는 빈 생수병 (파란 뚜껑)",
+      "item": "P01",
+      "confidence": 0.98,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 3.38,
+      "subject": "투명 페트병",
+      "notes": "A clear PET bottle with a blue screw cap, no separate label, and only droplets visible inside."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-12.jpeg",
+      "desc": "라벨 없는 빈 생수병 (파란 뚜껑)",
+      "item": "P01",
+      "confidence": 0.97,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.87,
+      "subject": "투명 페트병",
+      "notes": "A clear PET bottle with a blue screw cap; it has embossed markings, no separate label, and only visible droplets inside."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-13.jpeg",
+      "desc": "라벨 없는 빈 대용량 생수병",
+      "item": "P01",
+      "confidence": 0.96,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 4.2,
+      "subject": "투명 페트병",
+      "notes": "A clear drink bottle with a yellow screw cap, no separate label, and visibly buckled sides."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-13.jpeg",
+      "desc": "라벨 없는 빈 대용량 생수병",
+      "item": "P01",
+      "confidence": 0.97,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.97,
+      "subject": "투명 페트병",
+      "notes": "A clear drink bottle with an attached yellow cap, no separate label, and no visible liquid."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-13.jpeg",
+      "desc": "라벨 없는 빈 대용량 생수병",
+      "item": "P01",
+      "confidence": 0.97,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.78,
+      "subject": "투명 생수 페트병",
+      "notes": "Clear plastic drink bottle with an attached yellow cap, no separate label, and only visible droplets inside."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-14.jpeg",
+      "desc": "라벨 붙고 음료가 남은 스포츠음료 병",
+      "item": "P01",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 2.85,
+      "subject": "검은 음료가 든 투명 페트병",
+      "notes": "Clear plastic beverage bottle with a label, dark liquid inside, and a closed cap."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-14.jpeg",
+      "desc": "라벨 붙고 음료가 남은 스포츠음료 병",
+      "item": "P01",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 3.28,
+      "subject": "음료가 든 투명 페트병",
+      "notes": "A clear plastic drink bottle has a wraparound label, visible dark liquid, and a closed cap."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-14.jpeg",
+      "desc": "라벨 붙고 음료가 남은 스포츠음료 병",
+      "item": "P01",
+      "confidence": 0.95,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 3.38,
+      "subject": "검은 음료가 든 투명 페트병",
+      "notes": "A clear plastic drink bottle has a dark liquid inside, a wraparound label, and a closed cap."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-15.jpeg",
+      "desc": "라벨 없는 빈 페트병 (검은 뚜껑)",
+      "item": "P01",
+      "confidence": 0.76,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 6.56,
+      "subject": "투명 페트병",
+      "notes": "A clear rigid plastic bottle with a black screw cap; no separate label or visible contents."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-15.jpeg",
+      "desc": "라벨 없는 빈 페트병 (검은 뚜껑)",
+      "item": "P01",
+      "confidence": 0.82,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 5.11,
+      "subject": "투명 페트병",
+      "notes": "A clear, rigid drink bottle with a black screw cap and no separate label; the inside appears empty."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-15.jpeg",
+      "desc": "라벨 없는 빈 페트병 (검은 뚜껑)",
+      "item": "P01",
+      "confidence": 0.82,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 5.33,
+      "subject": "투명 페트병",
+      "notes": "A clear rigid bottle with a black screw cap and no visible label or contents."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-16.jpeg",
+      "desc": "통형 제습제 (옆)",
+      "item": "I41",
+      "confidence": 0.86,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 3.58,
+      "subject": "파란 덮개가 있는 통형 제습제",
+      "notes": "A tub-shaped container has a perforated blue top and a translucent lower chamber, consistent with a tub-type moisture absorber."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-16.jpeg",
+      "desc": "통형 제습제 (옆)",
+      "item": "I41",
+      "confidence": 0.78,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 4.5,
+      "subject": "파란 뚜껑의 제습제 통",
+      "notes": "A white tub with a blue perforated top, consistent with a tub-style moisture absorber."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-16.jpeg",
+      "desc": "통형 제습제 (옆)",
+      "item": "I41",
+      "confidence": 0.84,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 3.18,
+      "subject": "파란 뚜껑의 제습제 통",
+      "notes": "A white tub with a blue perforated top, matching a tub-type moisture absorber."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-17.jpeg",
+      "desc": "통형 제습제 (위)",
+      "item": "X00",
+      "confidence": 0.85,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 4.74,
+      "subject": "파란색 플라스틱 타공판",
+      "notes": "A blue oval plastic lattice object with multiple openings; it does not clearly match a listed category."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-17.jpeg",
+      "desc": "통형 제습제 (위)",
+      "item": "X00",
+      "confidence": 0.83,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 3.88,
+      "subject": "파란색 타공 플라스틱 덮개",
+      "notes": "A rigid blue plastic oval cover with many oval openings; its specific use is unclear."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-17.jpeg",
+      "desc": "통형 제습제 (위)",
+      "item": "X00",
+      "confidence": 0.75,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 5.11,
+      "subject": "파란색 타공 플라스틱 판",
+      "notes": "A blue oval plastic plate with a raised rim and multiple openings; no listed item type is identifiable."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-18.jpeg",
+      "desc": "통형 제습제 (라벨 보임)",
+      "item": "I41",
+      "confidence": 0.96,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 3.04,
+      "subject": "통형 제습제",
+      "notes": "A tub-shaped moisture absorber with a blue perforated lid and a Korean dehumidifier label."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-18.jpeg",
+      "desc": "통형 제습제 (라벨 보임)",
+      "item": "I41",
+      "confidence": 0.97,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 3.09,
+      "subject": "파란 뚜껑 제습제 통",
+      "notes": "A tub labeled as a dehumidifier, with a perforated blue lid."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-18.jpeg",
+      "desc": "통형 제습제 (라벨 보임)",
+      "item": "I41",
+      "confidence": 0.98,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 3.81,
+      "subject": "통형 제습제",
+      "notes": "A tub-shaped moisture absorber with a perforated blue top and a Korean dehumidifier label."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-19.jpeg",
+      "desc": "뜯은 빈 알약 포장재",
+      "item": "I13",
+      "confidence": 0.78,
+      "status": "question",
+      "expected_status": "pass",
+      "seconds": 4.97,
+      "subject": "블리스터 포장에 든 갈색 알약",
+      "notes": "A narrow blister-style package with brown pill-shaped contents visible in two pockets."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-19.jpeg",
+      "desc": "뜯은 빈 알약 포장재",
+      "item": "I33",
+      "confidence": 0.94,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 5.38,
+      "subject": "빈 알약 블리스터 포장",
+      "notes": "A small blister pack with two opened cavities and peeled foil backing."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-19.jpeg",
+      "desc": "뜯은 빈 알약 포장재",
+      "item": "I13",
+      "confidence": 0.72,
+      "status": "question",
+      "expected_status": "pass",
+      "seconds": 6.04,
+      "subject": "알약이 든 블리스터 포장",
+      "notes": "A torn blister strip has brown pill-shaped contents visible in its cavities."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-2.jpeg",
+      "desc": "달걀 껍데기",
+      "item": "I27",
+      "confidence": 0.98,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.05,
+      "subject": "깨진 달걀껍데기",
+      "notes": "A broken brown eggshell is visible on the countertop."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-2.jpeg",
+      "desc": "달걀 껍데기",
+      "item": "I27",
+      "confidence": 0.98,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.15,
+      "subject": "깨진 달걀껍데기",
+      "notes": "A broken brown eggshell with the white inner membrane visible."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-2.jpeg",
+      "desc": "달걀 껍데기",
+      "item": "I27",
+      "confidence": 0.98,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.25,
+      "subject": "깨진 갈색 달걀껍데기",
+      "notes": "A broken brown eggshell is visible on the countertop."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-20.jpeg",
+      "desc": "빈 알약 포장재 (주황색 칸)",
+      "item": "I13",
+      "confidence": 0.94,
+      "status": "question",
+      "expected_status": "pass",
+      "seconds": 2.37,
+      "subject": "캡슐이 든 약 포장",
+      "notes": "Two amber capsules are visible in a blister pack."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-20.jpeg",
+      "desc": "빈 알약 포장재 (주황색 칸)",
+      "item": "I13",
+      "confidence": 0.84,
+      "status": "question",
+      "expected_status": "pass",
+      "seconds": 3.06,
+      "subject": "캡슐약 블리스터 포장",
+      "notes": "Two amber-colored capsules are visible in a blister package."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-20.jpeg",
+      "desc": "빈 알약 포장재 (주황색 칸)",
+      "item": "I13",
+      "confidence": 0.9,
+      "status": "question",
+      "expected_status": "pass",
+      "seconds": 2.76,
+      "subject": "연질캡슐 블리스터 포장",
+      "notes": "A blister strip visibly contains two amber-colored capsules."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-21.jpeg",
+      "desc": "음료·얼음이 남은 플라스틱 컵 (빨대, 라벨)",
+      "item": "P13",
+      "confidence": 0.97,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 3.58,
+      "subject": "커피 잔여물이 든 플라스틱 컵",
+      "notes": "A clear disposable plastic cup has brown liquid at the bottom, a straw, and a yellow sleeve."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-21.jpeg",
+      "desc": "음료·얼음이 남은 플라스틱 컵 (빨대, 라벨)",
+      "item": "P13",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 2.77,
+      "subject": "커피가 남은 투명 플라스틱 컵",
+      "notes": "A clear disposable plastic cup has brown liquid at the bottom, a straw, and a paper sleeve."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-21.jpeg",
+      "desc": "음료·얼음이 남은 플라스틱 컵 (빨대, 라벨)",
+      "item": "P13",
+      "confidence": 0.98,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 3.67,
+      "subject": "빨대와 종이띠가 있는 투명 컵",
+      "notes": "A clear disposable plastic cup has a yellow straw, a paper sleeve, and brown liquid residue at the bottom."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-22.jpeg",
+      "desc": "음료가 조금 남은 플라스틱 컵 (빨대 꽂힘)",
+      "item": "P13",
+      "confidence": 0.95,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 3.81,
+      "subject": "빨대와 음료 찌꺼기가 든 투명 플라스틱 컵",
+      "notes": "A clear disposable plastic cup has a yellow straw inside and a small amount of brown liquid at the bottom."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-22.jpeg",
+      "desc": "음료가 조금 남은 플라스틱 컵 (빨대 꽂힘)",
+      "item": "P13",
+      "confidence": 0.95,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 3.99,
+      "subject": "노란 빨대가 든 투명 플라스틱 컵",
+      "notes": "A clear disposable plastic cup has a yellow straw inside and visible liquid residue at the bottom."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-22.jpeg",
+      "desc": "음료가 조금 남은 플라스틱 컵 (빨대 꽂힘)",
+      "item": "P13",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 3.32,
+      "subject": "노란 빨대가 꽂힌 투명 플라스틱 컵",
+      "notes": "A clear disposable plastic cup has a yellow straw and visible liquid residue at the bottom."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-23.jpeg",
+      "desc": "비닐 창이 붙은 종이 상자",
+      "item": "I17",
+      "confidence": 0.72,
+      "status": "pass",
+      "expected_status": "need_action",
+      "seconds": 6.92,
+      "subject": "비닐 내장 청포도 상자",
+      "notes": "An open corrugated fruit box has a clear plastic lining visible inside."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-23.jpeg",
+      "desc": "비닐 창이 붙은 종이 상자",
+      "item": "I17",
+      "confidence": 0.72,
+      "status": "pass",
+      "expected_status": "need_action",
+      "seconds": 6.59,
+      "subject": "비닐 안감이 있는 샤인머스캣 상자",
+      "notes": "A cardboard Shine Muscat box has a visible clear plastic lining inside."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-23.jpeg",
+      "desc": "비닐 창이 붙은 종이 상자",
+      "item": "X00",
+      "confidence": 0.88,
+      "status": "pass",
+      "expected_status": "need_action",
+      "seconds": 7.03,
+      "subject": "샤인머스캣 포장 상자",
+      "notes": "A green printed corrugated fruit box with a clear plastic lining inside."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-24.jpeg",
+      "desc": "비닐 창을 뗀 종이 상자",
+      "item": "P12",
+      "confidence": 0.95,
+      "status": "need_action",
+      "expected_status": "pass",
+      "seconds": 4.2,
+      "subject": "초록색 골판지 상자",
+      "notes": "An open corrugated cardboard box with visible torn label or tape remnants on its printed surface."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-24.jpeg",
+      "desc": "비닐 창을 뗀 종이 상자",
+      "item": "P12",
+      "confidence": 0.94,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 4.18,
+      "subject": "초록색 인쇄 골판지 상자",
+      "notes": "An open corrugated cardboard box with a printed green exterior and no visible tape or shipping label."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-24.jpeg",
+      "desc": "비닐 창을 뗀 종이 상자",
+      "item": "P12",
+      "confidence": 0.94,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 4.42,
+      "subject": "초록색 인쇄 골판지 상자",
+      "notes": "An open corrugated cardboard box with a printed green exterior; no tape or label is visible."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-25.jpeg",
+      "desc": "뿔테 안경 (손 위)",
+      "item": "I39",
+      "confidence": 0.99,
+      "status": "question",
+      "expected_status": "question",
+      "seconds": 1.94,
+      "subject": "검은 테 안경",
+      "notes": "Dark-framed eyeglasses with clear lenses are held in the center of the photo."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-25.jpeg",
+      "desc": "뿔테 안경 (손 위)",
+      "item": "I39",
+      "confidence": 0.99,
+      "status": "question",
+      "expected_status": "question",
+      "seconds": 2.27,
+      "subject": "검은 테 안경",
+      "notes": "Black-framed eyeglasses with lenses are held in the hand."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-25.jpeg",
+      "desc": "뿔테 안경 (손 위)",
+      "item": "I39",
+      "confidence": 0.98,
+      "status": "question",
+      "expected_status": "question",
+      "seconds": 1.8,
+      "subject": "검은 테 안경",
+      "notes": "Black-framed eyeglasses with clear lenses are held in the center of the image."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-26.jpeg",
+      "desc": "테이프·송장이 붙은 택배 상자",
+      "item": "P12",
+      "confidence": 0.98,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 2.68,
+      "subject": "노란 택배 골판지 상자",
+      "notes": "A yellow corrugated shipping box with a shipping label still attached; it is open but not flattened or crushed."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-26.jpeg",
+      "desc": "테이프·송장이 붙은 택배 상자",
+      "item": "P12",
+      "confidence": 0.98,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 2.15,
+      "subject": "노란 택배 골판지 상자",
+      "notes": "A yellow corrugated cardboard shipping box with a shipping label and tape; it is open but not flattened."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-26.jpeg",
+      "desc": "테이프·송장이 붙은 택배 상자",
+      "item": "P12",
+      "confidence": 0.98,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 2.17,
+      "subject": "노란 택배 골판지 상자",
+      "notes": "Yellow corrugated cardboard shipping box with a label on top; it is open but not crushed."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-27.jpeg",
+      "desc": "테이프를 떼고 펼친 택배 상자",
+      "item": "P12",
+      "confidence": 0.97,
+      "status": "need_action",
+      "expected_status": "pass",
+      "seconds": 4.37,
+      "subject": "노란색 골판지 상자",
+      "notes": "An opened, flattened corrugated cardboard box with visible white label or paper remnants."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-27.jpeg",
+      "desc": "테이프를 떼고 펼친 택배 상자",
+      "item": "P12",
+      "confidence": 0.92,
+      "status": "need_action",
+      "expected_status": "pass",
+      "seconds": 8.92,
+      "subject": "노란색 골판지 상자",
+      "notes": "A yellow printed cardboard box is unfolded flat, with white torn label-like patches remaining on the surface."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-27.jpeg",
+      "desc": "테이프를 떼고 펼친 택배 상자",
+      "item": "P12",
+      "confidence": 0.96,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 4.81,
+      "subject": "펴서 납작해진 종이 상자",
+      "notes": "A yellow printed corrugated cardboard box is opened and flattened, with no visible tape or label."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-28.jpeg",
+      "desc": "봉제 인형",
+      "item": "I40",
+      "confidence": 0.98,
+      "status": "question",
+      "expected_status": "question",
+      "seconds": 2.05,
+      "subject": "분홍색 봉제 인형",
+      "notes": "A long pink-and-white plush character doll with a fabric surface and embroidered face."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-28.jpeg",
+      "desc": "봉제 인형",
+      "item": "I40",
+      "confidence": 0.93,
+      "status": "question",
+      "expected_status": "question",
+      "seconds": 2.49,
+      "subject": "분홍색 캐릭터 봉제인형",
+      "notes": "A long soft fabric character toy with an embroidered face is visible."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-28.jpeg",
+      "desc": "봉제 인형",
+      "item": "I40",
+      "confidence": 0.98,
+      "status": "question",
+      "expected_status": "question",
+      "seconds": 2.12,
+      "subject": "분홍색 긴 봉제 인형",
+      "notes": "A long pink plush character with a soft fabric surface and embroidered face."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-29.jpeg",
+      "desc": "영수증 (두 번째)",
+      "item": "I01",
+      "confidence": 0.99,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.15,
+      "subject": "다이소 영수증",
+      "notes": "A printed Daiso store receipt with itemized text and a barcode."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-29.jpeg",
+      "desc": "영수증 (두 번째)",
+      "item": "I01",
+      "confidence": 0.99,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 1.74,
+      "subject": "다이소 영수증",
+      "notes": "A printed itemized store receipt is visible on the table."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-29.jpeg",
+      "desc": "영수증 (두 번째)",
+      "item": "I01",
+      "confidence": 0.99,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.26,
+      "subject": "다이소 영수증",
+      "notes": "A printed itemized store receipt with transaction details and a barcode."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-3.jpeg",
+      "desc": "접시 위 음식 찌꺼기 (음식물 쓰레기 품목이 기준표에 없음 → 종량제로 안내하면 틀림)",
+      "item": "I27",
+      "confidence": 0.68,
+      "status": "pass",
+      "expected_status": "unsupported",
+      "seconds": 5.21,
+      "subject": "뼈가 붙은 음식 찌꺼기",
+      "notes": "Several brown food scraps with hard, bone-like pieces are visible on the plate."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-3.jpeg",
+      "desc": "접시 위 음식 찌꺼기 (음식물 쓰레기 품목이 기준표에 없음 → 종량제로 안내하면 틀림)",
+      "item": "I27",
+      "confidence": 0.78,
+      "status": "pass",
+      "expected_status": "unsupported",
+      "seconds": 5.13,
+      "subject": "고기가 붙은 뼈 조각",
+      "notes": "Irregular cooked food scraps with visible bone-like sections and meat attached."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-3.jpeg",
+      "desc": "접시 위 음식 찌꺼기 (음식물 쓰레기 품목이 기준표에 없음 → 종량제로 안내하면 틀림)",
+      "item": "I27",
+      "confidence": 0.72,
+      "status": "pass",
+      "expected_status": "unsupported",
+      "seconds": 3.99,
+      "subject": "남은 고기뼈와 껍질",
+      "notes": "A pile of browned food scraps with bone-like pieces is visible on the plate."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-30.jpeg",
+      "desc": "소스가 남은 케첩 통",
+      "item": "P02",
+      "confidence": 0.95,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 3.48,
+      "subject": "소스가 묻은 플라스틱 소스통",
+      "notes": "A clear squeeze sauce bottle with a yellow cap and visible sauce residue inside."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-30.jpeg",
+      "desc": "소스가 남은 케첩 통",
+      "item": "P02",
+      "confidence": 0.9,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 3.7,
+      "subject": "소스 자국이 남은 플라스틱 통",
+      "notes": "A clear rigid plastic squeeze bottle has visible reddish sauce residue inside and a yellow cap."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-30.jpeg",
+      "desc": "소스가 남은 케첩 통",
+      "item": "P02",
+      "confidence": 0.9,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 3.21,
+      "subject": "소스가 남은 플라스틱 통",
+      "notes": "A clear rigid plastic squeeze bottle has visible reddish sauce residue inside."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-31.jpeg",
+      "desc": "내용물이 남은 마요네즈 통",
+      "item": "P01",
+      "confidence": 0.72,
+      "status": "pass",
+      "expected_status": "need_action",
+      "seconds": 7.26,
+      "subject": "투명 페트병",
+      "notes": "A clear rigid plastic bottle with a yellow screw cap; no separate label or visible contents."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-31.jpeg",
+      "desc": "내용물이 남은 마요네즈 통",
+      "item": "P02",
+      "confidence": 0.76,
+      "status": "pass",
+      "expected_status": "need_action",
+      "seconds": 6.11,
+      "subject": "투명 플라스틱 병",
+      "notes": "A rigid clear plastic bottle with a yellow cap; droplets are visible but no liquid contents are apparent."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-31.jpeg",
+      "desc": "내용물이 남은 마요네즈 통",
+      "item": "P02",
+      "confidence": 0.68,
+      "status": "pass",
+      "expected_status": "need_action",
+      "seconds": 8.29,
+      "subject": "노란 뚜껑의 반투명 플라스틱 병",
+      "notes": "A translucent rigid plastic bottle with a yellow cap; only droplets are visible inside."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-32.jpeg",
+      "desc": "음식물이 묻은 샐러드 용기 (라벨 붙음)",
+      "item": "P03",
+      "confidence": 0.95,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 4.2,
+      "subject": "샐러드 플라스틱 용기",
+      "notes": "A clear plastic salad container has visible food bits and an attached printed paper label."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-32.jpeg",
+      "desc": "음식물이 묻은 샐러드 용기 (라벨 붙음)",
+      "item": "P03",
+      "confidence": 0.88,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 4.2,
+      "subject": "투명 샐러드 플라스틱 용기",
+      "notes": "Clear molded salad container with visible food remnants and a paper label attached."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-32.jpeg",
+      "desc": "음식물이 묻은 샐러드 용기 (라벨 붙음)",
+      "item": "P03",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 3.28,
+      "subject": "리코타 샐러드 플라스틱 용기",
+      "notes": "Clear plastic salad container with a paper label attached and small food remnants visible inside."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-33.jpeg",
+      "desc": "음식물이 남은 샐러드 용기와 뚜껑",
+      "item": "P03",
+      "confidence": 0.72,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 9.62,
+      "subject": "투명 플라스틱 식품 용기",
+      "notes": "A clear molded food container is visible with a printed label or film attached; no food residue or surface tint is apparent."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-33.jpeg",
+      "desc": "음식물이 남은 샐러드 용기와 뚜껑",
+      "item": "P03",
+      "confidence": 0.78,
+      "status": "pass",
+      "expected_status": "need_action",
+      "seconds": 9.53,
+      "subject": "투명 플라스틱 음식 용기 뚜껑",
+      "notes": "A large clear plastic food-container lid is visible; no food residue, stain, or attached material is apparent."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-33.jpeg",
+      "desc": "음식물이 남은 샐러드 용기와 뚜껑",
+      "item": "P03",
+      "confidence": 0.82,
+      "status": "pass",
+      "expected_status": "need_action",
+      "seconds": 7.36,
+      "subject": "투명 플라스틱 배달용기 뚜껑",
+      "notes": "A clear rectangular plastic food-container lid is the largest object; no food residue or attached material is visible."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-34.jpeg",
+      "desc": "랩과 가격표가 붙은 스티로폼 트레이",
+      "item": "P09",
+      "confidence": 0.97,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 4.22,
+      "subject": "랩 씌운 흰 스티로폼 트레이",
+      "notes": "A white foam tray remains covered with clear plastic wrap and a price label, with small reddish residue spots visible."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-34.jpeg",
+      "desc": "랩과 가격표가 붙은 스티로폼 트레이",
+      "item": "P09",
+      "confidence": 0.97,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 4.8,
+      "subject": "랩 씌운 흰 스티로폼 트레이",
+      "notes": "A white foam tray is covered with clear plastic wrap and a sticker, with a few small red marks visible."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-34.jpeg",
+      "desc": "랩과 가격표가 붙은 스티로폼 트레이",
+      "item": "P09",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 5.01,
+      "subject": "랩과 가격표가 붙은 흰 스티로폼 트레이",
+      "notes": "A white foam tray is covered with clear plastic wrap and a price label, with a few small red marks visible."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-35.jpeg",
+      "desc": "랩을 벗긴 흰 스티로폼 트레이",
+      "item": "P09",
+      "confidence": 0.93,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 5.22,
+      "subject": "흰 스티로폼 트레이",
+      "notes": "A white foam tray is visible with a few droplets and tiny residue marks; the clear wrap and label lie beside it."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-35.jpeg",
+      "desc": "랩을 벗긴 흰 스티로폼 트레이",
+      "item": "P09",
+      "confidence": 0.94,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 4.19,
+      "subject": "흰 스티로폼 트레이",
+      "notes": "A white foam tray is the main subject; it has a few droplets and tiny residue marks, while the wrap and label lie beside it."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-35.jpeg",
+      "desc": "랩을 벗긴 흰 스티로폼 트레이",
+      "item": "P09",
+      "confidence": 0.94,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 4.0,
+      "subject": "흰색 스티로폼 트레이",
+      "notes": "A white foam food tray with a few droplets and small residue marks; the film and label are separate beside it."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-36.jpeg",
+      "desc": "라벨 없는 빈 생수병 (흰 배경)",
+      "item": "P01",
+      "confidence": 0.98,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.98,
+      "subject": "투명 페트병",
+      "notes": "Clear drink bottle with a blue cap, no separate label, and only visible droplets inside."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-36.jpeg",
+      "desc": "라벨 없는 빈 생수병 (흰 배경)",
+      "item": "P01",
+      "confidence": 0.98,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.65,
+      "subject": "파란 뚜껑 투명 페트병",
+      "notes": "A clear, empty PET drink bottle with a blue cap and no visible label."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-36.jpeg",
+      "desc": "라벨 없는 빈 생수병 (흰 배경)",
+      "item": "P01",
+      "confidence": 0.97,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.54,
+      "subject": "파란 뚜껑 투명 페트병",
+      "notes": "A clear drink bottle has a blue cap, no visible label, and only droplets inside."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-37.jpeg",
+      "desc": "마스크 (기준표에 없음)",
+      "item": "X00",
+      "confidence": 0.97,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.88,
+      "subject": "흰색 일회용 마스크",
+      "notes": "A folded white disposable face mask with elastic ear loops; no listed category fits it."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-37.jpeg",
+      "desc": "마스크 (기준표에 없음)",
+      "item": "X00",
+      "confidence": 0.97,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.21,
+      "subject": "흰색 일회용 마스크",
+      "notes": "A folded white disposable face mask with ear loops is visible."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-37.jpeg",
+      "desc": "마스크 (기준표에 없음)",
+      "item": "X00",
+      "confidence": 0.98,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 2.73,
+      "subject": "흰색 일회용 마스크",
+      "notes": "White disposable face masks with ear loops are visible."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-38.jpeg",
+      "desc": "마스크, 펼친 상태 (기준표에 없음)",
+      "item": "X00",
+      "confidence": 0.9,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 3.97,
+      "subject": "분리된 끈이 놓인 흰색 마스크",
+      "notes": "A white pleated mask body is shown with detached white straps and a thin strip below it."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-38.jpeg",
+      "desc": "마스크, 펼친 상태 (기준표에 없음)",
+      "item": "X00",
+      "confidence": 0.93,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 3.17,
+      "subject": "흰색 마스크",
+      "notes": "A white disposable face mask with detached straps is visible."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-38.jpeg",
+      "desc": "마스크, 펼친 상태 (기준표에 없음)",
+      "item": "X00",
+      "confidence": 0.88,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 3.69,
+      "subject": "분리된 일회용 마스크",
+      "notes": "A white disposable mask-shaped item with detached elastic straps and a narrow strip below."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-39.jpeg",
+      "desc": "플라스틱 뚜껑이 붙은 물티슈 포장",
+      "item": "P10",
+      "confidence": 0.94,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 3.79,
+      "subject": "플라스틱 뚜껑 달린 물티슈 포장",
+      "notes": "A soft wet-wipe pouch with an attached rigid blue plastic lid; the contents are not visible."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-39.jpeg",
+      "desc": "플라스틱 뚜껑이 붙은 물티슈 포장",
+      "item": "P10",
+      "confidence": 0.94,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 5.53,
+      "subject": "플라스틱 뚜껑이 붙은 물티슈 포장",
+      "notes": "A crinkled wet-wipe pouch with an attached rigid blue plastic dispenser lid."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-39.jpeg",
+      "desc": "플라스틱 뚜껑이 붙은 물티슈 포장",
+      "item": "P10",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": "need_action",
+      "seconds": 4.88,
+      "subject": "뚜껑 달린 물티슈 포장",
+      "notes": "A Bebesup wet-wipe pouch with an attached blue plastic lid; no visible residue."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-4.jpeg",
+      "desc": "숯 (기준표에 없음)",
+      "item": "X00",
+      "confidence": 0.82,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 4.33,
+      "subject": "숯 조각",
+      "notes": "Several rough, blackened wood-like charcoal pieces are visible in a brown bowl."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-4.jpeg",
+      "desc": "숯 (기준표에 없음)",
+      "item": "X00",
+      "confidence": 0.88,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 4.2,
+      "subject": "검은 숯 조각",
+      "notes": "Dark, deeply cracked charcoal-like pieces are gathered in a bowl."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-4.jpeg",
+      "desc": "숯 (기준표에 없음)",
+      "item": "X00",
+      "confidence": 0.75,
+      "status": "pass",
+      "expected_status": "pass",
+      "seconds": 3.88,
+      "subject": "검은 숯 조각",
+      "notes": "Dark, cracked wood-like chunks are visible in a bowl; they do not match a listed item category."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-40.jpeg",
+      "desc": "뚜껑을 뗀 물티슈 포장 (뚜껑은 옆에)",
+      "item": "P10",
+      "confidence": 0.9,
+      "status": "pass",
+      "expected_status": [
+        "pass",
+        "need_action"
+      ],
+      "seconds": 7.38,
+      "subject": "아기 물티슈 포장지",
+      "notes": "An opened soft baby-wipes pouch with wipes visible inside; its blue plastic lid is detached beside it."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-40.jpeg",
+      "desc": "뚜껑을 뗀 물티슈 포장 (뚜껑은 옆에)",
+      "item": "P10",
+      "confidence": 0.91,
+      "status": "pass",
+      "expected_status": [
+        "pass",
+        "need_action"
+      ],
+      "seconds": 6.41,
+      "subject": "아기 물티슈 포장팩",
+      "notes": "An opened Bebesup soft wipes pouch is visible, with no liquid or attached hard plastic part."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-40.jpeg",
+      "desc": "뚜껑을 뗀 물티슈 포장 (뚜껑은 옆에)",
+      "item": "P10",
+      "confidence": 0.9,
+      "status": "pass",
+      "expected_status": [
+        "pass",
+        "need_action"
+      ],
+      "seconds": 5.87,
+      "subject": "아기 물티슈 포장 봉투",
+      "notes": "An opened soft plastic wet-wipe pouch is visible; its blue hard lid is detached beside it."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-5.jpeg",
+      "desc": "양념이 많이 남은 배달 용기",
+      "item": "P03",
+      "confidence": 0.95,
+      "status": "need_action",
+      "expected_status": [
+        "need_action",
+        "fallback"
+      ],
+      "seconds": 3.79,
+      "subject": "소스가 남은 검은 플라스틱 배달용기",
+      "notes": "A black plastic takeout container has extensive reddish sauce residue and no attached material."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-5.jpeg",
+      "desc": "양념이 많이 남은 배달 용기",
+      "item": "P03",
+      "confidence": 0.95,
+      "status": "need_action",
+      "expected_status": [
+        "need_action",
+        "fallback"
+      ],
+      "seconds": 3.58,
+      "subject": "양념이 많이 남은 검은 플라스틱 용기",
+      "notes": "A black plastic food container has sauce residue covering most of its interior."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-5.jpeg",
+      "desc": "양념이 많이 남은 배달 용기",
+      "item": "P03",
+      "confidence": 0.95,
+      "status": "need_action",
+      "expected_status": [
+        "need_action",
+        "fallback"
+      ],
+      "seconds": 3.25,
+      "subject": "소스가 남은 검은 플라스틱 배달 용기",
+      "notes": "A black plastic food container has sauce residue covering most of its interior."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-6.jpeg",
+      "desc": "양념이 남은 배달 용기 (칸막이)",
+      "item": "P03",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": [
+        "need_action",
+        "fallback"
+      ],
+      "seconds": 3.92,
+      "subject": "음식물이 남은 검은 플라스틱 배달용기",
+      "notes": "A black divided plastic takeout tray has visible food pieces and red-orange sauce residue."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-6.jpeg",
+      "desc": "양념이 남은 배달 용기 (칸막이)",
+      "item": "P03",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": [
+        "need_action",
+        "fallback"
+      ],
+      "seconds": 4.4,
+      "subject": "검은 플라스틱 배달 용기",
+      "notes": "Black plastic food container with visible solid food scraps and red-orange residue."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-6.jpeg",
+      "desc": "양념이 남은 배달 용기 (칸막이)",
+      "item": "P03",
+      "confidence": 0.96,
+      "status": "need_action",
+      "expected_status": [
+        "need_action",
+        "fallback"
+      ],
+      "seconds": 3.48,
+      "subject": "음식물이 남은 검은 배달용기",
+      "notes": "Black plastic food container with visible sauce and solid food scraps; no separate material is attached."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-7.jpeg",
+      "desc": "양념이 남은 배달 용기 (손)",
+      "item": "P03",
+      "confidence": 0.94,
+      "status": "need_action",
+      "expected_status": [
+        "need_action",
+        "fallback"
+      ],
+      "seconds": 3.79,
+      "subject": "양념이 남은 검은 배달용기",
+      "notes": "Black plastic takeout tray with extensive solid food and red-orange sauce residue."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-7.jpeg",
+      "desc": "양념이 남은 배달 용기 (손)",
+      "item": "P03",
+      "confidence": 0.94,
+      "status": "need_action",
+      "expected_status": [
+        "need_action",
+        "fallback"
+      ],
+      "seconds": 4.21,
+      "subject": "양념 음식물이 남은 검은 플라스틱 배달용기",
+      "notes": "A black plastic takeout tray contains substantial red-orange food residue; no attached material of another kind is visible."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-7.jpeg",
+      "desc": "양념이 남은 배달 용기 (손)",
+      "item": "P03",
+      "confidence": 0.97,
+      "status": "need_action",
+      "expected_status": [
+        "need_action",
+        "fallback"
+      ],
+      "seconds": 3.69,
+      "subject": "양념 음식이 남은 검은 플라스틱 배달용기",
+      "notes": "A black plastic takeout tray contains substantial leftover food and reddish sauce."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-8.jpeg",
+      "desc": "볼펜",
+      "item": "I20",
+      "confidence": 0.99,
+      "status": "question",
+      "expected_status": [
+        "question",
+        "pass"
+      ],
+      "seconds": 2.04,
+      "subject": "보라색 볼펜",
+      "notes": "A purple ballpoint pen with a clip and red push button."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-8.jpeg",
+      "desc": "볼펜",
+      "item": "I20",
+      "confidence": 0.98,
+      "status": "question",
+      "expected_status": [
+        "question",
+        "pass"
+      ],
+      "seconds": 1.85,
+      "subject": "보라색 볼펜",
+      "notes": "A purple pen with a clip and red slider is visible on the table."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-8.jpeg",
+      "desc": "볼펜",
+      "item": "I20",
+      "confidence": 0.98,
+      "status": "question",
+      "expected_status": [
+        "question",
+        "pass"
+      ],
+      "seconds": 2.24,
+      "subject": "파란색 다색 볼펜",
+      "notes": "A blue ballpoint pen with a red selector is lying on the table."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-9.jpeg",
+      "desc": "헤어롤 (기준표에 없음)",
+      "item": "X00",
+      "confidence": 0.91,
+      "status": "pass",
+      "expected_status": [
+        "pass",
+        "question"
+      ],
+      "seconds": 2.6,
+      "subject": "분홍색 플라스틱 헤어롤",
+      "notes": "A pink cylindrical hair roller with a perforated plastic body."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-9.jpeg",
+      "desc": "헤어롤 (기준표에 없음)",
+      "item": "X00",
+      "confidence": 0.88,
+      "status": "pass",
+      "expected_status": [
+        "pass",
+        "question"
+      ],
+      "seconds": 2.46,
+      "subject": "분홍색 플라스틱 헤어롤",
+      "notes": "A pink cylindrical hair roller with a perforated plastic body is visible."
+    },
+    {
+      "image": "final/KakaoTalk_Photo_2026-11-16-13-12-57-9.jpeg",
+      "desc": "헤어롤 (기준표에 없음)",
+      "item": "X00",
+      "confidence": 0.91,
+      "status": "pass",
+      "expected_status": [
+        "pass",
+        "question"
+      ],
+      "seconds": 2.61,
+      "subject": "분홍색 플라스틱 헤어롤",
+      "notes": "A pink cylindrical hair roller with a slotted plastic body."
+    }
+  ]
+}
