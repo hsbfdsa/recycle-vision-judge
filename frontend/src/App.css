@@ -631,12 +631,12 @@ body {
 
   .result-screen {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 4%;
   }
 
   .upload-card,
   .judgement-panel {
-    padding: 20px 16px;
+    padding: 5% 4%;
   }
 
   .preview {
@@ -646,7 +646,7 @@ body {
 
 @media (max-width: 400px) {
   .upload-area {
-    padding: 24px 18px;
+    padding: 6% 4%;
   }
 
   .upload-title h2 {
@@ -654,11 +654,11 @@ body {
   }
 
   .judgement-panel {
-    padding: 16px;
+    padding: 4%;
   }
 
   .result-card {
-    padding: 15px;
+    padding: 4%;
   }
 }
 /* 판정 중 표시 */
