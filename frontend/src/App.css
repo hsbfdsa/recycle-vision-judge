@@ -691,3 +691,13 @@ body {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+/* 체크박스 크기 통일 */
+.judgement-panel input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
