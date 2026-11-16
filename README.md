@@ -131,7 +131,7 @@ flowchart LR
 
 ## 기술 스택
 
-FastAPI · Pydantic v2 · OpenAI Vision API (gpt-4o-mini) · React (Vite) · GitHub Actions · Render · Vercel
+FastAPI · Pydantic v2 · OpenAI Vision API · React (Vite) · GitHub Actions · Render · Vercel
 
 ## 실행
 
