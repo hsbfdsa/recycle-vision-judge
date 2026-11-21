@@ -2,7 +2,7 @@
 
 > 사진 한 장으로 **지금 버려도 되는지**, 아니면 라벨 제거·헹굼처럼 **버리기 전에 무엇을 해야 하는지** 알려 주는 웹 서비스
 
-**[서비스 바로 써 보기](https://recycle-vision-judge.vercel.app)** · 2026 인공지능학과 대학 연합 해커톤 23팀 
+**[서비스 바로 써 보기](https://recycle-vision-judge.vercel.app)** · 2026 인공지능학과 대학 연합 해커톤 **특별상** 수상 (23팀)
 
 <p align="center"><img src="docs/demo.gif" width="300" alt="유리컵을 찍으면 유리병류가 아니라 특수규격마대에 버리라고 안내"><br><sub>유리컵을 찍으면 "유리병류가 아니에요"와 버리는 곳·방법을 안내합니다 · <a href="docs/RE-SCAN_demo.mp4">전체 시연 영상</a></sub></p>
 
