@@ -79,7 +79,7 @@ GitHub Actions의 `docker` 작업이 푸시마다 이미지를 빌드하고 컨�
 git clone https://github.com/hsbfdsa/recycle-vision-judge.git && cd recycle-vision-judge
 bash deploy/setup.sh            # 스왑 2GB, Docker 설치 → 로그아웃 후 다시 접속
 
-nano .env                       # OPENAI_API_KEY, ALLOWED_ORIGINS=https://recycle-vision-judge.vercel.app
+nano .env                       # OPENAI_API_KEY, ALLOWED_ORIGINS=https://recycle-vision-judge.vercel.app, (선택) SENTRY_DSN, APP_ENV=production
 cd deploy
 DOMAIN=3-34-1-2.sslip.io docker compose up -d --build   # IP 3.34.1.2인 경우
 docker compose ps               # api가 (healthy)인지 확인

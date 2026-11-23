@@ -30,3 +30,8 @@ ALLOWED_ORIGINS = [o.strip() for o in os.getenv("ALLOWED_ORIGINS", "http://local
 RATE_LIMIT_PER_MIN = int(os.getenv("RATE_LIMIT_PER_MIN", "20"))
 HOST = os.getenv("HOST", "127.0.0.1")              # 배포 서버에서는 0.0.0.0
 PORT = int(os.getenv("PORT", "5001"))              # Render 등은 PORT를 자동으로 넣어 줌
+
+# ---------- 운영 ----------
+# Sentry 에러 추적 주소. 비어 있으면 끔 (로컬·테스트에서는 보내지 않음)
+SENTRY_DSN = os.getenv("SENTRY_DSN", "")
+APP_ENV = os.getenv("APP_ENV", "local")            # Sentry에서 local / production 구분

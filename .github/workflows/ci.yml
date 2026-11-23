@@ -31,6 +31,8 @@ jobs:
           done
           docker logs api
           exit 1
+      - name: HEAD /health (가동 감시 도구 방식)
+        run: curl -fsSI http://localhost:5001/health
       - name: Smoke test /items
         run: curl -fsS http://localhost:5001/items | head -c 200
       - name: Container runs as non-root

@@ -1,7 +1,7 @@
 """API 서버 (FastAPI). 계약(요청·응답 형식)은 backend/API.md 참고.
 
 실행:  cd backend && uvicorn app:app --reload --port 5001
-배포:  uvicorn app:app --host 0.0.0.0 --port $PORT     (Render 등의 Start Command)
+배포:  deploy/docker-compose.yml (Docker + Caddy), docs/operations.md 참고
 문서:  http://127.0.0.1:5001/docs  (브라우저에서 바로 테스트 가능)
 """
 import json
@@ -15,7 +15,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from config import ALLOWED_ORIGINS, HOST, MAX_BYTES, PORT, RATE_LIMIT_PER_MIN
+from config import ALLOWED_ORIGINS, APP_ENV, HOST, MAX_BYTES, PORT, RATE_LIMIT_PER_MIN, SENTRY_DSN
 from judge import LABELS, MESSAGES, item_options, judge, normalize_item, RULES
 from schemas import ErrorResponse, JudgeResponse, Observation
 from concurrent.futures import ThreadPoolExecutor
@@ -23,6 +23,15 @@ from concurrent.futures import ThreadPoolExecutor
 from vision import compare_same, observe, prepare_image
 
 log = logging.getLogger("uvicorn.error")
+
+# ---------- 에러 추적 (Sentry) ----------
+# 처리하지 못한 예외와 log.exception(예: AI 호출 실패)이 Sentry로 모인다.
+# 사진·요청 본문과 사용자 IP는 보내지 않는다.
+if SENTRY_DSN:
+    import sentry_sdk
+
+    sentry_sdk.init(dsn=SENTRY_DSN, environment=APP_ENV, send_default_pii=False,
+                    max_request_body_size="never", traces_sample_rate=0.0)
 
 app = FastAPI(title="분리배출 판정 API", version="0.3.0")
 
@@ -56,7 +65,7 @@ _recent = defaultdict(deque)                            # IP → 최근 1분 요
 
 
 def _client_ip(request: Request) -> str:
-    # Render·Vercel 같은 배포 환경은 프록시를 거치므로 원래 IP가 X-Forwarded-For 맨 앞에 있다
+    # Caddy 같은 프록시를 거치면 원래 IP가 X-Forwarded-For 맨 앞에 있다
     fwd = request.headers.get("x-forwarded-for")
     return fwd.split(",")[0].strip() if fwd else (request.client.host if request.client else "?")
 
@@ -112,7 +121,8 @@ def _same_item(prev: bytes, cur: bytes) -> str:
 
 # ---------- API ----------
 
-@app.get("/health")
+# HEAD도 받는다: 가동 감시 도구(UptimeRobot 등)는 기본으로 HEAD 요청을 보낸다
+@app.api_route("/health", methods=["GET", "HEAD"])
 def health():
     return {"ok": True}
 

@@ -14,7 +14,7 @@
 | **평균 응답 시간** | 4.8초 → **3.3초** |
 | **지원 품목** | 56개 (상태 판정형 14 · 정보 안내형 42) + 기준이 없는 물건은 일반 원칙으로 안내 |
 | **자동 테스트** | AI 없이 도는 판정 63 · API 16 · 예외 상황 64건 (총 143건), push마다 GitHub Actions 실행 |
-| **배포 환경** | 백엔드를 Docker 이미지로 묶고, CI에서 컨테이너를 띄워 응답 · 비root 실행까지 검사 |
+| **운영** | AWS EC2에 Docker Compose로 배포, Caddy HTTPS, 헬스체크 · 외부 가동 감시 · Sentry 에러 추적 ([운영 구조](docs/operations.md)) |
 
 ---
 
@@ -174,8 +174,9 @@ flowchart LR
 - "AI는 관찰만, 판정은 규칙표"로 나누는 판정 구조 설계와 구현 (FastAPI, OpenAI Vision API)
 - 팀이 조사한 공공기관 분리배출 기준을 규칙표(`rules.json`)로 옮기고, 서버 시작 시 규칙표 오류를 막는 스키마 작성
 - 평가 세트(개선 30장 · 최종 검증 44장, 정답 · 측정 지표)를 설계하고, 실행 · 채점 결과로 오류 패턴을 찾아 프롬프트와 규칙 개선
-- AI 없이 도는 자동 테스트 143건과 GitHub Actions CI, Render(백엔드) · Vercel(프론트) 배포, 요청 수 제한 등 배포 보호
-- 해커톤 이후 백엔드를 Docker 이미지로 정리 (비root 실행, 헬스체크, 비밀값 제외). CI가 컨테이너를 띄워 `/health` · `/items` 응답을 확인 ([docs/docker.md](docs/docker.md))
+- AI 없이 도는 자동 테스트 143건과 GitHub Actions CI, 해커톤 당시 Render(백엔드) · Vercel(프론트) 배포, 요청 수 제한 등 배포 보호
+- 해커톤 이후 백엔드를 Docker 이미지로 정리하고 Render에서 AWS EC2로 이전. Docker Compose + Caddy(HTTPS 자동 인증서)로 배포하고 API 포트는 비공개 ([docs/docker.md](docs/docker.md))
+- 운영 감시: 컨테이너 헬스체크와 자동 재시작, UptimeRobot 가동 감시, Sentry 에러 추적, 판정별 처리 시간 JSON 로그 ([docs/operations.md](docs/operations.md))
 - 프론트와의 API 약속(`API.md`)을 정하고, 품목 검색 선택 · "품목이 달라요" 같은 판정 흐름 기능을 화면에 연결
 
 ## 폴더 구조
@@ -198,13 +199,15 @@ flowchart LR
 │   ├── test_judge.py · test_api.py · test_edge_cases.py   # AI 없이 도는 자동 테스트
 │   ├── run_tests.py · cases.json · cases_final.json      # 실제 사진 평가 (개선 세트 · 최종 검증 세트)
 │   └── results/                                          # 평가 결과 (개선 전 · 후 · 최종 검증)
+├── deploy/               # EC2 배포: docker-compose.yml (API + Caddy), Caddyfile, setup.sh
 ├── docs/docker.md        # Docker 실행 · 배포 방법과 이미지 설계 이유
+├── docs/operations.md    # 운영 구조, 감시 · 에러 추적, 장애 대응, 운영 기록
 └── .github/workflows/ci.yml   # 자동 테스트 → 컨테이너 빌드 · 실행 검사
 ```
 
 ## 기술 스택
 
-FastAPI · Pydantic v2 · OpenAI Vision API (gpt-4o-mini) · React (Vite) · Docker · GitHub Actions · Render · Vercel
+FastAPI · Pydantic v2 · OpenAI Vision API (gpt-4o-mini) · React (Vite) · Docker · Docker Compose · Caddy · AWS EC2 · GitHub Actions · Vercel · Sentry
 
 ## 실행
 
