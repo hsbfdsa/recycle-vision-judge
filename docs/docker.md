@@ -15,14 +15,14 @@
 docker build -t rescan-api backend
 
 # 2. 실행 — API 키는 이미지에 넣지 않고 실행할 때 넘긴다
-docker run --rm -p 5001:5001 --env-file backend/.env rescan-api
+docker run --rm -p 5001:5001 --env-file .env rescan-api
 
 # 3. 확인
 curl http://localhost:5001/health        # {"ok":true}
 open http://localhost:5001/docs          # API 문서
 ```
 
-`backend/.env` 예시 (저장소에 올리지 않는다):
+저장소 루트의 `.env` 예시 (저장소에 올리지 않는다):
 
 ```
 OPENAI_API_KEY=sk-...
@@ -41,7 +41,7 @@ docker build -t rescan-api backend
 
 # .env는 서버에서 직접 만든다 (scp나 에디터로)
 docker run -d --name rescan-api --restart unless-stopped \
-  -p 80:5001 --env-file backend/.env rescan-api
+  -p 80:5001 --env-file .env rescan-api
 
 docker ps                    # STATUS에 (healthy)가 보이면 정상
 docker logs -f rescan-api    # 요청 로그 확인
@@ -52,7 +52,7 @@ docker logs -f rescan-api    # 요청 로그 확인
 ```bash
 git pull && docker build -t rescan-api backend
 docker rm -f rescan-api && docker run -d --name rescan-api --restart unless-stopped \
-  -p 80:5001 --env-file backend/.env rescan-api
+  -p 80:5001 --env-file .env rescan-api
 ```
 
 ## 이미지 설계

@@ -14,6 +14,7 @@
 | **평균 응답 시간** | 4.8초 → **3.3초** |
 | **지원 품목** | 56개 (상태 판정형 14 · 정보 안내형 42) + 기준이 없는 물건은 일반 원칙으로 안내 |
 | **자동 테스트** | AI 없이 도는 판정 63 · API 16 · 예외 상황 64건 (총 143건), push마다 GitHub Actions 실행 |
+| **배포 환경** | 백엔드를 Docker 이미지로 묶고, CI에서 컨테이너를 띄워 응답 · 비root 실행까지 검사 |
 
 ---
 
@@ -174,6 +175,7 @@ flowchart LR
 - 팀이 조사한 공공기관 분리배출 기준을 규칙표(`rules.json`)로 옮기고, 서버 시작 시 규칙표 오류를 막는 스키마 작성
 - 평가 세트(개선 30장 · 최종 검증 44장, 정답 · 측정 지표)를 설계하고, 실행 · 채점 결과로 오류 패턴을 찾아 프롬프트와 규칙 개선
 - AI 없이 도는 자동 테스트 143건과 GitHub Actions CI, Render(백엔드) · Vercel(프론트) 배포, 요청 수 제한 등 배포 보호
+- 해커톤 이후 백엔드를 Docker 이미지로 정리 (비root 실행, 헬스체크, 비밀값 제외). CI가 컨테이너를 띄워 `/health` · `/items` 응답을 확인 ([docs/docker.md](docs/docker.md))
 - 프론트와의 API 약속(`API.md`)을 정하고, 품목 검색 선택 · "품목이 달라요" 같은 판정 흐름 기능을 화면에 연결
 
 ## 폴더 구조
@@ -186,6 +188,7 @@ flowchart LR
 │   ├── schemas.py        # Pydantic 스키마 (규칙표 · AI 관찰 · 응답)
 │   ├── rules.json        # 판정기준표: 품목 56개, 조건, 오염도 5단계, 배출 장소, 일반 원칙, 화면 문구
 │   ├── config.py         # 설정값 (.env로 변경)
+│   ├── Dockerfile        # 백엔드 컨테이너 이미지 (비root 실행, 헬스체크)
 │   └── API.md            # 프론트 ↔ 백엔드 약속
 ├── frontend/src/
 │   ├── App.jsx           # 촬영 → 판정 → 질문 · 재촬영 흐름
@@ -195,12 +198,13 @@ flowchart LR
 │   ├── test_judge.py · test_api.py · test_edge_cases.py   # AI 없이 도는 자동 테스트
 │   ├── run_tests.py · cases.json · cases_final.json      # 실제 사진 평가 (개선 세트 · 최종 검증 세트)
 │   └── results/                                          # 평가 결과 (개선 전 · 후 · 최종 검증)
-└── .github/workflows/ci.yml
+├── docs/docker.md        # Docker 실행 · 배포 방법과 이미지 설계 이유
+└── .github/workflows/ci.yml   # 자동 테스트 → 컨테이너 빌드 · 실행 검사
 ```
 
 ## 기술 스택
 
-FastAPI · Pydantic v2 · OpenAI Vision API (gpt-4o-mini) · React (Vite) · GitHub Actions · Render · Vercel
+FastAPI · Pydantic v2 · OpenAI Vision API (gpt-4o-mini) · React (Vite) · Docker · GitHub Actions · Render · Vercel
 
 ## 실행
 
@@ -213,6 +217,10 @@ cd backend && python app.py                 # http://127.0.0.1:5001/docs
 
 # 프론트엔드 (다른 터미널)
 cd frontend && npm install && npm run dev   # http://localhost:5173
+
+# 또는 Docker로 백엔드 실행 (API 키는 이미지에 넣지 않고 실행할 때 전달)
+docker build -t rescan-api backend
+docker run --rm -p 5001:5001 --env-file .env rescan-api   # curl localhost:5001/health
 
 # 테스트 (AI 호출 없음)
 python tests/test_judge.py && python tests/test_api.py && python tests/test_edge_cases.py

@@ -1,6 +1,6 @@
 # RE:SCAN 백엔드 컨테이너
 #   빌드:  docker build -t rescan-api backend
-#   실행:  docker run --rm -p 5001:5001 --env-file backend/.env rescan-api
+#   실행:  docker run --rm -p 5001:5001 --env-file .env rescan-api
 #   확인:  curl http://localhost:5001/health
 #
 # 이미지 안에는 비밀값(.env)을 넣지 않는다. API 키는 실행할 때 환경 변수로만 넘긴다.
