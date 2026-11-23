@@ -1,0 +1,27 @@
+# EC2 한 대에서 API + HTTPS 프록시(Caddy)를 함께 띄운다
+#   실행:  cd deploy && DOMAIN=<주소> docker compose up -d --build
+services:
+  api:
+    build: ../backend
+    env_file: ../.env          # API 키 등 비밀값은 서버에서만 만든다 (저장소에 올리지 않음)
+    restart: unless-stopped
+    expose:
+      - "5001"                 # 외부에 직접 열지 않고 Caddy를 통해서만 접근
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on: [api]
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: "${DOMAIN:?DOMAIN을 지정하세요. 예 3-34-1-2.sslip.io}"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data       # 발급받은 인증서 보관 (재시작해도 재발급하지 않게)
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

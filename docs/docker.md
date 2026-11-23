@@ -69,3 +69,27 @@ docker rm -f rescan-api && docker run -d --name rescan-api --restart unless-stop
 ## CI
 
 GitHub Actions의 `docker` 작업이 푸시마다 이미지를 빌드하고 컨테이너를 띄워 `/health`, `/items` 응답과 non-root 실행을 확인합니다. AI는 호출하지 않으므로 API 키가 필요 없습니다.
+
+## AWS EC2 + HTTPS (docker compose)
+
+`deploy/` 폴더에 API와 HTTPS 프록시(Caddy)를 함께 띄우는 설정이 있습니다. 도메인을 사지 않고 `IP주소.sslip.io` 주소로 Let's Encrypt 인증서를 받습니다.
+
+```bash
+# 서버(Ubuntu)에서
+git clone https://github.com/hsbfdsa/recycle-vision-judge.git && cd recycle-vision-judge
+bash deploy/setup.sh            # 스왑 2GB, Docker 설치 → 로그아웃 후 다시 접속
+
+nano .env                       # OPENAI_API_KEY, ALLOWED_ORIGINS=https://recycle-vision-judge.vercel.app
+cd deploy
+DOMAIN=3-34-1-2.sslip.io docker compose up -d --build   # IP 3.34.1.2인 경우
+docker compose ps               # api가 (healthy)인지 확인
+curl https://3-34-1-2.sslip.io/health
+```
+
+| 결정 | 이유 |
+|---|---|
+| API 포트를 외부에 열지 않음 | Caddy(80·443)를 통해서만 들어오게 해 HTTPS를 강제 |
+| Caddy가 인증서 자동 발급·갱신 | Vercel(HTTPS) 화면이 HTTP API를 부르면 브라우저가 막기 때문 |
+| `X-Forwarded-For`는 Caddy가 새로 씀 | 사용자가 헤더를 위조해 요청 제한을 피하지 못하게 |
+| 스왑 2GB | 프리티어 1GB 메모리에서 빌드 중 멈춤 방지 |
+

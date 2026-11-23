@@ -1,0 +1,8 @@
+# DOMAIN으로 들어온 요청을 API로 전달. 인증서(Let's Encrypt)는 Caddy가 자동 발급·갱신
+{$DOMAIN} {
+	encode gzip
+	request_body {
+		max_size 20MB
+	}
+	reverse_proxy api:5001
+}
