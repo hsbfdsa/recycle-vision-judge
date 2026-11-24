@@ -102,3 +102,12 @@ cd deploy && docker compose up -d --build && docker compose ps
 - 해결: `/health`가 GET과 HEAD를 모두 받도록 수정하고, CI의 docker 작업에 HEAD 요청 검사를 추가
 - 결과: 감시 Up 전환. 감시 도구를 바꿔도 같은 문제가 다시 생기지 않게 CI가 막음
 
+### 2026-11-24 · 재배포 뒤 API가 켜지지 않음 (약 1시간)
+
+- **증상**: 2단계(판정 기록 DB) 배포 뒤 서비스 화면에 "서버에 연결할 수 없어요". `/health`가 빈 응답(502)
+- **확인**: `docker compose ps`에서 api만 `Restarting`, db · caddy는 정상. 로그에 `TypeError: Unknown option 'send_default_pii'`
+- **원인**: `requirements.txt`가 `sentry-sdk>=2.0`으로 상한이 없어, 이미지를 다시 빌드할 때 새 메이저 버전이 설치됨. 그 버전에서 쓰던 옵션이 없어져 앱이 시작되지 않음. CI에는 Sentry 주소(DSN)가 없어서 초기화 코드가 실행되지 않아 잡지 못함
+- **조치**: `sentry-sdk[fastapi]>=2.0,<3`으로 고정하고 api만 다시 빌드
+- **재발 방지**: CI에 가짜 DSN을 넣어 운영과 같은 설정으로 컨테이너가 켜지는지 검사 추가. 외부 라이브러리는 메이저 버전 상한을 둠
+- **배운 점**: 테스트가 운영과 다른 설정으로만 돌면 운영에서만 나는 오류는 못 잡는다. 재빌드는 의존성까지 바뀌는 배포라는 점도 확인
+

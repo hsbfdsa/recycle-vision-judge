@@ -73,6 +73,18 @@ jobs:
         run: curl -fsS http://localhost:5001/items | head -c 200
       - name: 관리자 기능은 토큰이 없으면 숨김 (404)
         run: test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:5001/admin)" = "404"
+      # 운영과 같은 설정(Sentry 켜짐)으로도 켜지는지. 2026-11-24 장애: CI에는 DSN이 없어 Sentry 초기화가
+      # 실행되지 않았고, 새 메이저 버전에서 없어진 옵션 때문에 운영 서버에서만 API가 켜지지 않았다
+      - name: Sentry를 켠 설정으로도 시작되는지
+        run: |
+          docker run -d --name api-sentry -p 5002:5001 -e OPENAI_API_KEY=dummy \
+            -e SENTRY_DSN=https://public@o0.ingest.sentry.io/0 -e APP_ENV=ci rescan-api
+          for i in $(seq 1 30); do
+            if curl -fsS http://localhost:5002/health; then echo; exit 0; fi
+            sleep 1
+          done
+          docker logs api-sentry
+          exit 1
       - name: Container runs as non-root
         run: test "$(docker exec api id -u)" != "0"
       - name: Image size
