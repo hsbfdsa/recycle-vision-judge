@@ -21,17 +21,21 @@ Claude Desktop 같은 AI 에이전트가 "이 사진 버려도 돼?"라는 질�
 
 ## 설치와 연결 (Claude Desktop)
 
+Python 3.10 이상이 필요합니다. macOS 기본 Python(3.9)이면 3.12를 따로 설치하고 가상환경을 만듭니다.
+
 ```bash
-pip install -r mcp_server/requirements.txt      # Python 3.10 이상
+brew install python@3.12
+python3.12 -m venv mcp_server/.venv
+mcp_server/.venv/bin/pip install -r mcp_server/requirements.txt
 ```
 
-Claude Desktop 설정 파일(`~/Library/Application Support/Claude/claude_desktop_config.json`)에 추가:
+Claude Desktop 설정 파일(`~/Library/Application Support/Claude/claude_desktop_config.json`)의 최상위에 추가합니다. 기존 항목은 그대로 둡니다.
 
 ```json
 {
   "mcpServers": {
     "rescan": {
-      "command": "python3",
+      "command": "/절대/경로/recycle-vision-judge/mcp_server/.venv/bin/python",
       "args": ["/절대/경로/recycle-vision-judge/mcp_server/server.py"]
     }
   }
@@ -45,6 +49,23 @@ Claude Desktop을 다시 열고 이렇게 물어보면 됩니다.
 - 판정이 질문을 돌려주면("헹궜나요?") 답한 내용이 `answers`로 다시 전달됩니다.
 
 다른 판정 서버를 쓰려면 환경 변수 `RESCAN_API_URL`을 지정합니다 (기본값: 운영 서버).
+
+## 실제 연결 확인 (2026-11-24)
+
+Claude Desktop(macOS)에 연결해 운영 서버까지 호출했습니다.
+
+![Claude Desktop에서 rescan 도구로 생수병 배출 기준을 조회한 화면](../docs/mcp_claude_desktop.png)
+
+| 확인 | 결과 |
+|---|---|
+| "생수병" 조회 | `search_items` → P01 투명 페트병, `get_disposal_rule` → 버리는 곳·순서·필수 조건·출처(S03, S04, S06) |
+| 과자 봉지 사진 판정 | `judge_photo` → AWS 운영 API → P10 비닐류, 아파트/주택별 배출 장소 |
+
+연결하면서 찾은 것:
+
+- **웹 검색이 켜져 있으면 에이전트가 도구 대신 검색을 고를 수 있다.** 첫 질문에서는 도구를 쓰지 않고 웹 문서로 답했다. 도구 이름을 질문에 넣거나 검색을 끄면 도구를 썼다. 도구 설명(description)을 "분리배출 질문이면 먼저 이 도구"처럼 더 분명히 쓰는 것이 다음 개선점이다.
+- **출처가 코드로만 나간다.** 에이전트가 S03이 어떤 문서인지 사용자에게 알려 주지 못했다. 출처 목록은 판정기준표의 출처 탭에만 있어서, rules.json에 출처 이름과 링크를 함께 넣어야 한다.
+- **비닐류 기준에 고체 내용물 조건이 없다.** 과자가 남은 봉지를 "비우세요" 없이 통과시켰고, 없는 플라스틱 부품을 있다고 본 체크리스트도 붙었다. 평가 사진에 추가해 기준을 고칠 항목이다.
 
 ## 테스트
 

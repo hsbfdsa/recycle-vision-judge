@@ -14,7 +14,7 @@
 | **평균 응답 시간** | 4.8초 → **3.3초** |
 | **지원 품목** | 56개 (상태 판정형 14 · 정보 안내형 42) + 기준이 없는 물건은 일반 원칙으로 안내 |
 | **자동 테스트** | AI 없이 도는 판정 63 · API 16 · 예외 상황 64건 (총 143건), push마다 GitHub Actions 실행 |
-| **MCP 서버** | 판정·배출 기준 조회를 MCP 도구 3개로 공개해 AI 에이전트(Claude Desktop 등)가 호출 ([mcp_server](mcp_server/README.md)) |
+| **MCP 서버** | 판정·배출 기준 조회를 MCP 도구 3개로 공개해 AI 에이전트(Claude Desktop 등)가 호출. Claude Desktop에 연결해 운영 서버까지 확인 ([mcp_server](mcp_server/README.md)) |
 | **운영** | AWS EC2에 Docker Compose로 배포, Caddy HTTPS, 헬스체크 · 외부 가동 감시 · Sentry 에러 추적 ([운영 구조](docs/operations.md)) |
 
 ---
@@ -178,7 +178,7 @@ flowchart LR
 - AI 없이 도는 자동 테스트 143건과 GitHub Actions CI, 해커톤 당시 Render(백엔드) · Vercel(프론트) 배포, 요청 수 제한 등 배포 보호
 - 해커톤 이후 백엔드를 Docker 이미지로 정리하고 Render에서 AWS EC2로 이전. Docker Compose + Caddy(HTTPS 자동 인증서)로 배포하고 API 포트는 비공개 ([docs/docker.md](docs/docker.md))
 - 운영 감시: 컨테이너 헬스체크와 자동 재시작, UptimeRobot 가동 감시, Sentry 에러 추적, 판정별 처리 시간 JSON 로그 ([docs/operations.md](docs/operations.md))
-- 판정과 배출 기준 조회를 MCP 서버로 공개. 에이전트는 규칙표 결과만 전달하도록 설계하고, 판정은 배포된 API에 맡겨 키를 사용자 기기에 두지 않음 ([mcp_server/README.md](mcp_server/README.md))
+- 판정과 배출 기준 조회를 MCP 서버로 공개. 에이전트는 규칙표 결과만 전달하도록 설계하고, 판정은 배포된 API에 맡겨 키를 사용자 기기에 두지 않음. Claude Desktop 연결 테스트에서 비닐류 기준의 내용물 조건 누락과 출처가 코드로만 나가는 문제를 찾아 개선 항목으로 정리 ([mcp_server/README.md](mcp_server/README.md))
 - 프론트와의 API 약속(`API.md`)을 정하고, 품목 검색 선택 · "품목이 달라요" 같은 판정 흐름 기능을 화면에 연결
 
 ## 폴더 구조
