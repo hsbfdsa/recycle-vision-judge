@@ -13,6 +13,18 @@ jobs:
       - run: python tests/test_judge.py
       - run: python tests/test_api.py
       - run: python tests/test_edge_cases.py
+  # MCP 서버: 도구 목록, 조회, 사진 판정(실제 백엔드 앱에 연결, AI는 가짜)
+  mcp:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r backend/requirements.txt -r mcp_server/requirements.txt
+      - run: python tests/test_mcp.py
+
   # 컨테이너 이미지가 빌드되고 실제로 떠서 응답하는지 확인 (AI 호출 없음)
   docker:
     runs-on: ubuntu-latest
