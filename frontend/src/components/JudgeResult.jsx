@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ItemPicker from "./ItemPicker";
+import Feedback from "./Feedback";
 import { getItems } from "../services/judgeApi";
 
 // 상태별 화면. 백엔드 judgement.status 와 1:1 대응
@@ -213,6 +214,11 @@ function JudgeResult({ result, loading, onRetake, onAnswer, onRestart, onCorrect
       </div>
 
       <p className="attempt">촬영 {j.attempt} / {j.max_attempts}</p>
+
+      {/* 판정이 맞았는지 사용자 의견 (질문에 답하는 중에는 묻지 않음). 기록이 꺼져 있으면 judgment_id가 없어 숨김 */}
+      {result.judgment_id && j.status !== "question" && (
+        <Feedback key={result.judgment_id} judgmentId={result.judgment_id} />
+      )}
 
       {/* 판정 근거: AI가 본 것 + 기준 출처 (발표 때 신뢰도 설명용) */}
       {result.observation && (

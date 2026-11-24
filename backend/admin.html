@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>RE:SCAN 관리자</title>
+<style>
+  :root { --bg:#f6f5f1; --card:#fff; --fg:#141414; --sub:#6b6b66; --line:#e2e1db; --acc:#e8562a; --ok:#2f8f5b; --bad:#c43c2c; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#151514; --card:#1e1e1c; --fg:#efeee9; --sub:#9a9a94; --line:#2e2e2b; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:14px/1.55 -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", sans-serif; }
+  main { max-width:1080px; margin:0 auto; padding:24px 16px 60px; }
+  h1 { font-size:20px; margin:0 0 4px; } .sub { color:var(--sub); font-size:13px; }
+  header { display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap; margin-bottom:20px; }
+  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  input, select, button { font:inherit; padding:7px 10px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--fg); }
+  button { cursor:pointer; } button.primary { background:var(--fg); color:var(--bg); border-color:var(--fg); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom:16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:14px 16px; }
+  .k { font-size:12px; color:var(--sub); } .v { font-size:26px; font-weight:700; margin-top:2px; font-variant-numeric:tabular-nums; }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+  @media (max-width:720px) { .two { grid-template-columns:1fr; } }
+  h2 { font-size:14px; margin:0 0 10px; }
+  .bar { display:flex; align-items:center; gap:8px; margin:4px 0; font-size:13px; }
+  .bar span:first-child { width:96px; color:var(--sub); flex-shrink:0; }
+  .bar i { display:block; height:10px; background:var(--fg); border-radius:2px; min-width:2px; }
+  .bar b { font-weight:600; font-variant-numeric:tabular-nums; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th, td { text-align:left; padding:8px 6px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { font-weight:600; color:var(--sub); font-size:12px; }
+  .tag { display:inline-block; padding:1px 7px; border-radius:10px; font-size:12px; border:1px solid var(--line); }
+  .tag.ok { color:var(--ok); border-color:var(--ok); } .tag.bad { color:var(--bad); border-color:var(--bad); }
+  .seen { color:var(--sub); font-size:12px; word-break:break-all; }
+  .scroll { overflow-x:auto; }
+  #msg { color:var(--bad); margin:8px 0; min-height:1em; }
+  .hidden { display:none; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div><h1>RE:SCAN 관리자</h1><div class="sub">판정 기록과 사용자 피드백. 사진과 IP는 저장하지 않습니다.</div></div>
+    <form id="login" class="row">
+      <input id="token" type="password" placeholder="관리자 토큰" autocomplete="current-password" aria-label="관리자 토큰">
+      <select id="days" aria-label="기간"><option value="1">1일</option><option value="7" selected>7일</option><option value="30">30일</option></select>
+      <button class="primary" type="submit">보기</button>
+    </form>
+  </header>
+  <div id="msg" role="status"></div>
+
+  <section id="dash" class="hidden">
+    <div class="grid">
+      <div class="card"><div class="k">판정 수</div><div class="v" id="c-total">-</div></div>
+      <div class="card"><div class="k">피드백 정답률</div><div class="v" id="c-acc">-</div><div class="sub" id="c-acc-sub"></div></div>
+      <div class="card"><div class="k">응답 시간 평균 / p95</div><div class="v" id="c-ms">-</div><div class="sub">AI를 부른 판정만</div></div>
+      <div class="card"><div class="k">통과 비율</div><div class="v" id="c-pass">-</div><div class="sub">전체 판정 중 바로 버려도 된 비율</div></div>
+    </div>
+    <div class="two">
+      <div class="card"><h2>결과별</h2><div id="by-status"></div></div>
+      <div class="card"><h2>날짜별 판정 수</h2><div id="daily"></div></div>
+    </div>
+    <div class="card" style="margin-bottom:16px"><h2>품목별 (오답 = 사용자가 '틀렸어요')</h2>
+      <div class="scroll"><table><thead><tr><th>품목</th><th>판정</th><th>오답</th></tr></thead><tbody id="by-item"></tbody></table></div></div>
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:8px">
+        <h2 style="margin:0">최근 판정</h2>
+        <select id="only" aria-label="목록 필터"><option value="wrong">틀렸어요만</option><option value="feedback">피드백 있는 것</option><option value="">전체</option></select>
+      </div>
+      <div class="scroll"><table><thead><tr><th>시각</th><th>품목</th><th>결과</th><th>피드백</th><th>AI가 본 값 · 의견</th></tr></thead><tbody id="list"></tbody></table></div>
+    </div>
+  </section>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const REASON = { item: "품목", state: "상태", place: "배출 장소", other: "기타" };
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+let token = "";
+try { token = sessionStorage.getItem("rescan_admin") || ""; } catch {}
+$("token").value = token;
+
+async function api(path) {
+  const r = await fetch(path, { headers: { Authorization: "Bearer " + token } });
+  const body = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(body?.error?.message || "요청 실패 (" + r.status + ")");
+  return body;
+}
+
+function bars(el, entries) {
+  const max = Math.max(1, ...entries.map(([, n]) => n));
+  el.innerHTML = entries.length ? entries.map(([k, n]) =>
+    `<div class="bar"><span>${esc(k)}</span><i style="width:${Math.round((n / max) * 70)}%"></i><b>${n}</b></div>`).join("")
+    : '<div class="sub">기록 없음</div>';
+}
+
+async function loadList() {
+  const { items } = await api("/admin/api/judgments?limit=100&only=" + $("only").value);
+  $("list").innerHTML = items.length ? items.map((r) => {
+    const fb = r.correct === true ? '<span class="tag ok">맞았어요</span>'
+      : r.correct === false ? `<span class="tag bad">틀렸어요${r.reason ? " · " + esc(REASON[r.reason] || r.reason) : ""}</span>` : "";
+    const seen = Object.entries(r.seen || {}).map(([k, v]) => `${esc(k)}=${esc(v)}`).join(", ");
+    const t = new Date(r.created_at).toLocaleString("ko-KR", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
+    return `<tr><td>${t}</td><td>${esc(r.item)}</td><td>${esc(r.status)}${r.reused ? ' <span class="sub">(답변)</span>' : ""}</td>
+      <td>${fb}</td><td><div class="seen">${seen}</div>${r.comment ? `<div>“${esc(r.comment)}”</div>` : ""}</td></tr>`;
+  }).join("") : '<tr><td colspan="5" class="sub">해당하는 판정이 없어요</td></tr>';
+}
+
+async function load() {
+  $("msg").textContent = "";
+  try {
+    const s = await api("/admin/api/summary?days=" + $("days").value);
+    $("c-total").textContent = s.judgments;
+    $("c-acc").textContent = s.feedback.accuracy == null ? "-" : Math.round(s.feedback.accuracy * 100) + "%";
+    $("c-acc-sub").textContent = `맞았어요 ${s.feedback.correct} · 틀렸어요 ${s.feedback.wrong}`;
+    $("c-ms").textContent = s.latency_ms.avg == null ? "-" : `${(s.latency_ms.avg / 1000).toFixed(1)} / ${(s.latency_ms.p95 / 1000).toFixed(1)}초`;
+    $("c-pass").textContent = s.judgments ? Math.round(((s.by_status.pass || 0) / s.judgments) * 100) + "%" : "-";
+    bars($("by-status"), Object.entries(s.by_status).sort((a, b) => b[1] - a[1]));
+    bars($("daily"), Object.entries(s.daily));
+    $("by-item").innerHTML = s.by_item.map((r) =>
+      `<tr><td>${esc(r.item)}</td><td>${r.n}</td><td>${r.wrong ? `<span class="tag bad">${r.wrong}</span>` : 0}</td></tr>`).join("")
+      || '<tr><td colspan="3" class="sub">기록 없음</td></tr>';
+    await loadList();
+    $("dash").classList.remove("hidden");
+  } catch (e) {
+    $("dash").classList.add("hidden");
+    $("msg").textContent = e.message;
+  }
+}
+
+$("login").addEventListener("submit", (e) => {
+  e.preventDefault();
+  token = $("token").value.trim();
+  try { sessionStorage.setItem("rescan_admin", token); } catch {}
+  load();
+});
+$("days").addEventListener("change", () => token && load());
+$("only").addEventListener("change", () => loadList().catch((e) => ($("msg").textContent = e.message)));
+if (token) load();
+</script>
+</body>
+</html>

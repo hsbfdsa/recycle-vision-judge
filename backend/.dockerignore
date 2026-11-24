@@ -10,3 +10,5 @@ uploads/
 .DS_Store
 Dockerfile
 .dockerignore
+data/
+*.db

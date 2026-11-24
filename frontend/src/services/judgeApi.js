@@ -66,3 +66,24 @@ export async function judgeImage({ image, attempt, prevImage = null, prevItem = 
   }
   return data;
 }
+
+// 결과 화면의 "맞았어요 / 틀렸어요". judgmentId는 판정 응답의 judgment_id
+export async function sendFeedback({ judgmentId, correct, reason = null, comment = "" }) {
+  if (USE_MOCK) {
+    await new Promise((r) => setTimeout(r, 300));
+    return { ok: true };
+  }
+  let response;
+  try {
+    response = await fetch(`${API_URL}/feedback`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ judgment_id: judgmentId, correct, reason, comment: comment.trim() || null }),
+    });
+  } catch {
+    throw new Error("서버에 연결할 수 없어요. 잠시 후 다시 시도해 주세요.");
+  }
+  const data = await response.json().catch(() => null);
+  if (!response.ok) throw new Error(data?.error?.message || "의견을 보내지 못했어요.");
+  return data;
+}

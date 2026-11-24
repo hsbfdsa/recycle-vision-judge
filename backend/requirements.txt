@@ -4,6 +4,9 @@ fastapi>=0.115
 uvicorn>=0.30
 python-multipart>=0.0.9
 pillow>=10.0
+# 판정 기록 DB (운영은 PostgreSQL, 로컬·테스트는 SQLite)
+sqlalchemy>=2.0,<3
+psycopg[binary]>=3.2
 # 운영 중 에러 추적 (SENTRY_DSN이 있을 때만 켜짐)
 sentry-sdk[fastapi]>=2.0
 # 아이폰 HEIC 사진 지원 (선택)

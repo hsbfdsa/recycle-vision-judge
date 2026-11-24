@@ -3,6 +3,17 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
+    # 판정 기록 DB 테스트를 운영과 같은 PostgreSQL로도 돌린다
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: rescan
+          POSTGRES_PASSWORD: rescan
+          POSTGRES_DB: rescan
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U rescan" --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -13,6 +24,14 @@ jobs:
       - run: python tests/test_judge.py
       - run: python tests/test_api.py
       - run: python tests/test_edge_cases.py
+      - name: 판정 기록 · 피드백 · 관리자 (SQLite)
+        run: python tests/test_store.py
+      - name: 판정 기록 · 피드백 · 관리자 (PostgreSQL)
+        run: python tests/test_store.py
+        env:
+          TEST_DATABASE_URL: postgresql+psycopg://rescan:rescan@localhost:5432/rescan
+      - name: 평가 결과 비교 스크립트
+        run: python tests/test_compare_runs.py
   # MCP 서버: 도구 목록, 조회, 사진 판정(실제 백엔드 앱에 연결, AI는 가짜)
   mcp:
     runs-on: ubuntu-latest
@@ -31,6 +50,11 @@ jobs:
     needs: test
     steps:
       - uses: actions/checkout@v4
+      - name: docker compose 설정 검사 (API + DB + Caddy)
+        run: touch .env && docker compose -f deploy/docker-compose.yml config -q
+        env:
+          DOMAIN: example.sslip.io
+          POSTGRES_PASSWORD: dummy
       - name: Build image
         run: docker build -t rescan-api backend
       - name: Run container
@@ -47,6 +71,8 @@ jobs:
         run: curl -fsSI http://localhost:5001/health
       - name: Smoke test /items
         run: curl -fsS http://localhost:5001/items | head -c 200
+      - name: 관리자 기능은 토큰이 없으면 숨김 (404)
+        run: test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:5001/admin)" = "404"
       - name: Container runs as non-root
         run: test "$(docker exec api id -u)" != "0"
       - name: Image size

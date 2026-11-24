@@ -13,9 +13,10 @@
 | **품목 정확도** | 81.1% → **94.4%** |
 | **평균 응답 시간** | 4.8초 → **3.3초** |
 | **지원 품목** | 56개 (상태 판정형 14 · 정보 안내형 42) + 기준이 없는 물건은 일반 원칙으로 안내 |
-| **자동 테스트** | AI 없이 도는 판정 63 · API 16 · 예외 상황 64건 (총 143건), push마다 GitHub Actions 실행 |
+| **자동 테스트** | AI 없이 도는 판정 63 · API 16 · 예외 상황 64 · 기록·피드백·관리자 24 · 평가 비교 9 · MCP 10건 (총 186건), push마다 GitHub Actions 실행. DB 테스트는 SQLite와 PostgreSQL 양쪽에서 |
 | **MCP 서버** | 판정·배출 기준 조회를 MCP 도구 3개로 공개해 AI 에이전트(Claude Desktop 등)가 호출. Claude Desktop에 연결해 운영 서버까지 확인 ([mcp_server](mcp_server/README.md)) |
 | **운영** | AWS EC2에 Docker Compose로 배포, Caddy HTTPS, 헬스체크 · 외부 가동 감시 · Sentry 에러 추적 ([운영 구조](docs/operations.md)) |
+| **개선 루프** | 판정 기록(PostgreSQL, 사진 · IP 미저장) → 사용자 "맞았어요 / 틀렸어요" → 관리자 화면 → 평가 세트 후보 → 전후 비교 ([운영 데이터](docs/operations.md#운영-데이터-판정-기록과-피드백)) |
 
 ---
 
@@ -33,6 +34,8 @@
 | 버리는 방법과 장소 | 단계별 방법, 아파트 · 단독주택별 배출 장소, 주의사항, 출처 |
 | 기준이 없는 물건 | "지원 안 함"으로 끝내지 않고 일반쓰레기 · 불연성 · 대형폐기물 · 전자제품 원칙으로 안내 |
 | 품목이 달라요 | AI가 틀려도 검색해서 고르면 그 품목 기준으로 지금 사진을 다시 판정 |
+| 판정 피드백 | 결과마다 "맞았어요 / 틀렸어요"와 틀린 부분(품목 · 상태 · 버리는 곳). 모인 오답은 다음 평가 세트 후보가 됨 |
+| 관리자 화면 | `/admin`에서 판정 수 · 피드백 정답률 · 응답 시간 · 품목별 오답 · 틀린 사례 (토큰 보호) |
 
 ## 핵심 설계: AI는 관찰, 판정은 규칙표
 
@@ -178,6 +181,7 @@ flowchart LR
 - AI 없이 도는 자동 테스트 143건과 GitHub Actions CI, 해커톤 당시 Render(백엔드) · Vercel(프론트) 배포, 요청 수 제한 등 배포 보호
 - 해커톤 이후 백엔드를 Docker 이미지로 정리하고 Render에서 AWS EC2로 이전. Docker Compose + Caddy(HTTPS 자동 인증서)로 배포하고 API 포트는 비공개 ([docs/docker.md](docs/docker.md))
 - 운영 감시: 컨테이너 헬스체크와 자동 재시작, UptimeRobot 가동 감시, Sentry 에러 추적, 판정별 처리 시간 JSON 로그 ([docs/operations.md](docs/operations.md))
+- 운영 데이터로 개선하는 흐름: 판정 기록 DB(SQLAlchemy, 운영 PostgreSQL · 로컬 SQLite, 사진 · IP 미저장), 피드백 API와 버튼, 토큰으로 보호한 관리자 화면, 오답을 평가 세트 후보로 뽑는 스크립트와 평가 전후 비교 스크립트. DB가 죽어도 판정은 계속되도록 저장 실패를 판정과 분리
 - 판정과 배출 기준 조회를 MCP 서버로 공개. 에이전트는 규칙표 결과만 전달하도록 설계하고, 판정은 배포된 API에 맡겨 키를 사용자 기기에 두지 않음. Claude Desktop 연결 테스트에서 비닐류 기준의 내용물 조건 누락과 출처가 코드로만 나가는 문제를 찾아 개선 항목으로 정리 ([mcp_server/README.md](mcp_server/README.md))
 - 프론트와의 API 약속(`API.md`)을 정하고, 품목 검색 선택 · "품목이 달라요" 같은 판정 흐름 기능을 화면에 연결
 
@@ -185,7 +189,9 @@ flowchart LR
 
 ```
 ├── backend/
-│   ├── app.py            # FastAPI 서버 (/judge, /items, /health), 오류 형식 통일, 요청 수 제한, 요청 로그
+│   ├── app.py            # FastAPI 서버 (/judge, /feedback, /items, /health, /admin), 오류 형식 통일, 요청 수 제한, 요청 로그
+│   ├── store.py          # 판정 기록 · 피드백 저장 (SQLAlchemy: 운영 PostgreSQL, 로컬 SQLite) + 관리자 집계
+│   ├── admin.html        # 관리자 화면 (판정 수, 정답률, 응답 시간, 틀린 사례)
 │   ├── vision.py         # 사진 전처리 + AI 관찰, 재촬영 시 같은 물건 비교 (프롬프트는 rules.json에서 생성)
 │   ├── judge.py          # 규칙표 기반 판정
 │   ├── schemas.py        # Pydantic 스키마 (규칙표 · AI 관찰 · 응답)
@@ -195,14 +201,15 @@ flowchart LR
 │   └── API.md            # 프론트 ↔ 백엔드 약속
 ├── frontend/src/
 │   ├── App.jsx           # 촬영 → 판정 → 질문 · 재촬영 흐름
-│   ├── components/       # JudgeResult (결과 화면), ItemPicker (품목 검색 선택)
+│   ├── components/       # JudgeResult (결과 화면), ItemPicker (품목 검색 선택), Feedback (맞았어요 / 틀렸어요)
 │   └── services/         # judgeApi (서버 호출 · 사진 축소), responses.json (Mock)
 ├── tests/
-│   ├── test_judge.py · test_api.py · test_edge_cases.py   # AI 없이 도는 자동 테스트
+│   ├── test_judge.py · test_api.py · test_edge_cases.py · test_store.py   # AI 없이 도는 자동 테스트
+│   ├── compare_runs.py · export_feedback.py               # 평가 전후 비교, 오답 → 평가 세트 후보
 │   ├── run_tests.py · cases.json · cases_final.json      # 실제 사진 평가 (개선 세트 · 최종 검증 세트)
 │   └── results/                                          # 평가 결과 (개선 전 · 후 · 최종 검증)
 ├── mcp_server/           # MCP 서버: search_items, get_disposal_rule, judge_photo
-├── deploy/               # EC2 배포: docker-compose.yml (API + Caddy), Caddyfile, setup.sh
+├── deploy/               # EC2 배포: docker-compose.yml (API + PostgreSQL + Caddy), Caddyfile, setup.sh, backup.sh
 ├── docs/docker.md        # Docker 실행 · 배포 방법과 이미지 설계 이유
 ├── docs/operations.md    # 운영 구조, 감시 · 에러 추적, 장애 대응, 운영 기록
 └── .github/workflows/ci.yml   # 자동 테스트 → 컨테이너 빌드 · 실행 검사
@@ -210,7 +217,7 @@ flowchart LR
 
 ## 기술 스택
 
-FastAPI · Pydantic v2 · OpenAI Vision API (gpt-4o-mini) · React (Vite) · Docker · Docker Compose · Caddy · AWS EC2 · GitHub Actions · Vercel · Sentry · MCP
+FastAPI · Pydantic v2 · SQLAlchemy · PostgreSQL · OpenAI Vision API (gpt-4o-mini) · React (Vite) · Docker · Docker Compose · Caddy · AWS EC2 · GitHub Actions · Vercel · Sentry · MCP
 
 ## 실행
 
@@ -229,5 +236,8 @@ docker build -t rescan-api backend
 docker run --rm -p 5001:5001 --env-file .env rescan-api   # curl localhost:5001/health
 
 # 테스트 (AI 호출 없음)
-python tests/test_judge.py && python tests/test_api.py && python tests/test_edge_cases.py
+python tests/test_judge.py && python tests/test_api.py && python tests/test_edge_cases.py && python tests/test_store.py
+
+# 평가 전후 비교 (실제 사진 평가 결과 두 개)
+python tests/compare_runs.py tests/results/before.json tests/results/after.json
 ```

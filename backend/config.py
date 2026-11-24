@@ -35,3 +35,10 @@ PORT = int(os.getenv("PORT", "5001"))              # Render 등은 PORT를 자�
 # Sentry 에러 추적 주소. 비어 있으면 끔 (로컬·테스트에서는 보내지 않음)
 SENTRY_DSN = os.getenv("SENTRY_DSN", "")
 APP_ENV = os.getenv("APP_ENV", "local")            # Sentry에서 local / production 구분
+
+# ---------- 기록 (DB) ----------
+# 운영: postgresql+psycopg://사용자:비밀번호@db:5432/rescan  (deploy/docker-compose.yml)
+# 비우면 backend/data/rescan.db (SQLite). 사진·IP는 어디에도 저장하지 않는다
+DATABASE_URL = os.getenv("DATABASE_URL") or "sqlite:///" + os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "rescan.db")
+# 관리자 화면(/admin) 토큰. 비어 있으면 관리자 기능 전체를 끈다 (404)
+ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "")

@@ -1,12 +1,36 @@
-# EC2 한 대에서 API + HTTPS 프록시(Caddy)를 함께 띄운다
-#   실행:  cd deploy && DOMAIN=<주소> docker compose up -d --build
+# EC2 한 대에서 API + DB(PostgreSQL) + HTTPS 프록시(Caddy)를 함께 띄운다
+#   준비:  deploy/.env 에 DOMAIN, POSTGRES_PASSWORD (저장소에 올리지 않음, docs/operations.md 참고)
+#   실행:  cd deploy && docker compose up -d --build
 services:
   api:
     build: ../backend
     env_file: ../.env          # API 키 등 비밀값은 서버에서만 만든다 (저장소에 올리지 않음)
+    environment:
+      DATABASE_URL: "postgresql+psycopg://rescan:${POSTGRES_PASSWORD:?deploy/.env에 POSTGRES_PASSWORD를 지정하세요}@db:5432/rescan"
     restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
     expose:
       - "5001"                 # 외부에 직접 열지 않고 Caddy를 통해서만 접근
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: rescan
+      POSTGRES_DB: rescan
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?deploy/.env에 POSTGRES_PASSWORD를 지정하세요}"
+    # 메모리 1GB 서버에 맞춰 작게
+    command: ["postgres", "-c", "shared_buffers=64MB", "-c", "max_connections=20"]
+    volumes:
+      - pg_data:/var/lib/postgresql/data   # 컨테이너를 지워도 기록은 남는다
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rescan -d rescan"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    # 포트를 열지 않는다: api 컨테이너만 내부 네트워크로 접근
 
   caddy:
     image: caddy:2
@@ -23,5 +47,6 @@ services:
       - caddy_config:/config
 
 volumes:
+  pg_data:
   caddy_data:
   caddy_config:

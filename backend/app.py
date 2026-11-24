@@ -6,18 +6,22 @@
 """
 import json
 import logging
+import os
+import secrets
 import time
 from collections import defaultdict, deque
 from typing import Optional
 
-from fastapi import FastAPI, File, Form, Request, UploadFile
+from fastapi import Depends, FastAPI, File, Form, Request, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 
-from config import ALLOWED_ORIGINS, APP_ENV, HOST, MAX_BYTES, PORT, RATE_LIMIT_PER_MIN, SENTRY_DSN
+import store
+from config import (ADMIN_TOKEN, ALLOWED_ORIGINS, APP_ENV, DATABASE_URL, HOST, MAX_BYTES, MODEL, PORT,
+                    RATE_LIMIT_PER_MIN, SENTRY_DSN)
 from judge import LABELS, MESSAGES, item_options, judge, normalize_item, RULES
-from schemas import ErrorResponse, JudgeResponse, Observation
+from schemas import ErrorResponse, FeedbackRequest, JudgeResponse, Observation
 from concurrent.futures import ThreadPoolExecutor
 
 from vision import compare_same, observe, prepare_image
@@ -33,7 +37,10 @@ if SENTRY_DSN:
     sentry_sdk.init(dsn=SENTRY_DSN, environment=APP_ENV, send_default_pii=False,
                     max_request_body_size="never", traces_sample_rate=0.0)
 
-app = FastAPI(title="분리배출 판정 API", version="0.3.0")
+app = FastAPI(title="분리배출 판정 API", version="0.4.0")
+
+# 판정 기록 DB. 연결에 실패해도 서버는 뜨고 판정은 계속된다 (store.py 참고)
+store.init(DATABASE_URL)
 
 
 # ---------- 오류: 모든 오류를 {"error": {"code", "message"}} 한 가지 모양으로 ----------
@@ -59,6 +66,7 @@ ERRORS = {400: {"model": ErrorResponse}, 413: {"model": ErrorResponse},
           429: {"model": ErrorResponse}, 502: {"model": ErrorResponse}}
 
 
+
 # ---------- 요청 보호: 너무 큰 요청, 너무 잦은 요청 ----------
 
 _recent = defaultdict(deque)                            # IP → 최근 1분 요청 시각
@@ -72,13 +80,16 @@ def _client_ip(request: Request) -> str:
 
 @app.middleware("http")
 async def guard(request: Request, call_next):
-    if request.method == "POST" and request.url.path == "/judge":
+    path = request.url.path
+    if request.method == "POST" and path == "/judge":
         # 1) 본문을 다 받기 전에 크기부터 확인 (사진 2장 + 여유)
         size = request.headers.get("content-length")
         if size and size.isdigit() and int(size) > 2 * MAX_BYTES + 1024 * 1024:
             return JSONResponse({"error": {"code": "TOO_LARGE", "message": "사진 용량이 너무 커요 (최대 15MB)."}},
                                 status_code=413)
+    if (request.method == "POST" and path in ("/judge", "/feedback")) or path.startswith("/admin/api/"):
         # 2) 같은 IP의 1분 요청 수 제한 (메모리에만 기록, 서버 재시작 시 초기화)
+        #    AI 비용이 드는 판정, DB에 쓰는 피드백, 토큰을 맞혀 보는 시도(관리자 API)에 건다
         if RATE_LIMIT_PER_MIN > 0:
             now, q = time.monotonic(), _recent[_client_ip(request)]
             while q and now - q[0] > 60:
@@ -204,8 +215,66 @@ def judge_api(
         "attempt": attempt, "reused": observation is not None, "same": obs.get("same_item"), "subject": obs.get("subject", ""), "notes": (obs.get("notes") or "")[:150],
         "ms": round((time.perf_counter() - started) * 1000),
     }, ensure_ascii=False))
+    ms = round((time.perf_counter() - started) * 1000)
+    # 판정 기록 (사진·IP 없음). 실패해도 판정 응답은 그대로 나간다
+    jid = store.save_judgment(
+        item=obs["item"], status=result["status"], attempt=attempt, confidence=obs.get("confidence"),
+        reused=observation is not None, seen=obs.get("observations") or {},
+        answers={k: v for k, v in answer_dict.items() if isinstance(v, (str, int, float, bool))},
+        notes=obs.get("notes") or "", ms=ms, model=MODEL)
     labels = {k: LABELS[k] for k in obs.get("observations") or {} if k in LABELS}
-    return {"observation": obs, "judgement": result, "labels": labels}
+    return {"observation": obs, "judgement": result, "labels": labels, "judgment_id": jid}
+
+
+@app.post("/feedback", responses={404: {"model": ErrorResponse}, 503: {"model": ErrorResponse}})
+def feedback_api(body: FeedbackRequest):
+    """결과 화면의 '맞았어요 / 틀렸어요'. 같은 판정에 다시 보내면 마지막 값으로 바뀐다"""
+    if not store.enabled():
+        raise ApiError("STORE_OFF", "지금은 의견을 저장할 수 없어요. 잠시 후 다시 시도해 주세요.", 503)
+    try:
+        found = store.save_feedback(body.judgment_id, body.correct, body.reason, body.comment)
+    except Exception:
+        log.exception("feedback save failed")
+        raise ApiError("STORE_OFF", "지금은 의견을 저장할 수 없어요. 잠시 후 다시 시도해 주세요.", 503)
+    if not found:
+        raise ApiError("NOT_FOUND", "판정 기록을 찾을 수 없어요.", 404)
+    log.info("feedback %s", json.dumps({"id": body.judgment_id[:8], "correct": body.correct, "reason": body.reason}))
+    return {"ok": True}
+
+
+# ---------- 관리자: 판정 수, 정답률, 틀린 사례 ----------
+# ADMIN_TOKEN이 없으면 존재 자체를 숨긴다(404). 있으면 Authorization: Bearer <토큰> 이 맞아야 한다.
+
+ADMIN_HTML = os.path.join(os.path.dirname(os.path.abspath(__file__)), "admin.html")
+
+
+def require_admin(request: Request):
+    if not ADMIN_TOKEN:
+        raise ApiError("NOT_FOUND", "Not Found", 404)
+    given = request.headers.get("authorization", "").removeprefix("Bearer ").strip()
+    if not secrets.compare_digest(given.encode(), ADMIN_TOKEN.encode()):
+        raise ApiError("UNAUTHORIZED", "관리자 토큰이 맞지 않아요.", 401)
+    if not store.enabled():
+        raise ApiError("STORE_OFF", "DB에 연결되어 있지 않아요.", 503)
+
+
+@app.get("/admin", include_in_schema=False)
+def admin_page():
+    """관리자 화면 (토큰은 화면에서 입력, 데이터는 아래 API로 받음)"""
+    if not ADMIN_TOKEN:
+        raise ApiError("NOT_FOUND", "Not Found", 404)
+    return FileResponse(ADMIN_HTML, headers={"Cache-Control": "no-store", "X-Robots-Tag": "noindex"})
+
+
+@app.get("/admin/api/summary", dependencies=[Depends(require_admin)])
+def admin_summary(days: int = 7):
+    return store.summary(max(1, min(days, 90)))
+
+
+@app.get("/admin/api/judgments", dependencies=[Depends(require_admin)])
+def admin_judgments(limit: int = 50, only: Optional[str] = None):
+    """only: wrong(틀렸어요만) / feedback(피드백 있는 것만) / 없음(전체)"""
+    return {"items": store.recent(limit, only if only in ("wrong", "feedback") else None)}
 
 
 if __name__ == "__main__":                              # python app.py 로도 실행 가능 (개발용, 코드 바꾸면 자동 재시작)

@@ -8,7 +8,9 @@ flowchart LR
     U -->|HTTPS /judge| C[Caddy<br/>인증서 자동 발급·갱신]
     subgraph EC2[AWS EC2 · Ubuntu · Docker Compose]
       C --> A[API 컨테이너<br/>FastAPI · 비root · 헬스체크]
+      A --> D[(PostgreSQL<br/>판정 기록 · 피드백)]
     end
+    C -->|/admin| A
     A --> O[OpenAI Vision API]
     M[UptimeRobot] -->|5분마다 /health| C
     A -->|예외| S[Sentry]
@@ -27,12 +29,13 @@ flowchart LR
 | 에러 추적 | Sentry (`SENTRY_DSN`이 있을 때만) | AI 호출 실패 · 처리 못 한 예외를 원인과 함께 모으기. 사진 · 요청 본문 · IP는 보내지 않음 |
 | 요청 로그 | 판정마다 상태 · 품목 · 확신도 · 처리 시간(ms)을 JSON 한 줄로 | 응답 시간과 실패 유형을 숫자로 보기 |
 | 비용 보호 | IP당 분당 20회, 사진 15MB 제한 | 주소가 공개돼도 AI 비용 폭주 방지 |
+| 판정 기록 | PostgreSQL 컨테이너 (포트 비공개, 볼륨 보관), 매일 백업 7일치 | 실제 사용에서 정확도를 보고 오답을 평가 세트로 되돌리기 |
+| 관리자 | `/admin` (토큰 보호, 없으면 404), 관리자 API에도 요청 수 제한 | 서버에 들어가지 않고 판정 수 · 정답률 · 틀린 사례 확인 |
 
 ## 자주 쓰는 명령 (서버)
 
 ```bash
-cd ~/recycle-vision-judge/deploy
-export DOMAIN=<IP를-대시로>.sslip.io
+cd ~/recycle-vision-judge/deploy      # DOMAIN, POSTGRES_PASSWORD는 deploy/.env에서 읽는다
 
 docker compose ps                         # 상태 (api가 healthy인지)
 docker compose logs --tail=50 api         # 최근 로그
@@ -43,6 +46,37 @@ cd .. && git pull && cd deploy && docker compose up -d --build
 
 # .env만 바꿨을 때
 docker compose up -d --force-recreate api
+
+# 판정 기록 직접 보기
+docker compose exec db psql -U rescan -d rescan -c "select status, count(*) from judgments group by status;"
+```
+
+## 운영 데이터: 판정 기록과 피드백
+
+```
+판정마다 기록 (사진 · IP 없음) → 사용자 "맞았어요 / 틀렸어요" → /admin 에서 오답 확인
+  → tests/export_feedback.py 로 평가 세트 후보 목록 → 같은 상황 사진을 찍어 cases.json에 추가
+  → run_tests.py --save → compare_runs.py 이전.json 새.json --strict  (나빠졌으면 배포하지 않음)
+```
+
+| 저장하는 것 | 저장하지 않는 것 |
+|---|---|
+| 품목, 판정 결과, AI가 본 값, 확신도, 처리 시간, 사용자가 답한 질문, 피드백과 의견 | 사진, IP, 기기 정보 |
+
+설계 원칙: **DB가 죽어도 판정은 계속된다.** 저장에 실패하면 로그와 Sentry에만 남기고, 판정 응답은 `judgment_id` 없이 그대로 나간다. 화면은 `judgment_id`가 없으면 피드백 버튼만 숨긴다.
+
+### 처음 켤 때 (서버, 한 번만)
+
+```bash
+cd ~/recycle-vision-judge
+# 1) DB 비밀번호와 도메인 (deploy/.env, 저장소에 올리지 않음)
+printf "DOMAIN=<IP를-대시로>.sslip.io\nPOSTGRES_PASSWORD=%s\n" "$(openssl rand -hex 24)" > deploy/.env
+# 2) 관리자 토큰 (.env에 추가). 출력된 값은 비밀번호 관리자에 보관
+echo "ADMIN_TOKEN=$(openssl rand -hex 24)" >> .env && grep ADMIN_TOKEN .env
+# 3) 배포
+cd deploy && docker compose up -d --build && docker compose ps
+# 4) 매일 새벽 4시 10분 백업 (7일치 보관)
+(crontab -l 2>/dev/null; echo "10 4 * * * $HOME/recycle-vision-judge/deploy/backup.sh >> $HOME/backup.log 2>&1") | crontab -
 ```
 
 ## 장애가 나면

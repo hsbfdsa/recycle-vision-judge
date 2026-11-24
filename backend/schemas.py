@@ -333,6 +333,16 @@ class JudgeResponse(BaseModel):
     observation: Observation
     judgement: Judgement
     labels: Dict[str, str] = {}                 # 관찰 키의 한국어 이름 (rules.json field_labels, 판정 근거 화면용)
+    judgment_id: Optional[str] = None           # 판정 기록 ID. 피드백(/feedback)에 쓴다. 기록이 꺼져 있으면 없음
+
+
+class FeedbackRequest(BaseModel):
+    """결과 화면의 '맞았어요 / 틀렸어요'"""
+    model_config = ConfigDict(extra="forbid")
+    judgment_id: str = Field(pattern=r"^[0-9a-f]{32}$")
+    correct: bool
+    reason: Optional[Literal["item", "state", "place", "other"]] = None   # 틀렸다면 무엇이: 품목 / 상태 / 배출 장소 / 기타
+    comment: Optional[str] = Field(default=None, max_length=300)
 
 
 class ErrorBody(BaseModel):

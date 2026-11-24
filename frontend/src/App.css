@@ -588,6 +588,99 @@ body {
   margin-top: 10px;
 }
 
+/* 판정 피드백: 맞았어요 / 틀렸어요 */
+.feedback {
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-green);
+}
+
+.feedback-q {
+  margin: 0 0 6px;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.feedback-row {
+  display: flex;
+  gap: 8px;
+}
+
+.app .feedback-row button {
+  margin: 6px 0 0;
+  min-height: 40px;
+  padding: 8px 12px;
+}
+
+.app .feedback button.secondary {
+  background: var(--surface);
+  color: var(--primary-dark);
+  border-color: var(--border);
+}
+
+.app .feedback button.secondary:hover {
+  background: var(--primary-light);
+}
+
+.feedback-reasons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.app .feedback .chip {
+  width: auto;
+  min-height: 34px;
+  margin: 0;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.app .feedback .chip.on {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.feedback textarea {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--text);
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.feedback-note {
+  margin: 8px 0 0;
+  color: var(--text-sub);
+  font-size: 11px;
+}
+
+.feedback-error {
+  margin: 8px 0 0;
+  color: var(--error);
+  font-size: 13px;
+}
+
+.feedback-done {
+  margin-top: 16px;
+  color: var(--primary);
+  font-size: 13px;
+  text-align: center;
+}
+
 
 /* =================================
    13. 테스트 및 판정 근거

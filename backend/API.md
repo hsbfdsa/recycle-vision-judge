@@ -74,6 +74,8 @@
 | `different_item` | 처음과 다른 물건 | "같은 물건 다시 찍기" (attempt 그대로). 품목은 같은데 AI만 다르다고 본 경우 `questions`에 "같은 물건이 맞나요?"(`confirm_same_item`)가 옴 → '예'면 같은 사진으로 재요청 |
 | `unsupported` | 지원하지 않는 품목인데 큰 분류도 모름, 인식 실패 | `message` + `questions`의 품목 목록(`item_hint`) 버튼. 고르면 `answers`에 `{"item_hint": "P01"}`를 넣고 **사진과 함께**(observation 없이) 재요청 → 서버가 그 품목 기준으로 AI를 다시 부름 |
 
+`judgment_id`(문자열, 선택): 이 판정의 기록 ID. `/feedback`에 쓴다.
+
 ### 오류 응답
 
 ```json
@@ -90,6 +92,27 @@
 | 502 | `AI_FAILED` | AI 호출 실패 (키 없음, 네트워크 등) |
 
 프론트는 `error.message`를 그대로 보여주면 된다.
+
+## POST /feedback
+
+결과 화면의 "맞았어요 / 틀렸어요". `/judge` 응답의 `judgment_id`로 보낸다. 같은 판정에 다시 보내면 마지막 값으로 바뀐다.
+
+```json
+{"judgment_id": "3f2a…(32자리)", "correct": false, "reason": "state", "comment": "라벨이 없는데 있다고 함"}
+```
+
+- `reason`(틀렸을 때, 선택): `item` 품목 · `state` 상태 · `place` 배출 장소 · `other` 기타
+- `comment`(선택): 300자까지
+- 성공: `{"ok": true}` · 없는 판정 404 `NOT_FOUND` · 형식 오류 400 `BAD_REQUEST` · DB 연결 안 됨 503 `STORE_OFF`
+- `judgment_id`는 DB 기록이 켜져 있을 때만 `/judge` 응답에 있다. 없으면 피드백 버튼을 숨긴다.
+
+## 관리자 (`/admin`)
+
+서버에 `ADMIN_TOKEN`이 있을 때만 열린다 (없으면 404). API는 `Authorization: Bearer <ADMIN_TOKEN>` 헤더가 필요하다.
+
+- `GET /admin` 관리자 화면 (토큰은 화면에서 입력)
+- `GET /admin/api/summary?days=7` 판정 수, 결과별 수, 피드백 정답률, 응답 시간(평균 · p95), 품목별 오답, 날짜별 수
+- `GET /admin/api/judgments?limit=50&only=wrong` 최근 판정 (`only`: `wrong` 틀렸어요만 · `feedback` 피드백 있는 것)
 
 ## GET /health
 
