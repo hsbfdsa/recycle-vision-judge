@@ -8,7 +8,7 @@ pillow>=10.0
 sqlalchemy>=2.0,<3
 psycopg[binary]>=3.2
 # 운영 중 에러 추적 (SENTRY_DSN이 있을 때만 켜짐)
-sentry-sdk[fastapi]>=2.0
+sentry-sdk[fastapi]>=2.0,<3
 # 아이폰 HEIC 사진 지원 (선택)
 pillow-heif>=0.16
 # 테스트(tests/test_api.py)용
